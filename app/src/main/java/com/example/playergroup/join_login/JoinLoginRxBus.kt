@@ -28,6 +28,8 @@ class JoinLoginRxBus {
     val JOINPAGE = 0    // 회원 가입 페이지
     val LOGINPAGE = 1   // 로그인 페이지
     val SEARCHMEMBERINFO = 2    // 아이디 / 비밀번호 찾기 페이지
+    //TODO TEST Ver
+    val GOMAIN = 3 // 홈으로 이동
 
     private val goToPagePublisher: PublishSubject<Int> = PublishSubject.create()
     fun publisher_goTo(page: Int) { goToPagePublisher.onNext(page) }

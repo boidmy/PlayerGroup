@@ -75,11 +75,14 @@ class LoginPageFragment: Fragment() {
                         }
                     })
                     .show()
+            } else {
+                // TODO Loading Bar 구현 하기.
             }
         }
 
         //TODO 로그인 기능 구현 완료시 삭제 ( Test 로 메인에 진입 할 수 있게 연결한 것 )
         btn_login.setOnLongClickListener {
+            mRxBus.publisher_goTo(mRxBus.GOMAIN)
             true
         }
 

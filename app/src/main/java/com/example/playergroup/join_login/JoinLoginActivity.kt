@@ -1,6 +1,7 @@
 package com.example.playergroup.join_login
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
 import com.example.playergroup.BaseActivity
 import com.example.playergroup.R
@@ -30,7 +31,13 @@ class JoinLoginActivity: BaseActivity() {
                 if (currentFocus != null) {
                     hideKeyboard(currentFocus!!)
                 }
-                vp_join_login_pager.setCurrentItem(it, true)
+
+                if (it == mRxBus.GOMAIN) {
+                    goToMain(this)
+                    Toast.makeText(this, "강제로 메인으로 이동합니다.", Toast.LENGTH_LONG).show()
+                } else {
+                    vp_join_login_pager.setCurrentItem(it, true)
+                }
             })
     }
 
