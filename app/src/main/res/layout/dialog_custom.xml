@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/custom_dialog_style"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <!-- TextView -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <!-- Detail -->
+        <TextView
+            android:id="@+id/tv_dialog__detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor_High_Emphasis"
+            android:textSize="16dp"
+            android:textStyle="normal"
+            android:gravity="center"
+            tools:text="@string/dialog_alert_msg_network" />
+
+    </LinearLayout>
+
+    <!-- Button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <!-- Negative -->
+        <Button
+            android:id="@+id/btn_dialog__negative"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/custom_button_negative_style"
+            android:textColor="@color/textColor_Medium_Emphasis"
+            android:textSize="15dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="" />
+
+        <!-- Positive -->
+        <Button
+            android:id="@+id/btn_dialog__posit"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/custom_button_positive_style"
+            android:textColor="@color/textColor_High_Emphasis"
+            android:textSize="15dp"
+            tools:text="OK" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

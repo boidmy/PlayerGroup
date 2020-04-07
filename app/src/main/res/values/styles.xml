@@ -1,0 +1,37 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Splash -->
+    <style name="SplashTheme" parent = "Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/spash_background</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <!-- JoinLoginPage -->
+    <style name="JoinLoginTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <!-- TextInputLayout OutLineBox 에서 EditText Focus 시 색을 ColorAccent 를 바라봄. -->
+        <item name="colorAccent">@color/textColor_High_Emphasis</item>
+    </style>
+
+    <!-- CustomDialog -->
+    <style name="CustomDialogStyle">
+        <item name="android:windowEnterAnimation">@anim/modal_in</item>
+        <item name="android:windowExitAnimation">@anim/modal_out</item>
+    </style>
+
+    <!--TextInputLayout-->
+    <style name="textInputLayer" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColorHint">@color/colorPrimaryDark</item>
+        <item name="boxStrokeColor">@color/textColor_High_Emphasis</item>
+    </style>
+
+</resources>

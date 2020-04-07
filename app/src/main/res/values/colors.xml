@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#121212</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="windowBackground">#121212</color>
+
+    <color name="viewOverlayBgColor">#121212</color>
+
+    <color name="textColor_High_Emphasis">#DEFFFFFF</color>
+    <color name="textColor_Medium_Emphasis">#99FFFFFF</color>
+    <color name="textColor_Low_Emphasis">#61FFFFFF</color>
+    <color name="textColor_Disabled">#1AFFFFFF</color>
+
+    <color name="btnColorPositive">#B3D81B60</color>
+    <color name="btnColorNegative">#1AFFFFFF</color>
+
+</resources>

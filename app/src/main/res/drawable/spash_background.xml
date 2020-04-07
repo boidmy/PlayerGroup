@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/colorPrimaryDark"/>
+    <!--values/colors.xml 에 미리 만들어둔 배경으로 채울 색상입니다.-->
+
+    <!--<item>
+        &lt;!&ndash; 이미지 정중앙에 그리기&ndash;&gt;
+        <bitmap
+                android:gravity="center"
+                android:src="@drawable/ic_launcher_background"/>
+    </item>-->
+
+</layer-list>

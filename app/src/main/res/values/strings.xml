@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">PlayerGroup</string>
+
+    <string name="dialog_alert_msg_network">네트워크가 연결되어 있지 않습니다.\n와이파이 혹은 모바일 데이터 연결을 확인해 주세요.</string>
+    <string name="app_finish_btn">종료하기</string>
+
+    <string name="ok">확인</string>
+    <string name="cancel">취소</string>
+
+    <string name="input_email">이메일을 입력해 주세요.</string>
+    <string name="input_email_helper">꼭! 이메일이여야 합니다. 비밀번호 찾을 때 사용 합니다.</string>
+    <string name="input_pw">비밀번호를 입력해 주세요.</string>
+    <string name="input_pw_help">4 ~ 16 자, 특수 기호 포함.</string>
+    <string name="input_pw2_help">위와 동일한 비밀번호를 입력해 주세요!</string>
+
+    <string name="input_empty_error">아이디 및 비밀번호를 정확히 입력해 주세요.</string>
+
+    <string name="login_other_way">다른 방법으로 로그인하기</string>
+    <string name="email">이메일</string>
+    <string name="logout">로그아웃</string>
+    <string name="join_page">간편 회원 가입</string>
+    <string name="join">회원가입</string>
+    <string name="search_member">아이디 / 비밀번호 찾기</string>
+    <string name="login">로그인</string>
+    <string name="join_ok">회원가입</string>
+    <string name="login_sub_title">with your social network</string>
+    <string name="input_name">이름</string>
+
+</resources>
