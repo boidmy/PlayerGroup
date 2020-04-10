@@ -7,6 +7,7 @@
 
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
+    <string name="send">보내기</string>
 
     <string name="input_email">Email</string>
     <string name="input_email_helper">꼭! 이메일이여야 합니다. 비밀번호 찾을 때 사용 합니다.</string>
@@ -16,6 +17,8 @@
     <string name="input_pw2_help">위와 동일한 비밀번호를 입력해 주세요!</string>
 
     <string name="input_empty_error">아이디 및 비밀번호를 정확히 입력해 주세요.</string>
+    <string name="email_check">인증 메일을 보내드렸습니다.\n확인 후 인증하여 회원가입을 완료해 주세요.</string>
+    <string name="non_email_check">메일 인증이 되지 않았습니다. 인증 후 다시 시도해 주세요.</string>
 
     <string name="login_other_way">다른 방법으로 로그인하기</string>
     <string name="email">이메일</string>
@@ -23,6 +26,7 @@
     <string name="join_page">간편 회원 가입</string>
     <string name="join">회원가입</string>
     <string name="search_member">아이디 / 비밀번호 찾기</string>
+    <string name="search_sub_title">찾으려는 사용자의 이메일을 입력하세요.</string>
     <string name="login">로그인</string>
     <string name="join_ok">회원가입</string>
     <string name="login_sub_title">with your social network</string>

@@ -43,7 +43,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
             <Button
-                android:id="@+id/btn_google_login"
+                android:id="@+id/btn_join_google_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -74,7 +74,7 @@
                 android:textColor="@color/textColor_Medium_Emphasis"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_google_login" />
+                app:layout_constraintTop_toBottomOf="@+id/btn_join_google_login" />
 
             <View
                 android:id="@+id/border03"

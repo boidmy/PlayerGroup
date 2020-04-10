@@ -1,6 +1,11 @@
 package com.example.playergroup.join_login
 
+import android.content.Intent
+import android.view.View
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import io.reactivex.Observable
+import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.subjects.PublishSubject
 
 /**
@@ -31,6 +36,9 @@ class JoinLoginRxBus {
     //TODO TEST Ver
     val GOMAIN = 3 // 홈으로 이동
 
+    //SNS Login Content
+    val GOOGLE = 4  // Google Login
+
     private val goToPagePublisher: PublishSubject<Int> = PublishSubject.create()
     fun publisher_goTo(page: Int) { goToPagePublisher.onNext(page) }
     fun listen_goTo(): Observable<Int> = goToPagePublisher
@@ -40,4 +48,8 @@ class JoinLoginRxBus {
     fun listen_idpw(): Observable<IDPW> = idpw_publisher
     data class IDPW(val id: String, val pw: String)
 
+    // *************** SNS 로그인 ******************
+    private val snsLogin: PublishSubject<Int> = PublishSubject.create()
+    fun publisher_snsLogin(snsLoginContent: Int) { snsLogin.onNext(snsLoginContent) }
+    fun listen_snsLogin() : Observable<Int> = snsLogin
 }

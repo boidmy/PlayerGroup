@@ -29,6 +29,7 @@ class LoginPageFragment: Fragment() {
         }
     }
 
+    private val firebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val mRxBus by lazy { JoinLoginRxBus.getInstance() }
     private val compositeDisposable = CompositeDisposable()
 
@@ -59,6 +60,10 @@ class LoginPageFragment: Fragment() {
         tv_join click { mRxBus.publisher_goTo(mRxBus.JOINPAGE)}
         tv_search_member click { mRxBus.publisher_goTo(mRxBus.SEARCHMEMBERINFO) }
 
+        btn_login_google_login click {
+            mRxBus.publisher_snsLogin(mRxBus.GOOGLE)
+        }
+
         btn_login click {
 
             if (activity?.currentFocus != null) {
@@ -69,25 +74,21 @@ class LoginPageFragment: Fragment() {
                 showDialog(it.context, it.context.getString(R.string.input_empty_error)).show()
             } else {
                 // TODO Loading Bar 구현 하기.
-                FirebaseAuth
-                    .getInstance()
+                firebaseAuth
                     .signInWithEmailAndPassword(et_login_id.text.toString(), et_login_pw.text.toString())
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            mRxBus.publisher_goTo(mRxBus.GOMAIN)
+                            if (firebaseAuth.currentUser?.isEmailVerified!!) {
+                                mRxBus.publisher_goTo(mRxBus.GOMAIN)
+                            } else {
+                                showDialog(it.context, it.context.getString(R.string.non_email_check)).show()
+                            }
                         } else {
                             showDialog(it.context, it.context.getString(R.string.dialog_alert_msg_error)).show()
                         }
                     }
             }
         }
-
-        //TODO 로그인 기능 구현 완료시 삭제 ( Test 로 메인에 진입 할 수 있게 연결한 것 )
-        btn_login.setOnLongClickListener {
-            mRxBus.publisher_goTo(mRxBus.GOMAIN)
-            true
-        }
-
     }
 
     override fun onResume() {

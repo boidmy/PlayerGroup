@@ -28,6 +28,7 @@ class JoinPageFragment: Fragment() {
         }
     }
 
+    private val firebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val mRxBus by lazy { JoinLoginRxBus.getInstance() }
     //private val PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{8,16}$")   // 8 ~ 16 가능 문자 특수문자 모두 가능
     private val PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*#?&]).{8,15}.\$")   // 8 ~ 16 ( 특수문자, 문자, 숫자 모두 포함 )
@@ -48,6 +49,10 @@ class JoinPageFragment: Fragment() {
 
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        btn_join_google_login click {
+            mRxBus.publisher_snsLogin(mRxBus.GOOGLE)
+        }
 
 
         et_join_id.setOnFocusChangeListener { v, hasFocus ->
@@ -77,15 +82,24 @@ class JoinPageFragment: Fragment() {
                 showDialog(it.context, it.context.getString(R.string.input_pw_error)).show()
             } else {
                 // 회원가입 진행
-                FirebaseAuth
-                    .getInstance()
+                firebaseAuth
                     .createUserWithEmailAndPassword(et_join_id.text.toString(), et_join_pw.text.toString())
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            mRxBus.publisher_idpw(et_join_id.text.toString(), et_join_pw.text.toString())
-                            mRxBus.publisher_goTo(mRxBus.LOGINPAGE)
+                            firebaseAuth.currentUser
+                                ?.sendEmailVerification()
+                                ?.addOnCompleteListener { verifiTask ->
+                                    if (verifiTask.isSuccessful) {
+                                        showDialog(it.context, it.context.getString(R.string.email_check)).show()
+                                        mRxBus.publisher_idpw(et_join_id.text.toString(), et_join_pw.text.toString())
+                                        mRxBus.publisher_goTo(mRxBus.LOGINPAGE)
+                                    } else {
+                                        showDialog(it.context, it.context.getString(R.string.dialog_alert_msg_error)).show()
+                                    }
+                                }
+
                         } else {
-                            showDialog(it.context, it.context.getString(R.string.dialog_alert_msg_error))
+                            showDialog(it.context, it.context.getString(R.string.dialog_alert_msg_error)).show()
                         }
                     }
             }
