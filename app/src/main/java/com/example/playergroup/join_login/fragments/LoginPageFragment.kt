@@ -16,6 +16,7 @@ import com.example.playergroup.join_login.JoinLoginRxBus
 import com.example.playergroup.util.DialogCustom
 import com.example.playergroup.util.click
 import com.example.playergroup.util.hideKeyboard
+import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_join.*
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -65,18 +66,19 @@ class LoginPageFragment: Fragment() {
             }
 
             if (isEditTextEmpty(et_login_id, et_login_pw)) {
-                DialogCustom(it.context)
-                    .setMessage(R.string.input_empty_error)
-                    .setConfirmBtnText(R.string.ok)
-                    .setDialogCancelable(false)
-                    .setConfirmClickListener(object: DialogCustom.DialogCustomClickListener {
-                        override fun onClick(dialogCustom: DialogCustom) {
-                            dialogCustom.dismiss()
-                        }
-                    })
-                    .show()
+                showDialog(it.context, it.context.getString(R.string.input_empty_error)).show()
             } else {
                 // TODO Loading Bar 구현 하기.
+                FirebaseAuth
+                    .getInstance()
+                    .signInWithEmailAndPassword(et_login_id.text.toString(), et_login_pw.text.toString())
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            mRxBus.publisher_goTo(mRxBus.GOMAIN)
+                        } else {
+                            showDialog(it.context, it.context.getString(R.string.dialog_alert_msg_error)).show()
+                        }
+                    }
             }
         }
 
@@ -105,4 +107,15 @@ class LoginPageFragment: Fragment() {
 
     private fun isEditTextEmpty(id: AppCompatEditText, pw: AppCompatEditText) =
         (id.text?.trim().isNullOrEmpty() || pw.text?.trim().isNullOrEmpty())
+
+    private fun showDialog(context: Context, msg: String): DialogCustom =
+        DialogCustom(context)
+            .setMessage(msg)
+            .setConfirmBtnText(R.string.ok)
+            .setDialogCancelable(false)
+            .setConfirmClickListener(object: DialogCustom.DialogCustomClickListener {
+                override fun onClick(dialogCustom: DialogCustom) {
+                    dialogCustom.dismiss()
+                }
+            })
 }

@@ -2,15 +2,17 @@
     <string name="app_name">PlayerGroup</string>
 
     <string name="dialog_alert_msg_network">네트워크가 연결되어 있지 않습니다.\n와이파이 혹은 모바일 데이터 연결을 확인해 주세요.</string>
+    <string name="dialog_alert_msg_error">관리자에게 문의해 주세요.</string>
     <string name="app_finish_btn">종료하기</string>
 
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
 
-    <string name="input_email">이메일을 입력해 주세요.</string>
+    <string name="input_email">Email</string>
     <string name="input_email_helper">꼭! 이메일이여야 합니다. 비밀번호 찾을 때 사용 합니다.</string>
-    <string name="input_pw">비밀번호를 입력해 주세요.</string>
-    <string name="input_pw_help">4 ~ 16 자, 특수 기호 포함.</string>
+    <string name="input_pw">Password</string>
+    <string name="input_pw_help">8 ~ 16 자, 문자, 특수 기호 모두포함.</string>
+    <string name="input_pw_error">비밀번호는 8 ~ 16자, 문자, 특수기호 모두포함 해 주세요.</string>
     <string name="input_pw2_help">위와 동일한 비밀번호를 입력해 주세요!</string>
 
     <string name="input_empty_error">아이디 및 비밀번호를 정확히 입력해 주세요.</string>

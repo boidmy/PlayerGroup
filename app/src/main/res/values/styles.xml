@@ -29,8 +29,7 @@
 
     <!--TextInputLayout-->
     <style name="textInputLayer" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:textColorHint">@color/colorPrimaryDark</item>
+        <item name="android:textColorHint">@color/textColor_Low_Emphasis</item>
         <item name="boxStrokeColor">@color/textColor_High_Emphasis</item>
     </style>
 

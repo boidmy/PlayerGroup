@@ -15,6 +15,8 @@ class JoinLoginActivity: BaseActivity() {
 
     private val mRxBus by lazy { JoinLoginRxBus.getInstance() }
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_joinlogin)
@@ -34,7 +36,6 @@ class JoinLoginActivity: BaseActivity() {
 
                 if (it == mRxBus.GOMAIN) {
                     goToMain(this)
-                    Toast.makeText(this, "강제로 메인으로 이동합니다.", Toast.LENGTH_LONG).show()
                 } else {
                     vp_join_login_pager.setCurrentItem(it, true)
                 }

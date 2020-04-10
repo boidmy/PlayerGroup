@@ -10,6 +10,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playergroup.join_login.JoinLoginActivity
 import com.example.playergroup.util.DialogCustom
+import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

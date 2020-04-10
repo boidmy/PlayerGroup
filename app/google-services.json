@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "298401794239",
+    "firebase_url": "https://playergroup-edc8b.firebaseio.com",
+    "project_id": "playergroup-edc8b",
+    "storage_bucket": "playergroup-edc8b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298401794239:android:94985cca089def5292de0a",
+        "android_client_info": {
+          "package_name": "com.example.playergroup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "298401794239-sdn2ktem7dunu9a6tpssoocmhko4o4mp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACgDDQxbexV6q1sI1qOs3ZqGqllH32nS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "298401794239-sdn2ktem7dunu9a6tpssoocmhko4o4mp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

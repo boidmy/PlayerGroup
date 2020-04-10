@@ -1,6 +1,7 @@
 package com.example.playergroup
 
 import android.os.Bundle
+import com.google.firebase.auth.FirebaseAuth
 
 class IntroActivity: BaseActivity() {
 
@@ -24,7 +25,13 @@ class IntroActivity: BaseActivity() {
         compositeDisposable.add(
             setDelay(TAG, 1000) // 현재는 데이터를 가져오는 통신 로직이 없어 딜레이로 대체
                 .map { this }
-                .subscribe(this::goToLogin)
+                .subscribe {
+                    if (FirebaseAuth.getInstance().currentUser == null) {
+                        goToLogin(it)
+                    } else {
+                        goToMain(it)
+                    }
+                }
         )
     }
 }
