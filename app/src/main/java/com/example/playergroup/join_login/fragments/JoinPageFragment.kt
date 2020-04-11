@@ -82,6 +82,7 @@ class JoinPageFragment: BaseFragment() {
                 showDialog(it.context, it.context.getString(R.string.input_pw_error)).show()
             } else {
                 // 회원가입 진행
+                mRxBus.publisher_loading(true)
                 firebaseAuth
                     .createUserWithEmailAndPassword(et_join_id.text.toString(), et_join_pw.text.toString())
                     .addOnCompleteListener { task ->
@@ -89,6 +90,7 @@ class JoinPageFragment: BaseFragment() {
                             firebaseAuth.currentUser
                                 ?.sendEmailVerification()
                                 ?.addOnCompleteListener { verifiTask ->
+                                    mRxBus.publisher_loading(false)
                                     if (verifiTask.isSuccessful) {
                                         showDialog(it.context, it.context.getString(R.string.email_check)).show()
                                         mRxBus.publisher_idpw(et_join_id.text.toString(), et_join_pw.text.toString())
@@ -99,6 +101,7 @@ class JoinPageFragment: BaseFragment() {
                                 }
 
                         } else {
+                            mRxBus.publisher_loading(false)
                             showDialog(it.context, it.context.getString(R.string.dialog_alert_msg_error)).show()
                         }
                     }

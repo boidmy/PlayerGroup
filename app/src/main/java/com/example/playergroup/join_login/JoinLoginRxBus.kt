@@ -47,4 +47,9 @@ class JoinLoginRxBus {
     private val snsLogin: PublishSubject<Int> = PublishSubject.create()
     fun publisher_snsLogin(snsLoginContent: Int) { snsLogin.onNext(snsLoginContent) }
     fun listen_snsLogin() : Observable<Int> = snsLogin
+
+    // loadingbar
+    private val loadingProgressBar: PublishSubject<Boolean> = PublishSubject.create()
+    fun publisher_loading(isShow: Boolean) {loadingProgressBar.onNext(isShow)}
+    fun listen_loading(): Observable<Boolean> = loadingProgressBar
 }

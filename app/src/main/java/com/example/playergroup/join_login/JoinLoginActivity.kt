@@ -57,6 +57,10 @@ class JoinLoginActivity: BaseActivity() {
             .listen_snsLogin()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(this::signInSnsLogin))
+
+        compositeDisposable.add(mRxBus
+            .listen_loading()
+            .subscribe{showProgress(group_ll_progress, it)})
     }
 
     override fun onBackPressed() {
@@ -67,6 +71,7 @@ class JoinLoginActivity: BaseActivity() {
     }
 
     private fun signInSnsLogin(snsLoginContent: Int) {
+        mRxBus.publisher_loading(true)
         when (snsLoginContent) {
             mRxBus.GOOGLE -> {
                 val mGoogleSignInClient = GoogleSignIn.getClient(this,
@@ -89,6 +94,7 @@ class JoinLoginActivity: BaseActivity() {
                 val account: GoogleSignInAccount = task.getResult(ApiException::class.java)!!
                 firebaseAuthWithGoogle(account)
             } catch (e: ApiException) {
+                mRxBus.publisher_loading(false)
                 Toast.makeText(this, "Google sign in failed:(", Toast.LENGTH_LONG).show()
                 Log.e(TAG, "Error > $e")
             }
@@ -101,6 +107,7 @@ class JoinLoginActivity: BaseActivity() {
             .getInstance()
             .signInWithCredential(credential)
             .addOnCompleteListener {
+                mRxBus.publisher_loading(false)
                 if (it.isSuccessful) {
                     FirebaseInstanceId
                         .getInstance()

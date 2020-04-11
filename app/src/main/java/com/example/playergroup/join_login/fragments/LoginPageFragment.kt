@@ -64,7 +64,6 @@ class LoginPageFragment: BaseFragment() {
         }
 
         btn_login click {
-
             if (activity?.currentFocus != null) {
                 hideKeyboard(activity?.currentFocus!!)
             }
@@ -72,10 +71,11 @@ class LoginPageFragment: BaseFragment() {
             if (isEditTextEmpty(et_login_id, et_login_pw)) {
                 showDialog(it.context, it.context.getString(R.string.input_empty_error)).show()
             } else {
-                // TODO Loading Bar 구현 하기.
+                mRxBus.publisher_loading(true)
                 firebaseAuth
                     .signInWithEmailAndPassword(et_login_id.text.toString(), et_login_pw.text.toString())
                     .addOnCompleteListener { task ->
+                        mRxBus.publisher_loading(false)
                         if (task.isSuccessful) {
                             if (firebaseAuth.currentUser?.isEmailVerified!!) {
                                 mRxBus.publisher_goTo(mRxBus.GOMAIN)

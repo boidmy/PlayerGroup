@@ -15,4 +15,6 @@
     <color name="btnColorPositive">#B3D81B60</color>
     <color name="btnColorNegative">#1AFFFFFF</color>
 
+    <color name="dim_color">#66000000</color>
+
 </resources>

@@ -2,6 +2,7 @@ package com.example.playergroup.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.playergroup.R
 import com.example.playergroup.util.DialogCustom
@@ -32,4 +33,9 @@ open class BaseFragment: Fragment() {
                     dialogCustom.dismiss()
                 }
             })
+
+    // 프로그스 바
+    protected fun showProgress(view: View, isShow: Boolean) {
+        view.visibility = if (isShow) View.VISIBLE else View.GONE
+    }
 }

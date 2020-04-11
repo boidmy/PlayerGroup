@@ -7,6 +7,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playergroup.join_login.JoinLoginActivity
 import com.example.playergroup.util.DialogCustom
@@ -126,6 +127,11 @@ open class BaseActivity : AppCompatActivity() {
             }
         }
         return result
+    }
+
+    // 프로그스 바
+    protected fun showProgress(view: View, isShow: Boolean) {
+        view.visibility = if (isShow) View.VISIBLE else View.GONE
     }
 
 }
