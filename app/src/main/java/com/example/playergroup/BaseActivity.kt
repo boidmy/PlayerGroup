@@ -63,6 +63,17 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
+    protected fun showDialog(context: Context, msg: String): DialogCustom =
+        DialogCustom(context)
+            .setMessage(msg)
+            .setConfirmBtnText(R.string.ok)
+            .setDialogCancelable(false)
+            .setConfirmClickListener(object: DialogCustom.DialogCustomClickListener {
+                override fun onClick(dialogCustom: DialogCustom) {
+                    dialogCustom.dismiss()
+                }
+            })
+
     protected fun goToMain(context: Context) {
         val intent = Intent(context, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)

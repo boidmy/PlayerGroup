@@ -1,11 +1,9 @@
 package com.example.playergroup.join_login
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.viewpager.widget.ViewPager
 import com.example.playergroup.BaseActivity
 import com.example.playergroup.R
 import com.example.playergroup.util.DialogCustom
@@ -21,13 +19,15 @@ import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_joinlogin.*
 
+/**
+ * 파이어베이스 회원 관리 참고 : https://firebase.google.com/docs/auth/unity/manage-users?hl=ko#send_a_user_a_verification_email
+ */
+
 class JoinLoginActivity: BaseActivity() {
 
     private val TAG = this::class.java.simpleName
 
     private val mRxBus by lazy { JoinLoginRxBus.getInstance() }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,15 +110,7 @@ class JoinLoginActivity: BaseActivity() {
                         }
                     goToMain(this)
                 } else {
-                    DialogCustom(this)
-                        .setMessage(R.string.dialog_alert_msg_error)
-                        .setConfirmBtnText(R.string.ok)
-                        .setDialogCancelable(false)
-                        .setConfirmClickListener(object: DialogCustom.DialogCustomClickListener {
-                            override fun onClick(dialogCustom: DialogCustom) {
-                                dialogCustom.dismiss()
-                            }
-                        }).show()
+                    showDialog(this@JoinLoginActivity, getString(R.string.dialog_alert_msg_error)).show()
                 }
             }
     }

@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.Fragment
 import com.example.playergroup.MainActivity
 import com.example.playergroup.R
+import com.example.playergroup.fragments.BaseFragment
 import com.example.playergroup.join_login.JoinLoginActivity
 import com.example.playergroup.join_login.JoinLoginRxBus
 import com.example.playergroup.util.DialogCustom
@@ -21,7 +22,7 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_join.*
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class LoginPageFragment: Fragment() {
+class LoginPageFragment: BaseFragment() {
 
     companion object {
         fun newInstance() = LoginPageFragment().apply {
@@ -29,9 +30,7 @@ class LoginPageFragment: Fragment() {
         }
     }
 
-    private val firebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val mRxBus by lazy { JoinLoginRxBus.getInstance() }
-    private val compositeDisposable = CompositeDisposable()
 
     override fun onAttach(@NonNull context: Context) {
         super.onAttach(context)
@@ -101,22 +100,7 @@ class LoginPageFragment: Fragment() {
         et_login_pw.text = null
     }
 
-    override fun onDestroy() {
-        compositeDisposable.clear()
-        super.onDestroy()
-    }
-
     private fun isEditTextEmpty(id: AppCompatEditText, pw: AppCompatEditText) =
         (id.text?.trim().isNullOrEmpty() || pw.text?.trim().isNullOrEmpty())
 
-    private fun showDialog(context: Context, msg: String): DialogCustom =
-        DialogCustom(context)
-            .setMessage(msg)
-            .setConfirmBtnText(R.string.ok)
-            .setDialogCancelable(false)
-            .setConfirmClickListener(object: DialogCustom.DialogCustomClickListener {
-                override fun onClick(dialogCustom: DialogCustom) {
-                    dialogCustom.dismiss()
-                }
-            })
 }

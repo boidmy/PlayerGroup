@@ -12,6 +12,7 @@ import androidx.annotation.Nullable
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.Fragment
 import com.example.playergroup.R
+import com.example.playergroup.fragments.BaseFragment
 import com.example.playergroup.join_login.JoinLoginRxBus
 import com.example.playergroup.util.DialogCustom
 import com.example.playergroup.util.click
@@ -20,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_join.*
 import java.util.regex.Pattern
 
-class JoinPageFragment: Fragment() {
+class JoinPageFragment: BaseFragment() {
 
     companion object {
         fun newInstance() = JoinPageFragment().apply {
@@ -28,7 +29,6 @@ class JoinPageFragment: Fragment() {
         }
     }
 
-    private val firebaseAuth by lazy { FirebaseAuth.getInstance() }
     private val mRxBus by lazy { JoinLoginRxBus.getInstance() }
     //private val PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{8,16}$")   // 8 ~ 16 가능 문자 특수문자 모두 가능
     private val PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*#?&]).{8,15}.\$")   // 8 ~ 16 ( 특수문자, 문자, 숫자 모두 포함 )
@@ -133,14 +133,4 @@ class JoinPageFragment: Fragment() {
     private fun isPWDPattern(et: AppCompatEditText) =
         (PASSWORD_PATTERN.matcher(et.text?.toString()).matches())
 
-    private fun showDialog(context: Context, msg: String): DialogCustom =
-        DialogCustom(context)
-            .setMessage(msg)
-            .setConfirmBtnText(R.string.ok)
-            .setDialogCancelable(false)
-            .setConfirmClickListener(object: DialogCustom.DialogCustomClickListener {
-                override fun onClick(dialogCustom: DialogCustom) {
-                    dialogCustom.dismiss()
-                }
-            })
 }

@@ -9,8 +9,9 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import com.example.playergroup.R
+import com.example.playergroup.fragments.BaseFragment
 
-class SearchMemberInfoPageFragment: Fragment() {
+class SearchMemberInfoPageFragment: BaseFragment() {
 
     companion object {
         fun newInstance() = SearchMemberInfoPageFragment().apply {

@@ -1,11 +1,6 @@
 package com.example.playergroup.join_login
 
-import android.content.Intent
-import android.view.View
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import io.reactivex.Observable
-import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.subjects.PublishSubject
 
 /**
