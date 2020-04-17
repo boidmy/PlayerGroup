@@ -9,5 +9,25 @@
         android:id="@+id/mainFragment"
         android:name="com.example.playergroup.fragments.MainFragment"
         android:label="MainFragment"
-        tools:layout="@layout/fragment_main"/>
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_myInfoFragment"
+            app:destination="@id/myInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/myInfoFragment"
+        android:name="com.example.playergroup.fragments.MyInfoFragment"
+        android:label="MyInfoFragment"
+        tools:layout="@layout/fragment_myinfo">
+        <action
+            android:id="@+id/action_myInfoFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/myInfoFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

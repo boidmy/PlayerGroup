@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="290dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="20dp">
+
+    <NumberPicker
+        android:id="@+id/pic_height"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintEnd_toStartOf="@+id/pic_weight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <NumberPicker
+        android:id="@+id/pic_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintEnd_toStartOf="@+id/pic_position"
+        app:layout_constraintStart_toEndOf="@+id/pic_height"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <NumberPicker
+        android:id="@+id/pic_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/pic_weight"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/save"
+        android:textColor="@color/textColor_High_Emphasis"
+        app:backgroundTint="@color/btnColorPositive"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/pic_position"
+        app:layout_constraintTop_toBottomOf="@+id/pic_height" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:text="@string/cancel"
+        android:textColor="@color/textColor_Medium_Emphasis"
+        app:backgroundTint="@color/btnColorNegative"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/btn_ok"
+        app:layout_constraintTop_toTopOf="@+id/btn_ok" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

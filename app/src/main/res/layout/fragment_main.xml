@@ -13,20 +13,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@drawable/custom_button_negative_style"
         android:text="@string/logout"
         android:textColor="@color/textColor_Medium_Emphasis"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:textSize="15dp"
+        app:cornerRadius="10dp"
+        app:backgroundTint="@color/btnColorPositive"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_myInfo"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_myInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/member_info"
+        android:textColor="@color/textColor_Medium_Emphasis"
+        app:cornerRadius="10dp"
+        app:backgroundTint="@color/design_default_color_primary_dark"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/btn_logout"
+        app:layout_constraintTop_toTopOf="@id/btn_logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/btn_logout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

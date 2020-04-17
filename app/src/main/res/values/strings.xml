@@ -8,6 +8,10 @@
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
     <string name="send">보내기</string>
+    <string name="save">등록하기</string>
+
+    <string name="go_home">홈으로</string>
+    <string name="register_success">등록되었습니다.</string>
 
     <string name="input_email">Email</string>
     <string name="input_email_helper">꼭! 이메일이여야 합니다. 비밀번호 찾을 때 사용 합니다.</string>
@@ -31,5 +35,19 @@
     <string name="join_ok">회원가입</string>
     <string name="login_sub_title">with your social network</string>
     <string name="input_name">이름</string>
+
+    <string name="member_info">내 정보</string>
+    <string name="member_info_height">키</string>
+    <string name="member_info_weight">몸무게</string>
+    <string name="member_info_addr">거주 지역</string>
+    <string name="member_info_addr_helper">ex ) 서울 송파구 신천동 </string>
+    <string name="member_info_age">생년월일</string>
+    <string name="member_info_position">포지션</string>
+    <string name="member_info_position_helper">ex ) 센터, 포워드, 가드.. </string>
+    <string name="member_info_detail">간단하게 하고싶은 말</string>
+
+    <string name="profile_img_see">프로필 사진 보기</string>
+    <string name="profile_img_selector">프로필 사진 선택</string>
+    <string name="profile_edit_is_empty">모두 빠짐없이 입력 부탁 드립니다..</string>
 
 </resources>

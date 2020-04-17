@@ -8,18 +8,11 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.fragment.app.Fragment
-import com.example.playergroup.MainActivity
 import com.example.playergroup.R
 import com.example.playergroup.fragments.BaseFragment
-import com.example.playergroup.join_login.JoinLoginActivity
 import com.example.playergroup.join_login.JoinLoginRxBus
-import com.example.playergroup.util.DialogCustom
 import com.example.playergroup.util.click
 import com.example.playergroup.util.hideKeyboard
-import com.google.firebase.auth.FirebaseAuth
-import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_join.*
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginPageFragment: BaseFragment() {
@@ -69,7 +62,7 @@ class LoginPageFragment: BaseFragment() {
             }
 
             if (isEditTextEmpty(et_login_id, et_login_pw)) {
-                showDialog(it.context, it.context.getString(R.string.input_empty_error)).show()
+                showDefDialog(it.context, it.context.getString(R.string.input_empty_error)).show()
             } else {
                 mRxBus.publisher_loading(true)
                 firebaseAuth
@@ -80,10 +73,10 @@ class LoginPageFragment: BaseFragment() {
                             if (firebaseAuth.currentUser?.isEmailVerified!!) {
                                 mRxBus.publisher_goTo(mRxBus.GOMAIN)
                             } else {
-                                showDialog(it.context, it.context.getString(R.string.non_email_check)).show()
+                                showDefDialog(it.context, it.context.getString(R.string.non_email_check)).show()
                             }
                         } else {
-                            showDialog(it.context, it.context.getString(R.string.dialog_alert_msg_error)).show()
+                            showDefDialog(it.context, it.context.getString(R.string.dialog_alert_msg_error)).show()
                         }
                     }
             }

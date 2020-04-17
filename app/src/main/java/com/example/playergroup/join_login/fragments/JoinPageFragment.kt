@@ -2,7 +2,7 @@ package com.example.playergroup.join_login.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.text.TextUtils
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +10,11 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.fragment.app.Fragment
 import com.example.playergroup.R
 import com.example.playergroup.fragments.BaseFragment
 import com.example.playergroup.join_login.JoinLoginRxBus
-import com.example.playergroup.util.DialogCustom
 import com.example.playergroup.util.click
 import com.example.playergroup.util.hideKeyboard
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_join.*
 import java.util.regex.Pattern
 
@@ -77,9 +74,9 @@ class JoinPageFragment: BaseFragment() {
             }
 
             if (isEditTextEmpty(et_join_id, et_join_pw)) {
-                showDialog(it.context, it.context.getString(R.string.input_empty_error)).show()
+                showDefDialog(it.context, it.context.getString(R.string.input_empty_error)).show()
             } else if (!isPWDPattern(et_join_pw)) {
-                showDialog(it.context, it.context.getString(R.string.input_pw_error)).show()
+                showDefDialog(it.context, it.context.getString(R.string.input_pw_error)).show()
             } else {
                 // 회원가입 진행
                 mRxBus.publisher_loading(true)
@@ -90,19 +87,34 @@ class JoinPageFragment: BaseFragment() {
                             firebaseAuth.currentUser
                                 ?.sendEmailVerification()
                                 ?.addOnCompleteListener { verifiTask ->
-                                    mRxBus.publisher_loading(false)
                                     if (verifiTask.isSuccessful) {
-                                        showDialog(it.context, it.context.getString(R.string.email_check)).show()
-                                        mRxBus.publisher_idpw(et_join_id.text.toString(), et_join_pw.text.toString())
-                                        mRxBus.publisher_goTo(mRxBus.LOGINPAGE)
+                                        val user = hashMapOf("email" to firebaseAuth.currentUser!!.email)
+
+                                        firebaseDB
+                                            .collection("users")
+                                            .document(firebaseAuth.currentUser!!.email.toString())
+                                            .set(user)
+                                            .addOnSuccessListener { documentReference ->
+                                                mRxBus.publisher_loading(false)
+                                                showDefDialog(it.context, it.context.getString(R.string.email_check)).show()
+                                                mRxBus.publisher_idpw(et_join_id.text.toString(), et_join_pw.text.toString())
+                                                mRxBus.publisher_goTo(mRxBus.LOGINPAGE)
+                                            }
+                                            .addOnFailureListener { e ->
+                                                Log.w("####", "Error adding document", e)
+                                                showDefDialog(it.context, it.context.getString(R.string.dialog_alert_msg_error)).show()
+                                                mRxBus.publisher_loading(false)
+                                            }
+
                                     } else {
-                                        showDialog(it.context, it.context.getString(R.string.dialog_alert_msg_error)).show()
+                                        mRxBus.publisher_loading(false)
+                                        showDefDialog(it.context, it.context.getString(R.string.dialog_alert_msg_error)).show()
                                     }
                                 }
 
                         } else {
                             mRxBus.publisher_loading(false)
-                            showDialog(it.context, it.context.getString(R.string.dialog_alert_msg_error)).show()
+                            showDefDialog(it.context, it.context.getString(R.string.dialog_alert_msg_error) + "\n" + task.exception?.message).show()
                         }
                     }
             }

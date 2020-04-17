@@ -6,18 +6,19 @@ import android.util.Log
 import android.widget.Toast
 import com.example.playergroup.BaseActivity
 import com.example.playergroup.R
-import com.example.playergroup.util.DialogCustom
+import com.example.playergroup.data.UserInfo
 import com.example.playergroup.util.hideKeyboard
+import com.example.playergroup.util.toastShort
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_joinlogin.*
+import kotlinx.android.synthetic.main.fragment_join.*
 
 /**
  * 파이어베이스 회원 관리 참고 : https://firebase.google.com/docs/auth/unity/manage-users?hl=ko#send_a_user_a_verification_email
@@ -103,20 +104,57 @@ class JoinLoginActivity: BaseActivity() {
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        FirebaseAuth
-            .getInstance()
+        firebaseAuth
             .signInWithCredential(credential)
             .addOnCompleteListener {
                 mRxBus.publisher_loading(false)
+
                 if (it.isSuccessful) {
                     FirebaseInstanceId
                         .getInstance()
                         .instanceId
                         .addOnSuccessListener { token ->
                             // 토큰값 과 계정정보를 가져온다.
+                            //TODO DB에 회원이 있는 경우에만 DB 에 저장하는 로직을 구현 해야 함.
+
+                            firebaseDB
+                                .collection("users")
+                                .document(firebaseAuth.currentUser?.email.toString())
+                                .get()
+                                .addOnSuccessListener {document ->
+                                    if (document.data != null) {
+                                        // 데이터가 존재 하므로 패스
+                                        mRxBus.publisher_loading(false)
+                                        goToMain(this)
+                                    } else {
+                                        // 데이터가 없으므로 생성하여 저장
+                                        val user = hashMapOf(
+                                            "email" to firebaseAuth.currentUser?.email.toString(),
+                                            "name" to firebaseAuth.currentUser?.displayName.toString(),
+                                            "img" to firebaseAuth.currentUser?.photoUrl.toString()
+                                        )
+                                        firebaseDB
+                                            .collection("users")
+                                            .document(firebaseAuth.currentUser!!.email.toString())
+                                            .set(user)
+                                            .addOnSuccessListener {
+                                                mRxBus.publisher_loading(false)
+                                                goToMain(this)
+                                            }
+                                            .addOnFailureListener { e ->
+                                                Log.w("####", "Error adding document", e)
+                                                showDialog(this, getString(R.string.dialog_alert_msg_error)).show()
+                                                mRxBus.publisher_loading(false)
+                                            }
+
+                                    }
+                                }
+                                .addOnFailureListener {
+                                    showDialog(this, getString(R.string.dialog_alert_msg_error)).show()
+                                }
                         }
-                    goToMain(this)
                 } else {
+                    mRxBus.publisher_loading(false)
                     showDialog(this@JoinLoginActivity, getString(R.string.dialog_alert_msg_error)).show()
                 }
             }

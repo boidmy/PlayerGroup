@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.playergroup.join_login.JoinLoginActivity
 import com.example.playergroup.util.DialogCustom
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,6 +24,8 @@ open class BaseActivity : AppCompatActivity() {
     private var backPressedTime: Long = 0
 
     protected val compositeDisposable = CompositeDisposable()
+    protected val firebaseAuth by lazy { FirebaseAuth.getInstance() }
+    protected val firebaseDB by lazy { FirebaseFirestore.getInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

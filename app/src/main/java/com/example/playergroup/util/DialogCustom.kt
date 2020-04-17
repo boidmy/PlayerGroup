@@ -2,21 +2,20 @@ package com.example.playergroup.util
 
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import com.example.playergroup.R
+import com.google.android.material.button.MaterialButton
 
-class DialogCustom constructor(context: Context) : AlertDialog(context), View.OnClickListener {
+class DialogCustom constructor(context: Context) : AlertDialog(context, R.style.AlertDialogTheme), View.OnClickListener {
 
     private var mMessageView: TextView? = null
-    private var mCancelBtn: Button? = null
-    private var mConfirmBtn: Button? = null
+    private var mCancelBtn: MaterialButton? = null
+    private var mConfirmBtn: MaterialButton? = null
 
     private var mMessageTxt: String? = null
     private var mConfirmTxt: String? = null

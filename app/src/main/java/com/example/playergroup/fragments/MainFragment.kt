@@ -11,8 +11,10 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import com.example.playergroup.MainActivity
 import com.example.playergroup.R
+import com.example.playergroup.data.UserInfo
 import com.example.playergroup.join_login.JoinLoginActivity
 import com.example.playergroup.util.click
+import com.example.playergroup.util.goTo
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : BaseFragment() {
@@ -36,9 +38,9 @@ class MainFragment : BaseFragment() {
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
         Log.d("####", "[MainFragment] onActivityCreated")
         super.onActivityCreated(savedInstanceState)
-
+        val userEmail = firebaseAuth.currentUser?.email?: ""
         if (firebaseAuth.currentUser != null) {
-            tv_title.text = firebaseAuth.currentUser?.email?: "이메일 정보를 못가져왔음.."
+            tv_title.text = userEmail
         }
 
         btn_logout click {
@@ -49,6 +51,10 @@ class MainFragment : BaseFragment() {
                     finish()
                 }
             }
+        }
+
+        btn_myInfo click {
+            mainContainer goTo R.id.action_mainFragment_to_myInfoFragment
         }
     }
 
