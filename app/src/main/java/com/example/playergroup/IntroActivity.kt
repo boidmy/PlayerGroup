@@ -33,5 +33,5 @@ class IntroActivity: BaseActivity() {
                     }
                 }
         )
-    }
+    }   
 }
