@@ -7,13 +7,11 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
@@ -23,19 +21,12 @@ import android.widget.NumberPicker
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.fragment_myinfo.*
-import java.util.*
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.CenterInside
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.module.GlideModule
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.playergroup.ActivityExchangeFragmentRxBus
 import com.example.playergroup.MainApplication
 import com.example.playergroup.R
@@ -49,9 +40,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.dialog_selector_profile.view.*
-import java.io.ByteArrayOutputStream
-import kotlin.math.min
-import kotlin.math.round
+import kotlinx.android.synthetic.main.fragment_myinfo.*
+import java.util.*
 
 /**
  * SNS Login 사용자는 FirebaseAuth.currentUser.photoUrl 을 가지고올 수 있음. ( 이름도 )
@@ -291,7 +281,7 @@ class MyInfoFragment : BaseFragment() {
             "position" to et_my_info_position.text.toString(),
             "age" to et_my_info_age.text.toString(),
             "addr" to et_my_info_addr.text.toString(),
-            "img" to firebaseAuth.currentUser?.email.toString(),
+            "img" to "userImg/${firebaseAuth.currentUser?.email.toString()}",
             "hope" to et_my_info_hope.text.toString()
         )
 
@@ -309,33 +299,33 @@ class MyInfoFragment : BaseFragment() {
 
     private fun setInitViewDateSet(userInfo: UserInfo?) {
         // 프로필
-        //setProfileImg(userInfo?.img)
-        val imgUrl = if (userInfo?.img.isNullOrEmpty()) {
-            ""
-        } else {
-            FirebaseStorage.getInstance().reference.child("userImg").child(userInfo?.img.toString())
-        }
-
-        GlideApp.with(this)
-            .load(imgUrl)
-            .apply(
-                RequestOptions()
-                .skipMemoryCache(true)    //캐시 사용 해제, Firebase사용 시 느리기 때문에 사용 필수
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-            )
-            .placeholder(
-                CircularProgressDrawable(iv_img.context).apply {
-                    //setColorFilter(ContextCompat.getColor(iv_img.context, R.color.textColor_Medium_Emphasis), PorterDuff.Mode.SRC_IN)
-                    //TODO 컬러 바꾸기.
-                    strokeWidth = 5f
-                    centerRadius = 30f
-                    start()
-                }
-            )
-            .error(R.drawable.iv_empty_profile)
-            .thumbnail(0.5f)    //이미지 배율 설정, 낮게해도 상관 없음
-            .transform(CenterCrop(), RoundedCorners(50))
-            .into(iv_img)
+        FirebaseStorage.getInstance().reference.child(userInfo?.img.toString())
+            .downloadUrl
+            .addOnSuccessListener {
+                GlideApp.with(this)
+                    .load(it)
+                    .apply(
+                        RequestOptions()
+                            .skipMemoryCache(true)    //캐시 사용 해제, Firebase사용 시 느리기 때문에 사용 필수
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    )
+                    .placeholder(
+                        CircularProgressDrawable(iv_img.context).apply {
+                            setColorFilter(ContextCompat.getColor(iv_img.context, R.color.textColor_Medium_Emphasis), PorterDuff.Mode.SRC_IN)
+                            //TODO 컬러 바꾸기.
+                            strokeWidth = 5f
+                            centerRadius = 30f
+                            start()
+                        }
+                    )
+                    .error(R.drawable.iv_empty_profile)
+                    .thumbnail(0.5f)    //이미지 배율 설정, 낮게해도 상관 없음
+                    .transform(CenterCrop(), RoundedCorners(50))
+                    .into(iv_img)
+            }
+            .addOnFailureListener {
+                Log.d("####", "이미지 경로 다운로드 실패 ")
+            }
 
         // 하위 EditText 들 채움.
         userInfo?.let {
@@ -428,6 +418,10 @@ class MyInfoFragment : BaseFragment() {
             .putFile(uri)
             .addOnSuccessListener {
                 isImageUpLoad.onNext(true)
+            }
+            .addOnProgressListener {
+                val progress: Double = 100.0 * it.bytesTransferred / it.totalByteCount
+                Log.d("####", "UpLoading >> $progress")
             }
             .addOnFailureListener {
 
