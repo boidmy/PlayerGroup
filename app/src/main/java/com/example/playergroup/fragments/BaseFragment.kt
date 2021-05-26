@@ -19,6 +19,7 @@ open class BaseFragment: Fragment() {
     protected val compositeDisposable = CompositeDisposable()
     protected val firebaseAuth by lazy { FirebaseAuth.getInstance() }
     protected val firebaseDB by lazy { FirebaseFirestore.getInstance() }
+    protected val firebaseBoardDB by lazy { firebaseDB.collection("board") }
 
     protected val mainActivity by lazy { activity as MainActivity }
     protected val mainContainer by lazy { mainActivity.main_container }

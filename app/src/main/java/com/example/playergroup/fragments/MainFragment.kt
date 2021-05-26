@@ -11,7 +11,6 @@ import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import com.example.playergroup.MainActivity
 import com.example.playergroup.R
-import com.example.playergroup.data.UserInfo
 import com.example.playergroup.join_login.JoinLoginActivity
 import com.example.playergroup.util.click
 import com.example.playergroup.util.goTo
@@ -40,7 +39,7 @@ class MainFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         val userEmail = firebaseAuth.currentUser?.email?: ""
         if (firebaseAuth.currentUser != null) {
-            tv_title.text = userEmail
+            userId.text = "user ID : $userEmail"
         }
 
         btn_logout click {
@@ -55,6 +54,10 @@ class MainFragment : BaseFragment() {
 
         btn_myInfo click {
             mainContainer goTo R.id.action_mainFragment_to_myInfoFragment
+        }
+
+        btnBoard click {
+            mainContainer goTo R.id.action_mainFragment_to_commonBoard
         }
     }
 

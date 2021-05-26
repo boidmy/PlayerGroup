@@ -302,7 +302,7 @@ class MyInfoFragment : BaseFragment() {
         FirebaseStorage.getInstance().reference.child(userInfo?.img.toString())
             .downloadUrl
             .addOnSuccessListener {
-                GlideApp.with(this)
+                Glide.with(this)
                     .load(it)
                     .apply(
                         RequestOptions()

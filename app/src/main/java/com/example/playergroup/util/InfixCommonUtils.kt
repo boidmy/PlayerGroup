@@ -1,6 +1,7 @@
 package com.example.playergroup.util
 
 import android.content.Context
+import android.content.res.Resources
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -14,6 +15,11 @@ const val REQUEST_CODE_GALLERY = 1000
 infix fun View?.click(block: (View) -> Unit) = this?.setOnClickListener(block)
 
 infix fun Context?.toastShort(message: () -> String) = Toast.makeText(this, message(), Toast.LENGTH_SHORT).show()
+
+inline val Int.toPx: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
+fun getScreenHeightToPx(): Int = Resources.getSystem().displayMetrics.heightPixels
 
 infix fun Any?.hideKeyboard(currentFocus: View) {
     if (currentFocus is AppCompatEditText) {
