@@ -9,8 +9,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,13 +18,28 @@
             android:layout_height="match_parent"
             android:paddingBottom="10dp">
 
-            <ImageView
-                android:id="@+id/img"
+            <RelativeLayout
+                android:id="@+id/imgVideoContainer"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:background="@color/colorPrimaryDark" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:layout_centerInParent="true"
+                    tools:background="@color/colorPrimaryDark" />
+
+                <VideoView
+                    android:id="@+id/video"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:layout_centerInParent="true"/>
+
+            </RelativeLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/userImgContainer"
@@ -36,7 +51,7 @@
                 app:cardCornerRadius="25dp"
                 app:cardElevation="0dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/img">
+                app:layout_constraintTop_toBottomOf="@id/imgVideoContainer">
 
                 <ImageView
                     android:id="@+id/userImg"

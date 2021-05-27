@@ -15,6 +15,8 @@ import com.example.playergroup.R
 import com.example.playergroup.data.BoardData
 import com.example.playergroup.fragments.BaseFragment
 import com.example.playergroup.util.click
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.fragment_common_board.*
@@ -22,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_common_board.*
 class CommonBoardFragment: BaseFragment() {
 
     private val mRxBus by lazy { ActivityExchangeFragmentRxBus.getInstance() }
+    private var firebaseBorderDb: ListenerRegistration? = null
 
     override fun onAttach(@NonNull context: Context) {
         super.onAttach(context)
@@ -57,18 +60,17 @@ class CommonBoardFragment: BaseFragment() {
 
     private fun initData() {
         mRxBus.publisher_loading(true)
-        firebaseBoardDB
-            .get()
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    val data = it.result?.toObjects<BoardData>()
-                    (boardList.adapter as? BoardListAdapter)?.items = data
-                    mRxBus.publisher_loading(false)
-                }
-                else {
-                    Log.d("####", "board api fail")
-                }
+        firebaseBorderDb = firebaseBoardDB.addSnapshotListener { snapshot, exception ->
+            mRxBus.publisher_loading(false)
+            if (exception != null) {
+                // error
+                return@addSnapshotListener
             }
+            if (snapshot != null) {
+                val data = snapshot.toObjects<BoardData>()
+                (boardList.adapter as? BoardListAdapter)?.items = data
+            }
+        }
     }
 
     private fun initBoardView() {
@@ -78,6 +80,7 @@ class CommonBoardFragment: BaseFragment() {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
+                    Log.d("####", "onSCrolled >> dy > " + dy)
                     val itemIdx =
                         (layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition()
                     showMoveTopBtn(!(itemIdx == 0 || itemIdx == null || adapter?.itemCount == 0))
@@ -99,6 +102,7 @@ class CommonBoardFragment: BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        firebaseBorderDb?.remove()
     }
 
     override fun onDestroyView() {
