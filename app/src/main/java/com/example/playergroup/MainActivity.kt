@@ -9,7 +9,7 @@ import com.example.playergroup.data.UserInfo
 import com.example.playergroup.fragments.MyInfoFragment
 import com.example.playergroup.util.REQUEST_CODE_GALLERY
 import com.example.playergroup.util.goTo
-import kotlinx.android.synthetic.main.activity_joinlogin.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
 
@@ -51,6 +51,7 @@ class MainActivity : BaseActivity() {
         compositeDisposable.add(mRxBus
             .listen_loading()
             .subscribe{showProgress(group_ll_progress, it)})
+        ll_dim.setOnTouchListener { v, event -> true }
 
     }
 

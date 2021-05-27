@@ -62,6 +62,7 @@ class JoinLoginActivity: BaseActivity() {
         compositeDisposable.add(mRxBus
             .listen_loading()
             .subscribe{showProgress(group_ll_progress, it)})
+        ll_dim.setOnTouchListener { v, event -> true }
     }
 
     override fun onBackPressed() {

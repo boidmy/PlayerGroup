@@ -134,7 +134,6 @@ open class BaseActivity : AppCompatActivity() {
 
     // 프로그스 바
     protected fun showProgress(view: View, isShow: Boolean) {
-        view.setOnTouchListener { v, event -> true }
         view.visibility = if (isShow) View.VISIBLE else View.GONE
     }
 
