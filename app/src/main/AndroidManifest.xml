@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".IntroActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,12 +27,12 @@
         <activity
             android:name=".join_login.JoinLoginActivity"
             android:theme="@style/JoinLoginTheme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="fullSensor"/>
 
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="fullSensor"/>
 
         <activity android:name=".BaseActivity" />
 

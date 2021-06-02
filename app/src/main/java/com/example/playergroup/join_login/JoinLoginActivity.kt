@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.example.playergroup.BaseActivity
 import com.example.playergroup.R
 import com.example.playergroup.data.UserInfo
@@ -34,6 +35,11 @@ class JoinLoginActivity: BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_joinlogin)
 
+        Glide.with(this)
+            .asGif()
+            .load(R.drawable.intro1)
+            .into(bgImg)
+
         vp_join_login_pager.run {
             adapter = JoinLoginAdapter(supportFragmentManager)
             currentItem = mRxBus.LOGINPAGE   // 초기 세팅은 로그인 페이지
@@ -61,7 +67,7 @@ class JoinLoginActivity: BaseActivity() {
 
         compositeDisposable.add(mRxBus
             .listen_loading()
-            .subscribe{showProgress(group_ll_progress, it)})
+            .subscribe{showProgress(progress, it)})
         ll_dim.setOnTouchListener { v, event -> true }
     }
 
