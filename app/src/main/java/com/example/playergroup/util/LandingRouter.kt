@@ -28,13 +28,22 @@ object LandingRouter {
 
     private fun gotoMain(context: Context, event: RouterEvent) {
         context.startActivity(Intent(context, MainActivity::class.java).also { intent ->
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_SINGLE_TOP or
+                            Intent.FLAG_ACTIVITY_NEW_TASK or
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK)
             })
-        //(context as? AppCompatActivity)?.overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
 
     private fun gotoLogin(context: Context, event: RouterEvent) {
-        context.startActivity(Intent(context, LoginActivity::class.java))
+        context.startActivity(Intent(context, LoginActivity::class.java).also { intent ->
+            intent.addFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP or
+                        Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        })
     }
 
     private fun gotoGoogleLogin(context: Context, event: RouterEvent) {
