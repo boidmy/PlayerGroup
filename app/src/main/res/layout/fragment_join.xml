@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         app:cardBackgroundColor="#4D000000"
         app:cardCornerRadius="5dp"
         app:cardElevation="2dp"
@@ -21,7 +21,7 @@
             android:padding="20dp">
 
             <TextView
-                android:id="@+id/tv_title"
+                android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -34,17 +34,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_sub_title"
+                android:id="@+id/tvSubTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_sub_title"
                 android:textColor="@color/textColor_Medium_Emphasis"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_join_google_login"
+                android:id="@+id/btnJoinGoogleLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -53,7 +53,7 @@
                 android:text="구글 로그인"
                 android:textColor="@color/textColor_Medium_Emphasis"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/tv_sub_title" />
+                app:layout_constraintTop_toBottomOf="@+id/tvSubTitle" />
 
             <View
                 android:id="@+id/border01"
@@ -62,12 +62,12 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@color/textColor_Medium_Emphasis"
-                app:layout_constraintBottom_toTopOf="@+id/tv_or"
-                app:layout_constraintEnd_toStartOf="@+id/tv_or"
-                app:layout_constraintTop_toBottomOf="@+id/tv_or" />
+                app:layout_constraintBottom_toTopOf="@+id/tvOr"
+                app:layout_constraintEnd_toStartOf="@+id/tvOr"
+                app:layout_constraintTop_toBottomOf="@+id/tvOr" />
 
             <TextView
-                android:id="@+id/tv_or"
+                android:id="@+id/tvOr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -75,7 +75,7 @@
                 android:textColor="@color/textColor_Medium_Emphasis"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_join_google_login" />
+                app:layout_constraintTop_toBottomOf="@+id/btnJoinGoogleLogin" />
 
             <View
                 android:id="@+id/border03"
@@ -84,12 +84,12 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
                 android:background="@color/textColor_Medium_Emphasis"
-                app:layout_constraintBottom_toTopOf="@+id/tv_or"
-                app:layout_constraintStart_toEndOf="@+id/tv_or"
-                app:layout_constraintTop_toBottomOf="@+id/tv_or" />
+                app:layout_constraintBottom_toTopOf="@+id/tvOr"
+                app:layout_constraintStart_toEndOf="@+id/tvOr"
+                app:layout_constraintTop_toBottomOf="@+id/tvOr" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ll_join_id"
+                android:id="@+id/llJoinId"
                 style="@style/textInputLayer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,21 +97,21 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:hint="@string/input_email"
-                app:layout_constraintTop_toBottomOf="@+id/tv_or">
+                app:layout_constraintTop_toBottomOf="@+id/tvOr">
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/et_join_id"
+                    android:id="@+id/etJoinId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:nextFocusDown="@id/et_join_pw"
+                    android:nextFocusDown="@id/etJoinPw"
                     android:overScrollMode="always" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ll_join_pw"
+                android:id="@+id/llJoinPw"
                 style="@style/textInputLayer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -123,12 +123,12 @@
                 app:counterEnabled="true"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_join_id"
+                app:layout_constraintTop_toBottomOf="@id/llJoinId"
                 app:passwordToggleEnabled="true"
                 app:helperText="@string/input_pw_help">
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/et_join_pw"
+                    android:id="@+id/etJoinPw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
@@ -139,7 +139,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_join"
+                android:id="@+id/btnJoin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -150,10 +150,10 @@
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_join_pw" />
+                app:layout_constraintTop_toBottomOf="@+id/llJoinPw" />
 
             <TextView
-                android:id="@+id/tv_cancel"
+                android:id="@+id/tvCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -164,7 +164,7 @@
                 android:textColor="@color/textColor_Medium_Emphasis"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_join" />
+                app:layout_constraintTop_toBottomOf="@id/btnJoin" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

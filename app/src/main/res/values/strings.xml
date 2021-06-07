@@ -32,6 +32,8 @@
     <string name="search_member">아이디 / 비밀번호 찾기</string>
     <string name="search_sub_title">찾으려는 사용자의 이메일을 입력하세요.</string>
     <string name="login">로그인</string>
+    <string name="google_login">구글 로그인</string>
+    <string name="go_to_login_page">이미 가입하셨나요? 로그인하기</string>
     <string name="join_ok">회원가입</string>
     <string name="login_sub_title">with your social network</string>
     <string name="input_name">이름</string>
