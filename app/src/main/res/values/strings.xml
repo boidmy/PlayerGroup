@@ -23,6 +23,7 @@
     <string name="input_empty_error">아이디 및 비밀번호를 정확히 입력해 주세요.</string>
     <string name="email_check">인증 메일을 보내드렸습니다.\n확인 후 인증하여 회원가입을 완료해 주세요.</string>
     <string name="non_email_check">메일 인증이 되지 않았습니다. 인증 후 다시 시도해 주세요.</string>
+    <string name="email_error_info">이메일 형식이 아닙니다.</string>
 
     <string name="login_other_way">다른 방법으로 로그인하기</string>
     <string name="email">이메일</string>

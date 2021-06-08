@@ -3,9 +3,11 @@ package com.example.playergroup.ui.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.playergroup.ui.base.BaseViewModel
-import com.google.firebase.auth.FirebaseUser
+import com.example.playergroup.util.getFirebaseExceptionCodeToString
 
 typealias LoadingProgress = ((Boolean) -> Unit)
+typealias GoogleLogin = (() -> Unit)
+typealias NavigationViewDismiss = (() -> Unit)
 class LoginViewModel: BaseViewModel() {
     private val authRepository by lazy { AuthRepository() }
 
@@ -13,7 +15,17 @@ class LoginViewModel: BaseViewModel() {
     val firebaseResult: LiveData<Boolean>
         get() = _firebaseResult
 
+    private val _firebaseError: MutableLiveData<String> = MutableLiveData()
+    val firebaseError: LiveData<String>
+        get() = _firebaseError
+
+    private val _firebaseJoinResult: MutableLiveData<Boolean> = MutableLiveData()
+    val firebaseJoinResult: LiveData<Boolean>
+        get() = _firebaseJoinResult
+
     var loadingProgress: LoadingProgress? = null
+    var googleLogin: GoogleLogin? = null
+    var dismiss: NavigationViewDismiss? = null
 
     fun firebaseAuthWithGoogle(idToken: String) {
         authRepository.googleRegister(idToken) { firebaseUser ->
@@ -26,7 +38,7 @@ class LoginViewModel: BaseViewModel() {
                         if (isSuccessful) { // 기존 사용자
                             _firebaseResult.value = true
                         } else {    // 신규 사용자
-                            authRepository.insertUserDocument(firebaseUser) {
+                            authRepository.insertUserDocument() {
                                 _firebaseResult.value = it
                             }
                         }
@@ -38,27 +50,26 @@ class LoginViewModel: BaseViewModel() {
         }
     }
 
-    fun searchUserDocument(user: FirebaseUser) {
-        val userEmail = user.email
-        if (userEmail.isNullOrEmpty()) {
-            _firebaseResult.value = false
-        } else {
-            authRepository.searchUserDocument(userEmail) {
-
+    fun createEmailUserJoin(id: String, pw: String) {
+        authRepository.createEmailUser(id, pw) { firebaseResultCallback ->
+            if (firebaseResultCallback.isSuccess) {
+                authRepository.sendEmailVerification { isEmailVerificationSuccessful ->
+                    if (isEmailVerificationSuccessful) {
+                        _firebaseJoinResult.value = isEmailVerificationSuccessful
+                    } else {
+                        val message = getFirebaseExceptionCodeToString("")
+                        _firebaseError.value = message
+                    }
+                }
+            } else {
+                val message = getFirebaseExceptionCodeToString(firebaseResultCallback.errorCode ?: "")
+                _firebaseError.value = message
             }
-        }
-    }
-
-    fun insertUserDocument(user: FirebaseUser) {
-        authRepository.insertUserDocument(user) {
-
         }
     }
 }
 
-enum class LoginType(
-    val value: Int
-) {
+enum class LoginType(val value: Int) {
     JOIN(0),
     LOGIN(1),
     LOGIN_INFO_LOST(2)

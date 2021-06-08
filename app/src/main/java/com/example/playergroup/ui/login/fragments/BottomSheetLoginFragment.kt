@@ -11,12 +11,14 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.playergroup.R
 import com.example.playergroup.databinding.DialogLoginContainerBinding
 import com.example.playergroup.ui.login.JoinLoginAdapter
 import com.example.playergroup.ui.login.LoginType
 import com.example.playergroup.ui.login.LoginViewModel
 import com.example.playergroup.util.getScreenHeightToPx
+import com.example.playergroup.util.showDefDialog
 import com.example.playergroup.util.toPx
 import com.example.playergroup.util.viewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -69,16 +71,36 @@ class BottomSheetLoginFragment: BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
+        initViewModel()
+    }
 
+    private fun initViewModel() {
+        loginViewModel.apply {
+            loadingProgress = this@BottomSheetLoginFragment::getLoadingProgress
+            dismiss = this@BottomSheetLoginFragment::getDismiss
+            firebaseJoinResult.observe(viewLifecycleOwner, Observer {
+                if (it) {
+                    loginViewModel.loadingProgress?.invoke(false)
+                    requireContext().showDefDialog(requireContext().getString(R.string.email_check)).show()
+                    binding.pager.currentItem = LoginType.LOGIN.value
+                }
+            })
+        }
+    }
+
+    private fun initView() {
         val index = arguments?.getInt(TAB_POSITION) ?: LoginType.LOGIN.value
         binding.pager.adapter = JoinLoginAdapter(childFragmentManager)
         binding.pager.apply {
             adapter = JoinLoginAdapter(childFragmentManager)
             setCurrentItem(index, false)
         }
-        loginViewModel.loadingProgress = this::getLoadingProgress
     }
 
+    private fun getDismiss() {
+        dismiss()
+    }
     private fun getLoadingProgress(isShow: Boolean) {
         binding.loadingProgress.publisherLoading(isShow)
     }

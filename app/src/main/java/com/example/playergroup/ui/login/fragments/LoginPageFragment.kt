@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.Fragment
 import com.example.playergroup.R
-import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginPageFragment: Fragment() {
 
@@ -28,8 +27,8 @@ class LoginPageFragment: Fragment() {
 
     override fun onPause() {
         super.onPause()
-        et_login_id.text = null
-        et_login_pw.text = null
+        /*et_login_id.text = null
+        et_login_pw.text = null*/
     }
 
     private fun isEditTextEmpty(id: AppCompatEditText, pw: AppCompatEditText) =
