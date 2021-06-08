@@ -107,6 +107,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
 
     private fun showLoginPopup(login: LoginType) {
         val newInstance = BottomSheetLoginFragment.newInstance(login.value)
+        if (newInstance.isVisible) return
         newInstance.show(supportFragmentManager, newInstance.tag)
     }
 

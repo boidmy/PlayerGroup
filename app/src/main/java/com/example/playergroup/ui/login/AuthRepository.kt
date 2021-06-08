@@ -1,6 +1,7 @@
 package com.example.playergroup.ui.login
 
 import com.example.playergroup.data.FirebaseResultCallback
+import com.example.playergroup.data.UserInfo
 import com.example.playergroup.ui.base.BaseRepository
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
@@ -40,10 +41,18 @@ class AuthRepository: BaseRepository() {
             }
     }
 
-    fun searchUserDocument(userEmail: String, callback: (Boolean) -> Unit) {
+    fun isUserInfoEmpty(callback: (Boolean) -> Unit) {
+        val data = firebaseAuth.currentUser
+        val userEmail = data?.email
+        if (userEmail.isNullOrEmpty()) {
+            callback.invoke(false)
+            return
+        }
         firebaseUser.document(userEmail).get()
             .addOnCompleteListener {
-                callback.invoke(it.isSuccessful)
+                val userInfo = (it.result?.toObject(UserInfo::class.java))
+                val isEmpty = userInfo == null
+                callback.invoke(isEmpty)
             }
     }
 
@@ -62,6 +71,22 @@ class AuthRepository: BaseRepository() {
         firebaseAuth.currentUser?.sendEmailVerification()
             ?.addOnCompleteListener {
                 callback.invoke(it.isSuccessful)
+            }
+    }
+
+    fun signInEmailLogin(id: String, pw: String, callback: (FirebaseResultCallback) -> Unit) {
+        firebaseAuth.signInWithEmailAndPassword(id, pw)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    if (firebaseAuth.currentUser?.isEmailVerified == false) {
+                        firebaseAuth.signOut()
+                        callback.invoke(FirebaseResultCallback(false, "ERROR_EMAIL_NOT_VERIFICATION"))
+                    } else {
+                        callback.invoke(FirebaseResultCallback(true))
+                    }
+                } else {
+                    callback.invoke(FirebaseResultCallback(it.isSuccessful, if (it is FirebaseAuthException) it.errorCode else ""))
+                }
             }
     }
 }

@@ -26,9 +26,4 @@ class SearchMemberInfoPageFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
-
-    private fun AppCompatEditText.isEditTextEmpty() = this.text?.trim().isNullOrEmpty()
-
-    private fun AppCompatEditText.isEmailPattern() =
-        (Patterns.EMAIL_ADDRESS.matcher(this.text?.trim().toString()).matches())
 }

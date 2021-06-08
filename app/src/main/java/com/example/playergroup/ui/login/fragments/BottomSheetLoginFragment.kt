@@ -79,6 +79,7 @@ class BottomSheetLoginFragment: BottomSheetDialogFragment() {
         loginViewModel.apply {
             loadingProgress = this@BottomSheetLoginFragment::getLoadingProgress
             dismiss = this@BottomSheetLoginFragment::getDismiss
+            pagerMoveCallback = this@BottomSheetLoginFragment::getPagerMove
             firebaseJoinResult.observe(viewLifecycleOwner, Observer {
                 if (it) {
                     loginViewModel.loadingProgress?.invoke(false)
@@ -101,6 +102,11 @@ class BottomSheetLoginFragment: BottomSheetDialogFragment() {
     private fun getDismiss() {
         dismiss()
     }
+
+    private fun getPagerMove(index: Int) {
+        binding.pager.currentItem = index
+    }
+
     private fun getLoadingProgress(isShow: Boolean) {
         binding.loadingProgress.publisherLoading(isShow)
     }

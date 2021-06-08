@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 typealias LoadingProgress = ((Boolean) -> Unit)
 typealias GoogleLogin = (() -> Unit)
 typealias NavigationViewDismiss = (() -> Unit)
+typealias PagerMoveCallback = ((Int) -> Unit)
 class LoginViewModel: BaseViewModel() {
     private val authRepository by lazy { AuthRepository() }
 
@@ -27,6 +28,7 @@ class LoginViewModel: BaseViewModel() {
     var loadingProgress: LoadingProgress? = null
     var googleLogin: GoogleLogin? = null
     var dismiss: NavigationViewDismiss? = null
+    var pagerMoveCallback: PagerMoveCallback? = null
 
     fun firebaseAuthWithGoogle(idToken: String) {
         authRepository.googleRegister(idToken) { firebaseUser ->
@@ -35,13 +37,13 @@ class LoginViewModel: BaseViewModel() {
                 if (userEmail.isNullOrEmpty()) {
                     _firebaseResult.value = false
                 } else {
-                    authRepository.searchUserDocument(userEmail) { isSuccessful ->
-                        if (isSuccessful) { // 기존 사용자
-                            _firebaseResult.value = true
-                        } else {    // 신규 사용자
-                            authRepository.insertUserDocument() {
+                    authRepository.isUserInfoEmpty { isSuccessful ->
+                        if (isSuccessful) { // 신규 사용자
+                            authRepository.insertUserDocument {
                                 _firebaseResult.value = it
                             }
+                        } else { // 기존 사용자
+                            _firebaseResult.value = true
                         }
                     }
                 }
@@ -62,6 +64,25 @@ class LoginViewModel: BaseViewModel() {
                     } else {
                         val message = getFirebaseExceptionCodeToString("")
                         _firebaseError.value = message
+                    }
+                }
+            } else {
+                val message = getFirebaseExceptionCodeToString(firebaseResultCallback.errorCode ?: "")
+                _firebaseError.value = message
+            }
+        }
+    }
+
+    fun signInEmailLogin(id: String, pw: String) {
+        authRepository.signInEmailLogin(id, pw) { firebaseResultCallback ->
+            if (firebaseResultCallback.isSuccess) {
+                authRepository.isUserInfoEmpty { isSuccessful ->
+                    if (isSuccessful) { // 신규 사용자
+                        authRepository.insertUserDocument {
+                            _firebaseResult.value = it
+                        }
+                    } else { // 기존 사용자
+                        _firebaseResult.value = true
                     }
                 }
             } else {

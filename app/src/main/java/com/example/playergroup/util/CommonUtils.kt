@@ -173,6 +173,7 @@ fun getFirebaseExceptionCodeToString(errorCode: String) = when(errorCode) {
     "ERROR_USER_DISABLED" -> "관리자에 의하여 사용자 계정을 비활성화 했습니다. 관리자에게 문의 해 주세요."
     "ERROR_USER_NOT_FOUND" -> "사용자를 찾을 수 없습니다. 확인 후 다시 이용해주세요. 반복될 경우 관리자에게 문의 부탁 드립니다."
     "ERROR_WEAK_PASSWORD" -> "암호가 유효하지 않습니다. 다시 입력해주세요."
+    "ERROR_EMAIL_NOT_VERIFICATION" -> "이메일 인증이 되어 있지 않은 계정입니다. 인증 후 다시 시도해 주세요."
     else -> "관리자에게 문의해주세요."
 }
 
