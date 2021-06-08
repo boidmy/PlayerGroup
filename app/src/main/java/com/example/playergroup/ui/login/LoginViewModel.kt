@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.playergroup.ui.base.BaseViewModel
 import com.example.playergroup.util.getFirebaseExceptionCodeToString
+import com.google.firebase.auth.FirebaseAuth
 
 typealias LoadingProgress = ((Boolean) -> Unit)
 typealias GoogleLogin = (() -> Unit)
@@ -55,6 +56,8 @@ class LoginViewModel: BaseViewModel() {
             if (firebaseResultCallback.isSuccess) {
                 authRepository.sendEmailVerification { isEmailVerificationSuccessful ->
                     if (isEmailVerificationSuccessful) {
+                        // 아직 메일인증 되지 않은 상태라고 판단 하고 로그아웃 처리 해버린다.
+                        FirebaseAuth.getInstance().signOut()
                         _firebaseJoinResult.value = isEmailVerificationSuccessful
                     } else {
                         val message = getFirebaseExceptionCodeToString("")
