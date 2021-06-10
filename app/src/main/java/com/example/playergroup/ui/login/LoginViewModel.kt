@@ -1,5 +1,8 @@
 package com.example.playergroup.ui.login
 
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.playergroup.ui.base.BaseViewModel
@@ -24,6 +27,10 @@ class LoginViewModel: BaseViewModel() {
     private val _firebaseJoinResult: MutableLiveData<Boolean> = MutableLiveData()
     val firebaseJoinResult: LiveData<Boolean>
         get() = _firebaseJoinResult
+
+    private val _firebaseUserPasswordResult: MutableLiveData<Boolean> = MutableLiveData()
+    val firebaseUserPasswordResult: LiveData<Boolean>
+        get() = _firebaseUserPasswordResult
 
     var loadingProgress: LoadingProgress? = null
     var googleLogin: GoogleLogin? = null
@@ -89,6 +96,12 @@ class LoginViewModel: BaseViewModel() {
                 val message = getFirebaseExceptionCodeToString(firebaseResultCallback.errorCode ?: "")
                 _firebaseError.value = message
             }
+        }
+    }
+
+    fun searchUserPassword(id: String) {
+        authRepository.searchUserPassword(id) {
+            _firebaseUserPasswordResult.value = it
         }
     }
 }

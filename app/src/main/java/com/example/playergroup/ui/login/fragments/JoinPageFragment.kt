@@ -74,9 +74,7 @@ class JoinPageFragment: Fragment() {
             }
 
             btnJoin click {
-                if (activity?.currentFocus != null) {
-                    hideKeyboard(activity?.currentFocus!!)
-                }
+                hideKeyboard(etJoinPw)
 
                 val id = etJoinId.text.toString()
                 val pw = etJoinPw.text.toString()

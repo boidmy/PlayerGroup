@@ -17,7 +17,9 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.fragment.app.FragmentActivity
 import com.example.playergroup.BuildConfig
 import com.example.playergroup.R
 import io.reactivex.Observable
@@ -146,10 +148,9 @@ inline fun <reified T> Observable<T>.retryWithDelay(maxRetries: Int, retryDelayM
 infix fun Any?.hideKeyboard(currentFocus: View) {
     if (currentFocus is AppCompatEditText) {
         currentFocus.apply {
-            clearFocus()
-            requestFocus()
             val imm: InputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(windowToken, 0)
+            clearFocus()
         }
     }
 }
@@ -180,10 +181,23 @@ fun getFirebaseExceptionCodeToString(errorCode: String) = when(errorCode) {
 fun isEditTextEmpty(id: String?, pw: String?) =
     (id?.trim().isNullOrEmpty() || pw?.trim().isNullOrEmpty())
 
+fun isEditTextEmpty(id: String?) = id?.trim().isNullOrEmpty()
+
 fun isEmailPattern(id: String?) =
     (Patterns.EMAIL_ADDRESS.matcher(id?.trim().toString()).matches())
 
 fun isPWDPattern(pw: String) = (PASSWORD_PATTERN.matcher(pw).matches())
+
+private lateinit var mInputMethodManager: InputMethodManager
+fun AppCompatEditText.hideKeyboard(activity: FragmentActivity) {
+    activity.currentFocus?.let {
+        if (!::mInputMethodManager.isInitialized) {
+            mInputMethodManager = activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        }
+        mInputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+        this.clearFocus()
+    }
+}
 
 fun getSpannedUnderLineBoldText(origin: String, changed: String, isBold: Boolean): Spannable {
     val sb = SpannableStringBuilder(origin)

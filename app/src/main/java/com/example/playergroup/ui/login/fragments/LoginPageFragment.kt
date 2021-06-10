@@ -52,9 +52,7 @@ class LoginPageFragment: Fragment() {
                 loginViewModel.googleLogin?.invoke()
             }
             btnLogin click {
-                if (activity?.currentFocus != null) {
-                    hideKeyboard(activity?.currentFocus!!)
-                }
+                hideKeyboard(etLoginPw)
 
                 val id = etLoginId.text.toString()
                 val pw = etLoginPw.text.toString()

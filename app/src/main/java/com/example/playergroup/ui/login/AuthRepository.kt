@@ -89,4 +89,11 @@ class AuthRepository: BaseRepository() {
                 }
             }
     }
+
+    fun searchUserPassword(id: String, callback: (Boolean) -> Unit) {
+        firebaseAuth.sendPasswordResetEmail(id)
+            .addOnCompleteListener {
+                callback.invoke(it.isSuccessful)
+            }
+    }
 }
