@@ -26,7 +26,8 @@ class LoadingProgressView @JvmOverloads constructor(
     private val mCompositeDisposable by lazy { CompositeDisposable() }
 
     init {
-        binding.root.visibility = View.GONE
+        visibility = View.GONE
+        binding
         setOnTouchListener { _, _ -> return@setOnTouchListener true }
         mCompositeDisposable.add(
             loadingProgressBar
@@ -36,6 +37,7 @@ class LoadingProgressView @JvmOverloads constructor(
     }
 
     private fun showProgress(isShow: Boolean) {
+        visibility = if (isShow) View.VISIBLE else View.GONE
         binding.root.visibility = if (isShow) View.VISIBLE else View.GONE
     }
 

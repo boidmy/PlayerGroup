@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="16dp"
+    android:background="@drawable/shape_top_rounded_corner_14dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:textColor="@color/textColor_High_Emphasis"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        android:text="@string/member_info_age"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivYearBefore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_2_step"
+        android:rotation="180"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:padding="15dp"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
+        android:id="@+id/ivMonthBefore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_1_step"
+        android:rotation="180"
+        android:padding="15dp"
+        app:layout_constraintTop_toTopOf="@id/ivYearBefore"
+        app:layout_constraintBottom_toBottomOf="@id/ivYearBefore"
+        app:layout_constraintStart_toEndOf="@id/ivYearBefore"/>
+
+    <TextView
+        android:id="@+id/tvCurrentDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColor_High_Emphasis"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        app:layout_constraintStart_toEndOf="@id/ivMonthBefore"
+        app:layout_constraintEnd_toStartOf="@id/ivMonthAfter"
+        app:layout_constraintTop_toTopOf="@id/ivMonthBefore"
+        app:layout_constraintBottom_toBottomOf="@id/ivMonthBefore"
+        tools:text="2020.05"/>
+
+    <ImageView
+        android:id="@+id/ivMonthAfter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_1_step"
+        android:padding="15dp"
+        app:layout_constraintTop_toTopOf="@id/ivMonthBefore"
+        app:layout_constraintBottom_toBottomOf="@id/ivMonthBefore"
+        app:layout_constraintEnd_toStartOf="@id/ivYearAfter" />
+
+    <ImageView
+        android:id="@+id/ivYearAfter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_2_step"
+        android:padding="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivMonthAfter"
+        app:layout_constraintBottom_toBottomOf="@id/ivMonthAfter" />
+
+
+
+    <LinearLayout
+        android:id="@+id/llWeekContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvCurrentDate">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_sun"
+            android:textColor="#e6230a"
+            android:textSize="13dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_mon"
+            android:textColor="@color/textColor_Medium_Emphasis"
+            android:textSize="13dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_the"
+            android:textColor="@color/textColor_Medium_Emphasis"
+            android:textSize="13dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_wed"
+            android:textColor="@color/textColor_Medium_Emphasis"
+            android:textSize="13dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_thu"
+            android:textColor="@color/textColor_Medium_Emphasis"
+            android:textSize="13dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_fri"
+            android:textColor="@color/textColor_Medium_Emphasis"
+            android:textSize="13dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/calendar_sat"
+            android:textColor="@color/textColor_Medium_Emphasis"
+            android:textSize="13dp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/textColor_Medium_Emphasis"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/llWeekContainer"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/calendarList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="7"
+        tools:itemCount="31"
+        tools:listitem="@layout/view_calendar_day"/>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="24dp"
+        android:text="@string/ok"
+        android:textColor="@color/textColor_Medium_Emphasis"
+        android:textStyle="bold"
+        app:backgroundTint="@color/btnColorPositive"
+        app:cornerRadius="10dp"
+        app:layout_constraintTop_toBottomOf="@id/calendarList" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,6 +24,9 @@ import com.example.playergroup.BuildConfig
 import com.example.playergroup.R
 import io.reactivex.Observable
 import java.net.URLEncoder
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 import kotlin.math.roundToInt
@@ -45,6 +48,22 @@ infix fun TextView?.setUnderLineBold(input: Pair<String, String>): Spannable {
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
     )
     return sb
+}
+
+fun getSimpleFormat(pattern: String) = SimpleDateFormat(pattern, Locale.getDefault())
+fun getToday(pattern: String) = SimpleDateFormat(pattern, Locale.getDefault()).format(Date())
+
+fun convertPattern(inputPattern: String, outputPattern: String, input: String): String {
+    var output = ""
+
+    try {
+        val date = SimpleDateFormat(inputPattern, Locale.getDefault()).parse(input)
+        output = SimpleDateFormat(outputPattern, Locale.getDefault()).format(date)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    } finally {
+        return output
+    }
 }
 
 fun getSpannedColorText(origin: String, changed: String, color: Int, bold: Boolean = false): Spannable {

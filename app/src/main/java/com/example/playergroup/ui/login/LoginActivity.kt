@@ -17,10 +17,7 @@ import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ActivityLoginBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.login.fragments.BottomSheetLoginFragment
-import com.example.playergroup.util.DialogCustom
-import com.example.playergroup.util.LandingRouter
-import com.example.playergroup.util.click
-import com.example.playergroup.util.debugToast
+import com.example.playergroup.util.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
@@ -36,7 +33,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
 
     override fun getViewBinding(): ActivityLoginBinding = ActivityLoginBinding.inflate(layoutInflater)
     override fun onNetworkStateLost(network: Network?) {
-        finishAlert(this@LoginActivity)
+        //finishAlert(this@LoginActivity)
     }
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
         initGifImg()
@@ -47,13 +44,14 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
 
     private fun initViewModel() {
         loginViewModel.apply {
-            loginViewModel.googleLogin = this@LoginActivity::googleLogin
+            googleLogin = this@LoginActivity::googleLogin
 
             // Google Login 성공 하게 되면 여기로 들어온다
-            firebaseResult.observe(this@LoginActivity, Observer { isSuccessful ->
-                loginViewModel.loadingProgress?.invoke(false)
-                if (isSuccessful) {
-                    LandingRouter.move(this@LoginActivity, RouterEvent(Landing.MAIN))
+            firebaseResult.observe(this@LoginActivity, Observer { loginResultCallback ->
+                loadingProgress?.invoke(false)
+                if (loginResultCallback.isSuccess) {
+                    LandingRouter.move(this@LoginActivity, RouterEvent(loginResultCallback.landingType, paramBoolean = true))
+                    finish()
                 } else {
                     DialogCustom(this@LoginActivity)
                         .setMessage(R.string.dialog_alert_msg_error)
@@ -66,6 +64,33 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
                         })
                         .show()
                 }
+            })
+
+            firebaseJoinResult.observe(this@LoginActivity, Observer {
+                if (it) {
+                    loadingProgress?.invoke(false)
+                    showDefDialog(getString(R.string.email_check)).show()
+                    pagerMoveCallback?.invoke(LoginType.LOGIN.value)
+                }
+            })
+
+            firebaseError.observe(this@LoginActivity, Observer {
+                loadingProgress?.invoke(false)
+                when (it) {
+                    is Int -> showDefDialog(getString(it)).show()
+                    is String -> showDefDialog(it).show()
+                }
+            })
+
+            firebaseUserPasswordResult.observe(this@LoginActivity, Observer {
+                loadingProgress?.invoke(false)
+                val message = if (it) {
+                    "비밀번호 변경 메일을 전송했습니다."
+                } else {
+                    "가입된 이메일이 없습니다. 다시 한번 확인해 주세요."
+                }
+                showDefDialog(message).show()
+                if (it) dismiss?.invoke()
             })
         }
     }

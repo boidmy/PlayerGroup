@@ -1,11 +1,14 @@
-package com.example.playergroup.ui.login
+package com.example.playergroup.data.repository
 
+import android.net.Uri
+import android.util.Log
 import com.example.playergroup.data.FirebaseResultCallback
 import com.example.playergroup.data.UserInfo
 import com.example.playergroup.ui.base.BaseRepository
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.UserProfileChangeRequest
 
 class AuthRepository: BaseRepository() {
 
@@ -21,6 +24,9 @@ class AuthRepository: BaseRepository() {
             }
     }
 
+    /**
+     * 회원가입 하면 기본으로 저장하는 User 정보
+     */
     fun insertUserDocument(callback: (Boolean) -> Unit) {
         val data = firebaseAuth.currentUser
         val userEmail = data?.email
@@ -30,15 +36,28 @@ class AuthRepository: BaseRepository() {
         }
 
         val user = hashMapOf(
-            "email" to userEmail.toString(),
-            "name" to data.displayName.toString(),
-            "img" to data.photoUrl.toString()
+            "email" to userEmail.toString()
         )
 
         firebaseUser.document(userEmail).set(user)
             .addOnCompleteListener {
                 callback.invoke(it.isSuccessful)
             }
+    }
+
+    /**
+     * 프로필 정보 저장
+     */
+    fun insertUserDocument(userInfo: UserInfo, callback: (Boolean) -> Unit) {
+        val data = firebaseAuth.currentUser
+        val userEmail = data?.email
+        if (userEmail.isNullOrEmpty()) {
+            callback.invoke(false)
+            return
+        }
+        firebaseUser.document(userEmail).set(userInfo).addOnCompleteListener {
+            callback.invoke(it.isSuccessful)
+        }
     }
 
     fun isUserInfoEmpty(callback: (Boolean) -> Unit) {
@@ -51,7 +70,7 @@ class AuthRepository: BaseRepository() {
         firebaseUser.document(userEmail).get()
             .addOnCompleteListener {
                 val userInfo = (it.result?.toObject(UserInfo::class.java))
-                val isEmpty = userInfo == null
+                val isEmpty = userInfo?.isEmptyData() ?: true
                 callback.invoke(isEmpty)
             }
     }
@@ -63,7 +82,7 @@ class AuthRepository: BaseRepository() {
     fun createEmailUser(id: String, pw: String, callback: (FirebaseResultCallback) -> Unit) {
         firebaseAuth.createUserWithEmailAndPassword(id, pw)
             .addOnCompleteListener {
-                callback.invoke(FirebaseResultCallback(it.isSuccessful, if (it is FirebaseAuthException) it.errorCode else ""))
+                callback.invoke(FirebaseResultCallback(it.isSuccessful, (it.exception as? FirebaseAuthException)?.errorCode ?: ""))
             }
     }
 
@@ -85,13 +104,37 @@ class AuthRepository: BaseRepository() {
                         callback.invoke(FirebaseResultCallback(true))
                     }
                 } else {
-                    callback.invoke(FirebaseResultCallback(it.isSuccessful, if (it is FirebaseAuthException) it.errorCode else ""))
+                    callback.invoke(FirebaseResultCallback(it.isSuccessful, (it.exception as? FirebaseAuthException)?.errorCode ?: ""))
                 }
             }
     }
 
     fun searchUserPassword(id: String, callback: (Boolean) -> Unit) {
         firebaseAuth.sendPasswordResetEmail(id)
+            .addOnCompleteListener {
+                callback.invoke(it.isSuccessful)
+            }
+    }
+
+    fun getCurrentUser() = firebaseAuth.currentUser
+
+    fun insertUserProfilePhoto(url: String, callback: (Boolean) -> Unit) {
+        firebaseAuth.currentUser?.updateProfile(
+            UserProfileChangeRequest.Builder()
+            .setPhotoUri(Uri.parse(url))
+            .build()
+        )?.addOnCompleteListener {
+            callback.invoke(it.isSuccessful)
+        }
+    }
+
+    fun upLoadStorageImg(uri: Uri, callback: (Boolean) -> Unit) {
+        firebaseStorageUserDB.child(firebaseAuth.currentUser?.email.toString())
+            .putFile(uri)
+            .addOnProgressListener {
+                val progress: Double = 100.0 * it.bytesTransferred / it.totalByteCount
+                Log.d("####", "UpLoading >> $progress")
+            }
             .addOnCompleteListener {
                 callback.invoke(it.isSuccessful)
             }

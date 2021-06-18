@@ -1,6 +1,7 @@
 package com.example.playergroup.ui.login.fragments
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,16 +31,10 @@ class LoginPageFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initEditView()
-        initBtnView()
-        initViewModel()
+        initView()
     }
 
-    private fun initEditView() {
-
-    }
-
-    private fun initBtnView() {
+    private fun initView() {
         with (binding) {
             tvJoin click {
                 loginViewModel.pagerMoveCallback?.invoke(LoginType.JOIN.value)
@@ -52,25 +47,26 @@ class LoginPageFragment: Fragment() {
                 loginViewModel.googleLogin?.invoke()
             }
             btnLogin click {
-                hideKeyboard(etLoginPw)
-
-                val id = etLoginId.text.toString()
-                val pw = etLoginPw.text.toString()
-
-                if (isEditTextEmpty(id, pw)) {
-                    requireContext().showDefDialog(requireContext().getString(R.string.input_empty_error)).show()
-                } else if (!isEmailPattern(id)) {
-                    requireContext().showDefDialog(requireContext().getString(R.string.email_error_info)).show()
-                } else {
-                    loginViewModel.loadingProgress?.invoke(true)
-                    loginViewModel.signInEmailLogin(id, pw)
+                setLoginEmailUser()
+            }
+            etLoginPw.setOnKeyListener { _, keyCode, event ->
+                if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    setLoginEmailUser()
+                    return@setOnKeyListener true
                 }
+                return@setOnKeyListener false
             }
         }
     }
 
-    private fun initViewModel() {
-
+    private fun setLoginEmailUser() {
+        with (binding) {
+            hideKeyboard(etLoginPw)
+            val id = etLoginId.text.toString()
+            val pw = etLoginPw.text.toString()
+            loginViewModel.loadingProgress?.invoke(true)
+            loginViewModel.signInEmailLogin(id, pw)
+        }
     }
 
     override fun onPause() {

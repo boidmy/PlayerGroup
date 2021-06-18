@@ -1,13 +1,13 @@
 package com.example.playergroup.ui.login.fragments
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.example.playergroup.R
 import com.example.playergroup.databinding.FragmentJoinBinding
 import com.example.playergroup.ui.login.LoginViewModel
@@ -34,7 +34,6 @@ class JoinPageFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initEditView()
         initBtnView()
-        initViewModel()
     }
 
     private fun initEditView() {
@@ -57,15 +56,6 @@ class JoinPageFragment: Fragment() {
         }
     }
 
-    private fun initViewModel() {
-        loginViewModel.apply {
-            firebaseError.observe(viewLifecycleOwner, Observer {
-                loginViewModel.loadingProgress?.invoke(false)
-                requireContext().showDefDialog(it).show()
-            })
-        }
-    }
-
     private fun initBtnView() {
         with (binding) {
             btnJoinGoogleLogin click {
@@ -74,25 +64,30 @@ class JoinPageFragment: Fragment() {
             }
 
             btnJoin click {
-                hideKeyboard(etJoinPw)
-
-                val id = etJoinId.text.toString()
-                val pw = etJoinPw.text.toString()
-
-                if (isEditTextEmpty(id, pw)) {
-                    requireContext().showDefDialog(requireContext().getString(R.string.input_empty_error)).show()
-                } else if (!isEmailPattern(id)) {
-                    requireContext().showDefDialog(requireContext().getString(R.string.email_error_info)).show()
-                } else if (!isPWDPattern(pw)) {
-                    requireContext().showDefDialog(requireContext().getString(R.string.input_pw_error)).show()
-                } else {
-                    loginViewModel.loadingProgress?.invoke(true)
-                    loginViewModel.createEmailUserJoin(id, pw)
-                }
+                setJoinEmailUser()
             }
+
+            etJoinPw.setOnKeyListener { _, keyCode, event ->
+                if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    setJoinEmailUser()
+                    return@setOnKeyListener true
+                }
+                return@setOnKeyListener false
+            }
+
             tvCancel click {
                 loginViewModel.dismiss?.invoke()
             }
+        }
+    }
+
+    private fun setJoinEmailUser() {
+        with (binding) {
+            hideKeyboard(etJoinPw)
+            val id = etJoinId.text.toString()
+            val pw = etJoinPw.text.toString()
+            loginViewModel.loadingProgress?.invoke(true)
+            loginViewModel.createEmailUserJoin(id, pw)
         }
     }
 

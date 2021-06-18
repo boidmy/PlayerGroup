@@ -80,13 +80,6 @@ class BottomSheetLoginFragment: BottomSheetDialogFragment() {
             loadingProgress = this@BottomSheetLoginFragment::getLoadingProgress
             dismiss = this@BottomSheetLoginFragment::getDismiss
             pagerMoveCallback = this@BottomSheetLoginFragment::getPagerMove
-            firebaseJoinResult.observe(viewLifecycleOwner, Observer {
-                if (it) {
-                    loginViewModel.loadingProgress?.invoke(false)
-                    requireContext().showDefDialog(requireContext().getString(R.string.email_check)).show()
-                    binding.pager.currentItem = LoginType.LOGIN.value
-                }
-            })
         }
     }
 

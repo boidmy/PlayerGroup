@@ -60,6 +60,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
+                    android:imeOptions="actionSend"
                     android:nextFocusDown="@id/etJoinPw"
                     android:overScrollMode="always" />
 
