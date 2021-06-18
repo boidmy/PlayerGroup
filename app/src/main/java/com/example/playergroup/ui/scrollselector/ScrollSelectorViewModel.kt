@@ -1,7 +1,7 @@
-package com.example.playergroup.custom.scrollselector
+package com.example.playergroup.ui.scrollselector
 
-import com.example.playergroup.custom.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType
-import com.example.playergroup.custom.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
+import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType
+import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
 import com.example.playergroup.ui.base.BaseViewModel
 import java.util.*
 

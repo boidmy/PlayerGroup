@@ -13,7 +13,6 @@ import io.reactivex.subjects.PublishSubject
 
 class MyPageViewModel: BaseViewModel() {
 
-    private val authRepository by lazy { AuthRepository() }
     var profileImgUri: Uri? = null
 
     private val isImageUpLoad = PublishSubject.create<Boolean>()

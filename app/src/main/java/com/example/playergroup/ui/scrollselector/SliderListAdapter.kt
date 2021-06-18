@@ -1,4 +1,4 @@
-package com.example.playergroup.custom.scrollselector
+package com.example.playergroup.ui.scrollselector
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

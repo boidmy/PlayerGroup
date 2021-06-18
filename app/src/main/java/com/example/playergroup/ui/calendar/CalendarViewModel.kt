@@ -1,11 +1,11 @@
-package com.example.playergroup.custom.calendar
+package com.example.playergroup.ui.calendar
 
 import androidx.lifecycle.MutableLiveData
-import com.example.playergroup.custom.calendar.BaseCalendar.Companion.DATE_FORMAT_D
-import com.example.playergroup.custom.calendar.BaseCalendar.Companion.DATE_FORMAT_YYYYMM
-import com.example.playergroup.custom.calendar.BaseCalendar.Companion.DATE_FORMAT_YYYY_MM
-import com.example.playergroup.custom.calendar.BaseCalendar.Companion.DAYS_OF_WEEK
-import com.example.playergroup.custom.calendar.CalendarViewModel.*
+import com.example.playergroup.ui.calendar.BaseCalendar.Companion.DATE_FORMAT_D
+import com.example.playergroup.ui.calendar.BaseCalendar.Companion.DATE_FORMAT_YYYYMM
+import com.example.playergroup.ui.calendar.BaseCalendar.Companion.DATE_FORMAT_YYYY_MM
+import com.example.playergroup.ui.calendar.BaseCalendar.Companion.DAYS_OF_WEEK
+import com.example.playergroup.ui.calendar.CalendarViewModel.*
 import com.example.playergroup.ui.base.BaseViewModel
 import com.example.playergroup.util.getSimpleFormat
 import com.example.playergroup.util.getToday

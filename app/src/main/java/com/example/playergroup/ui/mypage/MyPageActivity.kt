@@ -22,14 +22,9 @@ import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.playergroup.R
-import com.example.playergroup.custom.calendar.BaseCalendar.Companion.DATE_FORMAT_YYYYMMDD
-import com.example.playergroup.custom.calendar.BaseCalendar.Companion.DATE_FORMAT_YYYY_MM
-import com.example.playergroup.custom.calendar.BaseCalendar.Companion.DATE_FORMAT_YYYY_MM_DD
-import com.example.playergroup.custom.calendar.CalendarPickerBottomSheet
-import com.example.playergroup.custom.scrollselector.ScrollSelectorBottomSheet
-import com.example.playergroup.custom.scrollselector.ScrollSelectorBottomSheet.Companion
-import com.example.playergroup.custom.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType
-import com.example.playergroup.custom.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
+import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet
+import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType
+import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
 import com.example.playergroup.data.INTENT_EXTRA_PARAM
 import com.example.playergroup.data.Landing
 import com.example.playergroup.data.RouterEvent

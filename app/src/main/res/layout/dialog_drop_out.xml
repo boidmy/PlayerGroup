@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp"
+    android:background="@drawable/shape_top_rounded_corner_14dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="24dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="서비스 회원 탈퇴"
+        android:textColor="@color/textColor_High_Emphasis"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="24dp"
+        android:text="내 프로필 정보는 삭제될 예정이며, 참여하고 있는 모임에서 탈퇴됩니다.\n\n서비스 내에서 작성한 콘텐츠는 삭제 및 수정이 되지 않으니, 원하시면 서비스 탈퇴 하기전에 삭제 및 수정 하시기 바랍니다."
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/agreeCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="24dp"
+        android:text="내용 동의 후, 탈퇴를 원합니다."
+        app:layout_constraintTop_toBottomOf="@id/detail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDropOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:text="@string/dropout"
+        android:textColor="@color/textColor_Medium_Emphasis"
+        android:textStyle="bold"
+        android:enabled="false"
+        app:backgroundTint="@color/selector_btn_state_color"
+        app:cornerRadius="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/agreeCheckBox" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

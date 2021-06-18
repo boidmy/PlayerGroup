@@ -45,6 +45,17 @@ class AuthRepository: BaseRepository() {
             }
     }
 
+    fun deleteUserDocument(callback: (Boolean) -> Unit) {
+        val data = firebaseAuth.currentUser
+        val userEmail = data?.email
+        if (userEmail.isNullOrEmpty()) {
+            callback.invoke(false)
+            return
+        }
+        firebaseUser.document(userEmail).delete()
+            .addOnCompleteListener { callback.invoke(it.isSuccessful) }
+    }
+
     /**
      * 프로필 정보 저장
      */
@@ -139,4 +150,19 @@ class AuthRepository: BaseRepository() {
                 callback.invoke(it.isSuccessful)
             }
     }
+
+    fun deleteStorageImg(callback: (Boolean) -> Unit) {
+        firebaseStorageUserDB.child(firebaseAuth.currentUser?.email.toString()).delete()
+            .addOnCompleteListener { callback.invoke(it.isSuccessful) }
+    }
+
+    fun setFirebaseUserInfoDelete(callback: (Boolean) -> Unit) {
+        deleteUserDocument {
+            deleteStorageImg {
+                firebaseAuth.currentUser?.delete()
+                    ?.addOnCompleteListener { callback.invoke(it.isSuccessful) }
+            }
+        }
+    }
+
 }

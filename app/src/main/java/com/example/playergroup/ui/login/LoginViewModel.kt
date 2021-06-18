@@ -15,7 +15,6 @@ typealias GoogleLogin = (() -> Unit)
 typealias NavigationViewDismiss = (() -> Unit)
 typealias PagerMoveCallback = ((Int) -> Unit)
 class LoginViewModel: BaseViewModel() {
-    private val authRepository by lazy { AuthRepository() }
 
     private val _firebaseResult: MutableLiveData<LoginResultCallback> = MutableLiveData()
     val firebaseResult: LiveData<LoginResultCallback>

@@ -29,6 +29,7 @@
     <string name="login_other_way">다른 방법으로 로그인하기</string>
     <string name="email">이메일</string>
     <string name="logout">로그아웃</string>
+    <string name="dropout">서비스 탈퇴</string>
     <string name="join_page">간편 회원 가입</string>
     <string name="join">회원가입</string>
     <string name="search_member">아이디 / 비밀번호 찾기</string>
@@ -70,5 +71,7 @@
     <string name="profile_edit_save_confirm_info">저장하시겠습니까?</string>
 
     <string name="member_board">게시판</string>
+
+    <string name="service_drop_out_info">정말로 서비스 회원 탈퇴를 진행 하시겠습니까?\n확인을 누르면 바로 회원 탈퇴가 진행됩니다.</string>
 
 </resources>

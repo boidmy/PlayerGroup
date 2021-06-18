@@ -1,9 +1,9 @@
-package com.example.playergroup.custom.calendar
+package com.example.playergroup.ui.calendar
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playergroup.custom.calendar.CalendarViewModel.*
+import com.example.playergroup.ui.calendar.CalendarViewModel.*
 import com.example.playergroup.databinding.ViewCalendarDayBinding
 import com.example.playergroup.util.click
 import com.example.playergroup.util.diffUtilExtensions

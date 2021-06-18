@@ -1,13 +1,13 @@
-package com.example.playergroup.custom.calendar
+package com.example.playergroup.ui.calendar
 
 import android.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playergroup.R
-import com.example.playergroup.custom.calendar.BaseCalendar.Companion.DAYS_OF_WEEK
+import com.example.playergroup.ui.calendar.BaseCalendar.Companion.DAYS_OF_WEEK
 import com.example.playergroup.databinding.ViewCalendarDayBinding
 import com.example.playergroup.util.getSpannedColorText
-import com.example.playergroup.custom.calendar.CalendarViewModel.CalendarData
+import com.example.playergroup.ui.calendar.CalendarViewModel.CalendarData
 
 class CalendarItemViewHolder(private val binding: ViewCalendarDayBinding): RecyclerView.ViewHolder(binding.root) {
     fun onBindView(data: CalendarData?) {
