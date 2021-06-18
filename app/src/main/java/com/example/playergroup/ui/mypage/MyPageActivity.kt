@@ -63,31 +63,7 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
             }
 
             myPageViewModel.profileImgUri = selectedImageUri
-
-            var imgBitmap = if (Build.VERSION.SDK_INT < 28) {
-                MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
-            } else {
-                ImageDecoder.decodeBitmap(
-                    ImageDecoder.createSource(contentResolver, selectedImageUri))
-            }
-
-            var exif: ExifInterface
-            try {
-                val realPath = getRealPathFromURI(selectedImageUri)
-                exif = ExifInterface(realPath ?: "")
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(this, "이미지를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
-                return@registerForActivityResult
-            }
-
-            val orientation = exif.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED
-            )
-
-            imgBitmap = rotateBitmap(imgBitmap, orientation)
-            binding.ivProfileImg.setImageBitmap(imgBitmap)
+            Glide.with(this).load(selectedImageUri).into(binding.ivProfileImg)
         }
     }
 
@@ -238,60 +214,6 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
 
         myPageViewModel.saveProfile(getMakeUserInfoClass())
         binding.loadingProgress.publisherLoading(true)
-    }
-
-    private fun getRealPathFromURI(contentURI: Uri): String? {
-        val result: String?
-        val cursor: Cursor? = contentResolver.query(
-            contentURI,
-            null,
-            null,
-            null,
-            null
-        )
-        if (cursor == null) {
-            // Source is Dropbox or other similar local file path
-            result = contentURI.path
-        } else {
-            cursor.moveToFirst()
-            val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            result = cursor.getString(idx)
-            cursor.close()
-        }
-        return result
-    }
-
-    private fun rotateBitmap(bitmap: Bitmap, orientation: Int): Bitmap? {
-        val matrix = Matrix()
-        when (orientation) {
-            ExifInterface.ORIENTATION_NORMAL -> return bitmap
-            ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> matrix.setScale(-1f, 1f)
-            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.setRotate(180f)
-            ExifInterface.ORIENTATION_FLIP_VERTICAL -> {
-                matrix.setRotate(180f)
-                matrix.postScale(-1f, 1f)
-            }
-            ExifInterface.ORIENTATION_TRANSPOSE -> {
-                matrix.setRotate(90f)
-                matrix.postScale(-1f, 1f)
-            }
-            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.setRotate(90f)
-            ExifInterface.ORIENTATION_TRANSVERSE -> {
-                matrix.setRotate(-90f)
-                matrix.postScale(-1f, 1f)
-            }
-            ExifInterface.ORIENTATION_ROTATE_270 -> matrix.setRotate(-90f)
-            else -> return bitmap
-        }
-        return try {
-            val bmRotated =
-                Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-            bitmap.recycle()
-            bmRotated
-        } catch (e: OutOfMemoryError) {
-            e.printStackTrace()
-            null
-        }
     }
 
     private fun isEditTextEmpty(): Boolean = (
