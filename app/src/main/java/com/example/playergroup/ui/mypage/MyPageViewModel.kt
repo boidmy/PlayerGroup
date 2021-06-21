@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.playergroup.data.UserInfo
-import com.example.playergroup.data.repository.AuthRepository
 import com.example.playergroup.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
@@ -64,7 +63,7 @@ class MyPageViewModel: BaseViewModel() {
                 isImageUpLoad.onNext(it)
             }
         }
-        authRepository.insertUserDocument(userInfo) {
+        authRepository.insertInitUserDocument(userInfo) {
             isUserInfoUpLoad.onNext(it)
         }
     }

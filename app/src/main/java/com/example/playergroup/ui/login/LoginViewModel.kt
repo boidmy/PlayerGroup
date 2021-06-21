@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.playergroup.R
 import com.example.playergroup.data.Landing
 import com.example.playergroup.data.LoginResultCallback
-import com.example.playergroup.data.repository.AuthRepository
 import com.example.playergroup.ui.base.BaseViewModel
 import com.example.playergroup.util.*
 import com.google.firebase.auth.FirebaseAuth
@@ -46,7 +45,7 @@ class LoginViewModel: BaseViewModel() {
                 } else {
                     authRepository.isUserInfoEmpty { isSuccessful ->
                         if (isSuccessful) { // 신규 사용자
-                            authRepository.insertUserDocument {
+                            authRepository.insertInitUserDocument {
                                 _firebaseResult.value = LoginResultCallback(it, Landing.MY_PAGE)
                             }
                         } else { // 기존 사용자
@@ -98,7 +97,7 @@ class LoginViewModel: BaseViewModel() {
                 if (firebaseResultCallback.isSuccess) {
                     authRepository.isUserInfoEmpty { isSuccessful ->
                         if (isSuccessful) { // 신규 사용자
-                            authRepository.insertUserDocument {
+                            authRepository.insertInitUserDocument {
                                 _firebaseResult.value = LoginResultCallback(it, Landing.MY_PAGE)
                             }
                         } else { // 기존 사용자

@@ -9,16 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.playergroup.R
-import com.example.playergroup.data.repository.AuthRepository
+import com.example.playergroup.api.AuthRepository
 import com.example.playergroup.databinding.DialogDropOutBinding
 import com.example.playergroup.util.DialogCustom
 import com.example.playergroup.util.click
 import com.example.playergroup.util.viewBinding
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.firebase.auth.FirebaseAuth
 
+/**
+ * 회원 탈퇴 팝업
+ */
 class DropOutBottomSheet: BottomSheetDialogFragment() {
 
     private val binding by viewBinding(DialogDropOutBinding::bind)

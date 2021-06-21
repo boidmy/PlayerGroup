@@ -4,7 +4,7 @@ import android.net.Network
 import android.os.Bundle
 import com.example.playergroup.data.Landing
 import com.example.playergroup.data.RouterEvent
-import com.example.playergroup.data.repository.AuthRepository
+import com.example.playergroup.api.AuthRepository
 import com.example.playergroup.databinding.ActivityIntroBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.util.LandingRouter

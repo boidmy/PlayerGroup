@@ -1,4 +1,4 @@
-package com.example.playergroup.data.repository
+package com.example.playergroup.api
 
 import android.net.Uri
 import android.util.Log
@@ -12,6 +12,9 @@ import com.google.firebase.auth.UserProfileChangeRequest
 
 class AuthRepository: BaseRepository() {
 
+    /**
+     * 구글 로그인 회원 가입
+     */
     fun googleRegister(idToken: String, callback: ((FirebaseUser?) -> Unit)) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         firebaseAuth.signInWithCredential(credential)
@@ -27,7 +30,7 @@ class AuthRepository: BaseRepository() {
     /**
      * 회원가입 하면 기본으로 저장하는 User 정보
      */
-    fun insertUserDocument(callback: (Boolean) -> Unit) {
+    fun insertInitUserDocument(callback: (Boolean) -> Unit) {
         val data = firebaseAuth.currentUser
         val userEmail = data?.email
         if (userEmail.isNullOrEmpty()) {
@@ -45,7 +48,19 @@ class AuthRepository: BaseRepository() {
             }
     }
 
-    fun deleteUserDocument(callback: (Boolean) -> Unit) {
+    /**
+     * 회원 탈퇴 할 때 User 정보 삭제
+     */
+    fun setFirebaseUserInfoDelete(callback: (Boolean) -> Unit) {
+        deleteUserDocument {
+            deleteStorageImg {
+                firebaseAuth.currentUser?.delete()
+                    ?.addOnCompleteListener { callback.invoke(it.isSuccessful) }
+            }
+        }
+    }
+
+    private fun deleteUserDocument(callback: (Boolean) -> Unit) {
         val data = firebaseAuth.currentUser
         val userEmail = data?.email
         if (userEmail.isNullOrEmpty()) {
@@ -59,7 +74,7 @@ class AuthRepository: BaseRepository() {
     /**
      * 프로필 정보 저장
      */
-    fun insertUserDocument(userInfo: UserInfo, callback: (Boolean) -> Unit) {
+    fun insertInitUserDocument(userInfo: UserInfo, callback: (Boolean) -> Unit) {
         val data = firebaseAuth.currentUser
         val userEmail = data?.email
         if (userEmail.isNullOrEmpty()) {
@@ -71,6 +86,9 @@ class AuthRepository: BaseRepository() {
         }
     }
 
+    /**
+     * 프로필 데이터가 저장되어 있는지 확인
+     */
     fun isUserInfoEmpty(callback: (Boolean) -> Unit) {
         val data = firebaseAuth.currentUser
         val userEmail = data?.email
@@ -89,7 +107,6 @@ class AuthRepository: BaseRepository() {
     /**
      * 내 프로필 정보 가져오기
      */
-
     fun getUserProfileData(email: String?, callback: (UserInfo?) -> Unit) {
         if (email.isNullOrEmpty()) {
             callback.invoke(null)
@@ -113,6 +130,9 @@ class AuthRepository: BaseRepository() {
             }
     }
 
+    /**
+     * 이메일 인증 보내기
+     */
     fun sendEmailVerification(callback: (Boolean) -> Unit) {
         firebaseAuth.currentUser?.sendEmailVerification()
             ?.addOnCompleteListener {
@@ -120,6 +140,9 @@ class AuthRepository: BaseRepository() {
             }
     }
 
+    /**
+     * Email 로 회원 가입
+     */
     fun signInEmailLogin(id: String, pw: String, callback: (FirebaseResultCallback) -> Unit) {
         firebaseAuth.signInWithEmailAndPassword(id, pw)
             .addOnCompleteListener {
@@ -136,6 +159,9 @@ class AuthRepository: BaseRepository() {
             }
     }
 
+    /**
+     * 패스워드 재설정 메일 보내기
+     */
     fun searchUserPassword(id: String, callback: (Boolean) -> Unit) {
         firebaseAuth.sendPasswordResetEmail(id)
             .addOnCompleteListener {
@@ -144,6 +170,7 @@ class AuthRepository: BaseRepository() {
     }
 
     fun getCurrentUser() = firebaseAuth.currentUser
+
 
     fun insertUserProfilePhoto(url: String, callback: (Boolean) -> Unit) {
         firebaseAuth.currentUser?.updateProfile(
@@ -155,6 +182,9 @@ class AuthRepository: BaseRepository() {
         }
     }
 
+    /**
+     * Storage 에 사진 저장 하기
+     */
     fun upLoadStorageImg(uri: Uri, callback: (Boolean) -> Unit) {
         firebaseStorageUserDB.child(firebaseAuth.currentUser?.email.toString())
             .putFile(uri)
@@ -167,6 +197,9 @@ class AuthRepository: BaseRepository() {
             }
     }
 
+    /**
+     * Storage 에서 사진 URL 가져오기
+     */
     fun getUserProfilePhoto(userEmail: String?, callback: (String?) -> Unit) {
         if (userEmail.isNullOrEmpty()) {
             callback.invoke(null)
@@ -182,18 +215,12 @@ class AuthRepository: BaseRepository() {
             }
     }
 
+    /**
+     * Storage 에 사진 삭제 ( 회원 탈퇴 할 때 사용 )
+     */
     fun deleteStorageImg(callback: (Boolean) -> Unit) {
         firebaseStorageUserDB.child(firebaseAuth.currentUser?.email.toString()).delete()
             .addOnCompleteListener { callback.invoke(it.isSuccessful) }
-    }
-
-    fun setFirebaseUserInfoDelete(callback: (Boolean) -> Unit) {
-        deleteUserDocument {
-            deleteStorageImg {
-                firebaseAuth.currentUser?.delete()
-                    ?.addOnCompleteListener { callback.invoke(it.isSuccessful) }
-            }
-        }
     }
 
 }

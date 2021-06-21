@@ -12,7 +12,7 @@
     <color name="textColor_Low_Emphasis">#61FFFFFF</color>
     <color name="textColor_Disabled">#1AFFFFFF</color>
 
-    <color name="btnColorPositive">#B3D81B60</color>
+    <color name="btnColorPositive">#E6FF7F00</color>
     <color name="btnColorNegative">#555555</color>
 
     <color name="dim_color">#66000000</color>
