@@ -2,67 +2,83 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="280dp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:background="@drawable/custom_dialog_style"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
 
-    <!-- TextView -->
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="24dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@color/viewOverlayBgColor">
 
-        <!-- Detail -->
-        <TextView
-            android:id="@+id/tv_dialog__detail"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/textColor_High_Emphasis"
-            android:textSize="16dp"
-            android:textStyle="normal"
-            tools:text="@string/dialog_alert_msg_network" />
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <!-- TextView -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-    <!-- Button -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
+                <!-- Detail -->
+                <TextView
+                    android:id="@+id/tvDialogDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/textColor_High_Emphasis"
+                    android:textSize="16dp"
+                    android:textStyle="normal"
+                    tools:text="@string/dialog_alert_msg_network" />
 
-        <!-- Negative -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_dialog__negative"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:textColor="@color/textColor_Medium_Emphasis"
-            android:visibility="gone"
-            app:cornerRadius="10dp"
-            app:backgroundTint="@color/btnColorNegative"
-            tools:text="CANCEL"
-            tools:visibility="visible" />
+            </LinearLayout>
 
-        <!-- Positive -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_dialog__posit"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:textColor="@color/textColor_High_Emphasis"
-            app:cornerRadius="10dp"
-            app:backgroundTint="@color/btnColorPositive"
-            tools:text="OK" />
+            <!-- Button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <!-- Negative -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDialogNegative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/textColor_Medium_Emphasis"
+                    android:visibility="gone"
+                    app:cornerRadius="10dp"
+                    app:backgroundTint="@color/btnColorNegative"
+                    tools:text="CANCEL"
+                    tools:visibility="visible" />
 
+                <!-- Positive -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDialogPosit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:textColor="@color/textColor_High_Emphasis"
+                    app:cornerRadius="10dp"
+                    app:backgroundTint="@color/btnColorPositive"
+                    tools:text="OK" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

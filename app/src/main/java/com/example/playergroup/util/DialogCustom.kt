@@ -9,18 +9,14 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import com.example.playergroup.R
+import com.example.playergroup.databinding.DialogCustomBinding
 import com.google.android.material.button.MaterialButton
 
 class DialogCustom constructor(context: Context) : AlertDialog(context, R.style.AlertDialogTheme), View.OnClickListener {
-
-    private var mMessageView: TextView? = null
-    private var mCancelBtn: MaterialButton? = null
-    private var mConfirmBtn: MaterialButton? = null
-
-    private var mMessageTxt: String? = null
-    private var mConfirmTxt: String? = null
     private var mConfirmClickListener: DialogCustomClickListener? = null
     private var mCancelClickListener: DialogCustomClickListener? = null
+
+    private val binding by lazy { DialogCustomBinding.inflate(layoutInflater) }
 
     interface DialogCustomClickListener {
         fun onClick(dialogCustom: DialogCustom)
@@ -28,52 +24,52 @@ class DialogCustom constructor(context: Context) : AlertDialog(context, R.style.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_custom)
+        setContentView(binding.root)
 
         window?.let {
             it.attributes?.windowAnimations = R.style.CustomDialogStyle
             it.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
         }
 
-        mMessageView = findViewById(R.id.tv_dialog__detail)
-        mCancelBtn = findViewById(R.id.btn_dialog__negative)
-        mConfirmBtn = findViewById(R.id.btn_dialog__posit)
+        initBtn()
+    }
 
-        setMessage(mMessageTxt)
-        showCancelBtn(false)
-        setConfirmBtnText(mConfirmTxt)
-
-        mConfirmBtn?.setOnClickListener(this)
-        mCancelBtn?.setOnClickListener(this)
-
+    private fun initBtn() {
+        with (binding) {
+            btnDialogPosit.setOnClickListener(this@DialogCustom)
+            btnDialogNegative.setOnClickListener(this@DialogCustom)
+        }
     }
 
     fun setMessage(text: String?): DialogCustom {
-        mMessageTxt = text
-        if (TextUtils.isEmpty(mMessageTxt)) mMessageView?.visibility = View.GONE else {
-            mMessageView?.visibility = View.VISIBLE
-            mMessageView?.text = mMessageTxt
+        binding.tvDialogDetail.apply {
+            if (TextUtils.isEmpty(text)) visibility = View.GONE else {
+                visibility = View.VISIBLE
+                this.text = text
+            }
         }
         return this
     }
 
     fun setMessage(@StringRes messageId: Int): DialogCustom {
-        mMessageTxt = context.getText(messageId) as String?
-        if (TextUtils.isEmpty(mMessageTxt)) mMessageView?.visibility = View.GONE else {
-            mMessageView?.visibility = View.VISIBLE
-            mMessageView?.text = mMessageTxt
+        binding.tvDialogDetail.apply {
+            val text = context.getText(messageId) as String?
+            if (TextUtils.isEmpty(text)) visibility = View.GONE else {
+                visibility = View.VISIBLE
+                this.text = text
+            }
         }
         return this
     }
 
     fun setConfirmBtnText(text: String?): DialogCustom {
-        mConfirmBtn?.text = if (TextUtils.isEmpty(text)) "OK" else text
+        binding.btnDialogPosit.text = if (text.isNullOrEmpty()) "OK" else text
         return this
     }
 
     fun setConfirmBtnText(@StringRes btnTxtId: Int): DialogCustom {
-        mConfirmTxt = context.getText(btnTxtId) as String?
-        mConfirmBtn?.text = if (TextUtils.isEmpty(mConfirmTxt)) "OK" else mConfirmTxt
+        val text = context.getText(btnTxtId) as String?
+        binding.btnDialogPosit.text = if (text.isNullOrEmpty()) "OK" else text
         return this
     }
 
@@ -88,12 +84,12 @@ class DialogCustom constructor(context: Context) : AlertDialog(context, R.style.
     }
 
     fun showCancelBtn(isShow: Boolean): DialogCustom {
-        mCancelBtn?.visibility = if (isShow) View.VISIBLE else View.GONE
+        binding.btnDialogNegative.visibility = if (isShow) View.VISIBLE else View.GONE
         return this
     }
 
     fun setCancelBtnText(text: String?): DialogCustom {
-        mCancelBtn?.text = if (TextUtils.isEmpty(text)) "Cancel" else text
+        binding.btnDialogNegative.text = if (text.isNullOrEmpty()) "Cancel" else text
         return this
     }
 
@@ -102,9 +98,8 @@ class DialogCustom constructor(context: Context) : AlertDialog(context, R.style.
         return this
     }
 
-
     override fun onClick(v: View) {
-        if (v.id == R.id.btn_dialog__posit) {
+        if (v.id == R.id.btnDialogPosit) {
             mConfirmClickListener?.onClick(this)
         } else {
             mCancelClickListener?.onClick(this)

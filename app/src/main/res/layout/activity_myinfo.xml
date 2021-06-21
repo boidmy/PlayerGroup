@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/icon_back"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/icon_edit"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/llProfileImg"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="50dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardCornerRadius="60dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
+
+            <ImageView
+                android:id="@+id/ivProfileImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:background="@color/colorPrimary"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/llMyInfoName"
+            style="@style/textInputLayer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:hint="@string/input_name"
+            app:helperText="영문 또는 한글만 가능 합니다."
+            app:counterMaxLength="10"
+            app:counterEnabled="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llProfileImg">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etMyInfoName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:textColor="@color/selector_edit_text_enable_color"
+                android:nextFocusDown="@id/llMyInfoHeight"
+                android:overScrollMode="always" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 키 -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/llMyInfoHeight"
+            style="@style/textInputLayer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/member_info_height"
+            app:layout_constraintEnd_toStartOf="@+id/llMyInfoWeight"
+            app:layout_constraintHorizontal_weight="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llMyInfoName">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etMyInfoHeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
+                android:textColor="@color/selector_edit_text_enable_color"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 몸무게 -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/llMyInfoWeight"
+            style="@style/textInputLayer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/member_info_weight"
+            app:layout_constraintBottom_toBottomOf="@+id/llMyInfoHeight"
+            app:layout_constraintEnd_toStartOf="@+id/llMyInfoPosition"
+            app:layout_constraintHorizontal_weight="0.5"
+            app:layout_constraintStart_toEndOf="@+id/llMyInfoHeight"
+            app:layout_constraintTop_toTopOf="@+id/llMyInfoHeight">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etMyInfoWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
+                android:textColor="@color/selector_edit_text_enable_color"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/llMyInfoPosition"
+            style="@style/textInputLayer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/member_info_position"
+            android:maxLength="10"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:layout_constraintBottom_toBottomOf="@+id/llMyInfoHeight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/llMyInfoWeight"
+            app:layout_constraintTop_toTopOf="@+id/llMyInfoHeight">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etMyInfoPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:clickable="true"
+                android:focusable="false"
+                android:textColor="@color/selector_edit_text_enable_color"
+                android:overScrollMode="always" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 성별 -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/llMyInfoSex"
+            style="@style/textInputLayer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:hint="@string/member_info_sex"
+            android:maxLength="10"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:layout_constraintEnd_toStartOf="@+id/llMyInfoAge"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llMyInfoHeight">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etMyInfoSex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:clickable="true"
+                android:focusable="false"
+                android:maxLines="1"
+                android:textColor="@color/selector_edit_text_enable_color"
+                android:nextFocusDown="@id/llMyInfoAge"
+                android:overScrollMode="always" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 생년월일 -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/llMyInfoAge"
+            style="@style/textInputLayer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/member_info_age"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/llMyInfoSex"
+            app:layout_constraintTop_toTopOf="@+id/llMyInfoSex">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etMyInfoAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
+                android:textColor="@color/selector_edit_text_enable_color"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/llMyInfoComment"
+            style="@style/textInputLayer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/member_info_detail"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:counterMaxLength="100"
+            app:counterEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llMyInfoSex">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etMyInfoComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="textCapCharacters|textMultiLine"
+                android:scrollbars="vertical"
+                android:minLines="2"
+                android:textColor="@color/selector_edit_text_enable_color"
+                android:maxLines="5"
+                android:overScrollMode="always" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.example.playergroup.custom.LoadingProgressView
+            android:id="@+id/loadingProgress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

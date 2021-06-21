@@ -21,17 +21,22 @@
     <string name="input_pw2_help">위와 동일한 비밀번호를 입력해 주세요!</string>
 
     <string name="input_empty_error">아이디 및 비밀번호를 정확히 입력해 주세요.</string>
+    <string name="input_search_email_empty_error">아이디를 정확히 입력해 주세요.</string>
     <string name="email_check">인증 메일을 보내드렸습니다.\n확인 후 인증하여 회원가입을 완료해 주세요.</string>
     <string name="non_email_check">메일 인증이 되지 않았습니다. 인증 후 다시 시도해 주세요.</string>
+    <string name="email_error_info">이메일 형식이 아닙니다.</string>
 
     <string name="login_other_way">다른 방법으로 로그인하기</string>
     <string name="email">이메일</string>
     <string name="logout">로그아웃</string>
+    <string name="dropout">서비스 탈퇴</string>
     <string name="join_page">간편 회원 가입</string>
     <string name="join">회원가입</string>
     <string name="search_member">아이디 / 비밀번호 찾기</string>
     <string name="search_sub_title">찾으려는 사용자의 이메일을 입력하세요.</string>
     <string name="login">로그인</string>
+    <string name="google_login">구글 로그인</string>
+    <string name="go_to_login_page">이미 가입하셨나요? 로그인하기</string>
     <string name="join_ok">회원가입</string>
     <string name="login_sub_title">with your social network</string>
     <string name="input_name">이름</string>
@@ -40,16 +45,33 @@
     <string name="member_info_height">키</string>
     <string name="member_info_weight">몸무게</string>
     <string name="member_info_addr">거주 지역</string>
+    <string name="member_info_sex">성별</string>
     <string name="member_info_addr_helper">ex ) 서울 송파구 신천동 </string>
-    <string name="member_info_age">생년월일</string>
+    <string name="member_info_age">출생연도</string>
     <string name="member_info_position">포지션</string>
     <string name="member_info_position_helper">ex ) 센터, 포워드, 가드.. </string>
     <string name="member_info_detail">간단하게 하고싶은 말</string>
 
+    <!-- 캘린더 -->
+    <string name="calendar_sun">일</string>
+    <string name="calendar_mon">월</string>
+    <string name="calendar_the">화</string>
+    <string name="calendar_wed">수</string>
+    <string name="calendar_thu">목</string>
+    <string name="calendar_fri">금</string>
+    <string name="calendar_sat">토</string>
+    <string name="calendar_today">오늘</string>
+    <string name="calendar_title">날짜를 선택하세요</string>
+
     <string name="profile_img_see">프로필 사진 보기</string>
     <string name="profile_img_selector">프로필 사진 선택</string>
     <string name="profile_edit_is_empty">모두 빠짐없이 입력 부탁 드립니다..</string>
+    <string name="profile_first_entry_back_key_info">프로필을 작성해 주셔야 앱 이용이 가능 합니다.</string>
+    <string name="profile_edit_mode_back_key_info">프로필 수정중 입니다.\n저장하지 않고 나가시겠습니까?</string>
+    <string name="profile_edit_save_confirm_info">저장하시겠습니까?</string>
 
     <string name="member_board">게시판</string>
+
+    <string name="service_drop_out_info">정말로 서비스 회원 탈퇴를 진행 하시겠습니까?\n확인을 누르면 바로 회원 탈퇴가 진행됩니다.</string>
 
 </resources>
