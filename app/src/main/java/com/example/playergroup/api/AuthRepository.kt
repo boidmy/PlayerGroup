@@ -171,17 +171,6 @@ class AuthRepository: BaseRepository() {
 
     fun getCurrentUser() = firebaseAuth.currentUser
 
-
-    fun insertUserProfilePhoto(url: String, callback: (Boolean) -> Unit) {
-        firebaseAuth.currentUser?.updateProfile(
-            UserProfileChangeRequest.Builder()
-            .setPhotoUri(Uri.parse(url))
-            .build()
-        )?.addOnCompleteListener {
-            callback.invoke(it.isSuccessful)
-        }
-    }
-
     /**
      * Storage 에 사진 저장 하기
      */
@@ -221,6 +210,16 @@ class AuthRepository: BaseRepository() {
     fun deleteStorageImg(callback: (Boolean) -> Unit) {
         firebaseStorageUserDB.child(firebaseAuth.currentUser?.email.toString()).delete()
             .addOnCompleteListener { callback.invoke(it.isSuccessful) }
+    }
+
+    /**
+     * 이름 중복 확인용
+     */
+    fun getOverlapCheck(field: String, callback: (Boolean) -> Unit) {
+        firebaseUser.whereEqualTo("name", field).get()
+            .addOnCompleteListener {
+                callback.invoke(it.result?.isEmpty ?: true)
+            }
     }
 
 }

@@ -62,15 +62,16 @@ class MyPageViewModel: BaseViewModel() {
             authRepository.upLoadStorageImg(profileImgUri!!) {
                 isImageUpLoad.onNext(it)
             }
+        } else {
+            isImageUpLoad.onNext(true)  // 이미지 저장 안해도 패스..
         }
         authRepository.insertInitUserDocument(userInfo) {
             isUserInfoUpLoad.onNext(it)
         }
     }
 
-    fun setCurrentUserProfile(url: String) {
-        authRepository.insertUserProfilePhoto(url) {
-
+    fun getNameOverlapCheck(field: String) {
+        authRepository.getOverlapCheck(field) { isEmpty ->
         }
     }
 
