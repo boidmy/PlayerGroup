@@ -15,6 +15,8 @@ class MyPageViewModel: BaseViewModel() {
 
     var profileImgUri: Uri? = null
 
+    val isEditModeEvent = PublishSubject.create<Boolean>()
+
     private val isImageUpLoad = PublishSubject.create<Boolean>()
     private val isUserInfoUpLoad = PublishSubject.create<Boolean>()
 
@@ -22,7 +24,23 @@ class MyPageViewModel: BaseViewModel() {
     val firebaseResult: LiveData<Boolean>
         get() = _firebaseResult
 
+    private val _firebaseUserDataResult: MutableLiveData<UserInfo?> = MutableLiveData()
+    val firebaseUserDataResult: LiveData<UserInfo?>
+        get() = _firebaseUserDataResult
+
     fun getCurrentUser() = authRepository.getCurrentUser()
+
+    fun getUserProfile(userEmail: String?) {
+        authRepository.getUserProfileData(userEmail) {
+            _firebaseUserDataResult.value = it
+        }
+    }
+
+    fun getUserProfileImg(userEmail: String?, callback: (String?) -> Unit) {
+        authRepository.getUserProfilePhoto(userEmail) {
+            callback.invoke(it)
+        }
+    }
 
     fun saveProfile(userInfo: UserInfo) {
         compositeDisposable.add(

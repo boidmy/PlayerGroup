@@ -87,6 +87,22 @@ class AuthRepository: BaseRepository() {
     }
 
     /**
+     * 내 프로필 정보 가져오기
+     */
+
+    fun getUserProfileData(email: String?, callback: (UserInfo?) -> Unit) {
+        if (email.isNullOrEmpty()) {
+            callback.invoke(null)
+            return
+        }
+        firebaseUser.document(email).get()
+            .addOnCompleteListener {
+                val userInfo = (it.result?.toObject(UserInfo::class.java))
+                callback.invoke(userInfo)
+            }
+    }
+
+    /**
      * createEmail 오류코드 확인하여 적용 필요
      * https://firebase.google.com/docs/auth/admin/errors?hl=ko
      */
@@ -148,6 +164,21 @@ class AuthRepository: BaseRepository() {
             }
             .addOnCompleteListener {
                 callback.invoke(it.isSuccessful)
+            }
+    }
+
+    fun getUserProfilePhoto(userEmail: String?, callback: (String?) -> Unit) {
+        if (userEmail.isNullOrEmpty()) {
+            callback.invoke(null)
+            return
+        }
+        firebaseStorageUserDB.child(userEmail).downloadUrl
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    callback.invoke(it.result.toString())
+                } else {
+                    callback.invoke(null)
+                }
             }
     }
 

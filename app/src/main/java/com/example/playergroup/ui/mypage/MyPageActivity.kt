@@ -1,15 +1,8 @@
 package com.example.playergroup.ui.mypage
 
 import android.content.Intent
-import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.graphics.Matrix
 import android.net.Network
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -18,7 +11,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.playergroup.R
@@ -32,6 +24,9 @@ import com.example.playergroup.data.UserInfo
 import com.example.playergroup.databinding.ActivityMyinfoBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.util.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
 
@@ -47,10 +42,10 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
         val isFirstEntry = intent?.getBooleanExtra(INTENT_EXTRA_PARAM, false) ?: false
         if (isFirstEntry) isEditMode = true
 
-        initInputAndImageView()
-        initBtnView(isFirstEntry)
-        initViewModel()
         initGalleryImgResult()
+        initView(isFirstEntry)
+        initViewModel()
+
     }
 
     private fun initGalleryImgResult() {
@@ -106,21 +101,57 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
                 .show()
             return
         }
-        super.onBackPressed()
+        finish()
     }
 
     private fun initViewModel() {
-        myPageViewModel.firebaseResult.observe(this, Observer { isSuccessful ->
-            binding.loadingProgress.publisherLoading(false)
-            if (isSuccessful) {
-                LandingRouter.move(this, RouterEvent(type = Landing.MAIN))
-            } else {
-                Toast.makeText(this, "프로필을 저정하지 못했습니다. \n잠시 후에 다시 이용해 주세요.", Toast.LENGTH_SHORT).show()
+        myPageViewModel.apply {
+            isEditModeEvent
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(::setEditMode)
+            isEditModeEvent.onNext(isEditMode)
+
+            if (!isEditMode) {
+                getUserProfile(getCurrentUser()?.email)
             }
-        })
+
+            firebaseUserDataResult.observe(this@MyPageActivity, Observer { userInfo ->
+                userInfo?.let {
+                    setUserProfileView(it)
+                }
+            })
+
+            firebaseResult.observe(this@MyPageActivity, Observer { isSuccessful ->
+                binding.loadingProgress.publisherLoading(false)
+                if (isSuccessful) {
+                    LandingRouter.move(this@MyPageActivity, RouterEvent(type = Landing.MAIN))
+                } else {
+                    Toast.makeText(this@MyPageActivity, "프로필을 저정하지 못했습니다. \n잠시 후에 다시 이용해 주세요.", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
     }
 
-    private fun initBtnView(isFirstEntry: Boolean) {
+    private fun setUserProfileView(userInfo: UserInfo) {
+        with (binding) {
+            myPageViewModel.getUserProfileImg(userInfo.email) {
+                // todo 혹시 다운 받기 전에 화면이 사라지면 죽나 ?
+                Glide.with(this@MyPageActivity)
+                    .load(it)
+                    .into(ivProfileImg)
+            }
+
+            etMyInfoName.setText(userInfo.name ?: "")
+            etMyInfoHeight.setText(userInfo.height ?: "")
+            etMyInfoWeight.setText(userInfo.weight ?: "")
+            etMyInfoPosition.setText(userInfo.position ?: "")
+            etMyInfoAge.setText(userInfo.age ?: "")
+            etMyInfoSex.setText(userInfo.sex ?: "")
+            etMyInfoComment.setText(userInfo.comment ?: "")
+        }
+    }
+
+    private fun initView(isFirstEntry: Boolean) {
         with(binding)  {
             ivBack.apply {
                 click { onBackPressed() }
@@ -136,8 +167,9 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
                             .showCancelBtn(true)
                             .setConfirmClickListener(object: DialogCustom.DialogCustomClickListener {
                                 override fun onClick(dialogCustom: DialogCustom) {
-                                    //isEditMode = !isEditMode
+                                    isEditMode = !isEditMode
                                     saveMyProfile()
+                                    myPageViewModel.isEditModeEvent.onNext(isEditMode)
                                     dialogCustom.dismiss()
                                 }
                             })
@@ -148,10 +180,12 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
                             .show()
                     } else {
                         isEditMode = !isEditMode
+                        myPageViewModel.isEditModeEvent.onNext(isEditMode)
                     }
                     setEditModeState(isEditMode)
                 }
             }
+
 
             llProfileImg click {
                 LandingRouter.move(this@MyPageActivity, RouterEvent(type = Landing.GALLERY, activityResult = galleryImgResult))
@@ -186,17 +220,6 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
         }
         if (newInstance.isVisible) return
         newInstance.show(supportFragmentManager, newInstance.tag)
-    }
-
-    private fun initInputAndImageView() {
-        with(binding) {
-            val currentUser = myPageViewModel.getCurrentUser()
-            Glide.with(this@MyPageActivity)
-                .load(currentUser?.photoUrl)
-                .placeholder(R.drawable.icon_user)
-                .error(R.drawable.icon_user)
-                .into(ivProfileImg)
-        }
     }
 
     private fun ImageView.setEditModeState(isState: Boolean) {
@@ -236,4 +259,18 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
         img = myPageViewModel.getCurrentUser()?.email,
         comment = binding.etMyInfoComment.text.toString()
     )
+
+    private fun setEditMode(isEditMode: Boolean) {
+        with (binding) {
+            etMyInfoName.isEnabled = isEditMode
+            llProfileImg.isEnabled = isEditMode
+            etMyInfoSex.isEnabled = isEditMode
+            etMyInfoAge.isEnabled = isEditMode
+            etMyInfoHeight.isEnabled = isEditMode
+            etMyInfoWeight.isEnabled = isEditMode
+            etMyInfoPosition.isEnabled = isEditMode
+            etMyInfoComment.isEnabled = isEditMode
+            btnNameChecker.visibility = if (isEditMode) View.VISIBLE else View.GONE
+        }
+    }
 }

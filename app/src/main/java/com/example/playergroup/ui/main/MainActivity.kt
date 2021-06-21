@@ -28,5 +28,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }
             newInstance.show(supportFragmentManager, newInstance.tag)
         }
+
+        binding.btnMyPage click {
+            LandingRouter.move(this, RouterEvent(Landing.MY_PAGE))
+        }
     }
 }
