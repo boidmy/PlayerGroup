@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -32,7 +33,6 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
 
     private var isEditMode = false
     private val myPageViewModel by viewModels<MyPageViewModel>()
-
     private lateinit var galleryImgResult: ActivityResultLauncher<Intent>
 
     override fun getViewBinding(): ActivityMyinfoBinding = ActivityMyinfoBinding.inflate(layoutInflater)
@@ -135,10 +135,11 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
     private fun setUserProfileView(userInfo: UserInfo) {
         with (binding) {
             myPageViewModel.getUserProfileImg(userInfo.email) {
-                // todo 혹시 다운 받기 전에 화면이 사라지면 죽나 ?
-                Glide.with(this@MyPageActivity)
-                    .load(it)
-                    .into(ivProfileImg)
+                if (!isDestroyed) {
+                    Glide.with(this@MyPageActivity)
+                        .load(it)
+                        .into(ivProfileImg)
+                }
             }
 
             etMyInfoName.setText(userInfo.name ?: "")
@@ -186,7 +187,6 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
                 }
             }
 
-
             llProfileImg click {
                 LandingRouter.move(this@MyPageActivity, RouterEvent(type = Landing.GALLERY, activityResult = galleryImgResult))
             }
@@ -205,6 +205,7 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
 
             llMyInfoPosition.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(POSITION)}
             etMyInfoPosition click { setScrollerPicker(POSITION) }
+
         }
     }
 
@@ -270,7 +271,6 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
             etMyInfoWeight.isEnabled = isEditMode
             etMyInfoPosition.isEnabled = isEditMode
             etMyInfoComment.isEnabled = isEditMode
-            btnNameChecker.visibility = if (isEditMode) View.VISIBLE else View.GONE
         }
     }
 }
