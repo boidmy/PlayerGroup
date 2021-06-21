@@ -79,6 +79,7 @@
                 android:inputType="text"
                 android:maxLength="10"
                 android:maxLines="1"
+                android:textColor="@color/selector_edit_text_enable_color"
                 android:nextFocusDown="@id/llMyInfoHeight"
                 android:overScrollMode="always" />
 
@@ -118,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="false"
+                android:textColor="@color/selector_edit_text_enable_color"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -145,6 +147,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="false"
+                android:textColor="@color/selector_edit_text_enable_color"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -172,6 +175,7 @@
                 android:maxLines="1"
                 android:clickable="true"
                 android:focusable="false"
+                android:textColor="@color/selector_edit_text_enable_color"
                 android:overScrollMode="always" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -202,6 +206,7 @@
                 android:clickable="true"
                 android:focusable="false"
                 android:maxLines="1"
+                android:textColor="@color/selector_edit_text_enable_color"
                 android:nextFocusDown="@id/llMyInfoAge"
                 android:overScrollMode="always" />
 
@@ -227,6 +232,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="false"
+                android:textColor="@color/selector_edit_text_enable_color"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -254,6 +260,7 @@
                 android:inputType="textCapCharacters|textMultiLine"
                 android:scrollbars="vertical"
                 android:minLines="2"
+                android:textColor="@color/selector_edit_text_enable_color"
                 android:maxLines="5"
                 android:overScrollMode="always" />
 
