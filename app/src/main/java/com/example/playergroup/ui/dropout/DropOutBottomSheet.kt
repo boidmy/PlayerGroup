@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import com.example.playergroup.R
 import com.example.playergroup.api.AuthRepository
 import com.example.playergroup.databinding.DialogDropOutBinding
-import com.example.playergroup.util.DialogCustom
+import com.example.playergroup.custom.DialogCustom
 import com.example.playergroup.util.click
 import com.example.playergroup.util.viewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog

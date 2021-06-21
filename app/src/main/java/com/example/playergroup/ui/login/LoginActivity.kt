@@ -8,10 +8,10 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.playergroup.R
+import com.example.playergroup.custom.DialogCustom
 import com.example.playergroup.data.Landing
 import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ActivityLoginBinding
@@ -22,7 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import io.reactivex.android.schedulers.AndroidSchedulers
 
 class LoginActivity: BaseActivity<ActivityLoginBinding>() {
 

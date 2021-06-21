@@ -10,7 +10,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.example.playergroup.R
-import com.example.playergroup.util.DialogCustom
+import com.example.playergroup.custom.DialogCustom
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -124,11 +124,6 @@ abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         terminateNetworkCallback()
-    }
-
-    // 프로그스 바
-    protected fun showProgress(view: View, isShow: Boolean) {
-        view.visibility = if (isShow) View.VISIBLE else View.GONE
     }
 
 }

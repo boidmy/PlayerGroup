@@ -22,6 +22,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import com.example.playergroup.BuildConfig
 import com.example.playergroup.R
+import com.example.playergroup.custom.DialogCustom
 import io.reactivex.Observable
 import java.net.URLEncoder
 import java.text.ParseException

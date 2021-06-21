@@ -10,11 +10,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.playergroup.R
+import com.example.playergroup.custom.DialogCustom
 import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet
 import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType
 import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
@@ -25,8 +25,6 @@ import com.example.playergroup.data.UserInfo
 import com.example.playergroup.databinding.ActivityMyinfoBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.util.*
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {

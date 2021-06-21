@@ -1,16 +1,14 @@
-package com.example.playergroup.util
+package com.example.playergroup.custom
 
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import com.example.playergroup.R
 import com.example.playergroup.databinding.DialogCustomBinding
-import com.google.android.material.button.MaterialButton
 
 class DialogCustom constructor(context: Context) : AlertDialog(context, R.style.AlertDialogTheme), View.OnClickListener {
     private var mConfirmClickListener: DialogCustomClickListener? = null
@@ -63,13 +61,13 @@ class DialogCustom constructor(context: Context) : AlertDialog(context, R.style.
     }
 
     fun setConfirmBtnText(text: String?): DialogCustom {
-        binding.btnDialogPosit.text = if (text.isNullOrEmpty()) "OK" else text
+        binding.tvPositive.text = if (text.isNullOrEmpty()) "확인" else text
         return this
     }
 
     fun setConfirmBtnText(@StringRes btnTxtId: Int): DialogCustom {
         val text = context.getText(btnTxtId) as String?
-        binding.btnDialogPosit.text = if (text.isNullOrEmpty()) "OK" else text
+        binding.tvPositive.text = if (text.isNullOrEmpty()) "확인" else text
         return this
     }
 
@@ -89,7 +87,7 @@ class DialogCustom constructor(context: Context) : AlertDialog(context, R.style.
     }
 
     fun setCancelBtnText(text: String?): DialogCustom {
-        binding.btnDialogNegative.text = if (text.isNullOrEmpty()) "Cancel" else text
+        binding.tvNegative.text = if (text.isNullOrEmpty()) "취소" else text
         return this
     }
 
