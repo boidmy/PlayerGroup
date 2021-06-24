@@ -3,15 +3,13 @@ package com.example.playergroup.util
 import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.provider.MediaStore
 import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import com.example.playergroup.ui.main.MainActivity
 import com.example.playergroup.R
-import com.example.playergroup.data.INTENT_EXTRA_PARAM
-import com.example.playergroup.data.Landing
-import com.example.playergroup.data.RouterEvent
+import com.example.playergroup.data.*
+import com.example.playergroup.ui.club.ClubActivity
+import com.example.playergroup.ui.club.create.CreateClubActivity
 import com.example.playergroup.ui.login.LoginActivity
 import com.example.playergroup.ui.mypage.MyPageActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -20,7 +18,6 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 
 object LandingRouter {
-
     fun move(context: Context, event: RouterEvent) {
         try {
             when (event.type) {
@@ -29,10 +26,25 @@ object LandingRouter {
                 Landing.GOOGLE_LOGIN -> gotoGoogleLogin(context, event)
                 Landing.MY_PAGE -> gotoMyPage(context, event)
                 Landing.GALLERY -> checkPermission(context, event)
+                Landing.CREATE_CLUB -> gotoCreateClub(context, event)
+                Landing.CLUB_MAIN -> gotoClubMain(context, event)
             }
         } catch (e: Exception) {
             Log.e("####", "${event.type} -> ${e.localizedMessage}")
         }
+    }
+
+    private fun gotoClubMain(context: Context, event: RouterEvent) {
+        context.startActivity(Intent(context, ClubActivity::class.java).also { intent ->
+            intent.putExtra(INTENT_EXTRA_STRING_PARAM, event.paramString)
+            intent.putExtra(INTENT_EXTRA_URI_TO_STRING_PARAM, event.paramUriToString)
+        }, event.options?.toBundle())
+    }
+
+    private fun gotoCreateClub(context: Context, event: RouterEvent) {
+        context.startActivity(Intent(context, CreateClubActivity::class.java).also {
+            //todo Parameter?
+        })
     }
 
     private fun gotoMain(context: Context, event: RouterEvent) {

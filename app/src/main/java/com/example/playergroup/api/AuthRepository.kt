@@ -41,8 +41,23 @@ class AuthRepository: BaseRepository() {
         val user = hashMapOf(
             "email" to userEmail.toString()
         )
-
         firebaseUser.document(userEmail).set(user)
+            .addOnCompleteListener {
+                callback.invoke(it.isSuccessful)
+            }
+    }
+
+    /**
+     * 클럽을 새로 만들었을 경우 Admin 으로 User 정보에 등록
+     */
+    fun upDateClubUserField(clubNameWithAdmin: String, callback: (Boolean) -> Unit) {
+        val data = firebaseAuth.currentUser
+        val userEmail = data?.email
+        if (userEmail.isNullOrEmpty()) {
+            callback.invoke(false)
+            return
+        }
+        firebaseUser.document(userEmail).update("clubAdmin", clubNameWithAdmin)
             .addOnCompleteListener {
                 callback.invoke(it.isSuccessful)
             }

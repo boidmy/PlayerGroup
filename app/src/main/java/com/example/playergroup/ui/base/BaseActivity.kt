@@ -11,8 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.example.playergroup.R
 import com.example.playergroup.custom.DialogCustom
+import com.example.playergroup.ui.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
 
@@ -21,19 +23,22 @@ abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
 
     abstract fun getViewBinding(): B
     abstract fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?)
-    abstract fun onNetworkStateLost(network: Network?)
 
     private val FinishIntervalTime: Long = 2000   //화면 종료 버튼 2초 Setting
     private var backPressedTime: Long = 0
 
-    protected val firebaseAuth by lazy { FirebaseAuth.getInstance() }
-    protected val firebaseDB by lazy { FirebaseFirestore.getInstance() }
+    protected val compositeDisposable by lazy { CompositeDisposable() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = getViewBinding()
         setContentView(binding.root)
         onCreateBindingWithSetContentView(savedInstanceState)
+    }
+
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
     }
 
     override fun onBackPressed() {
@@ -43,11 +48,14 @@ abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
 
         val isFinishApp = intervalTime in 0..FinishIntervalTime
 
-        if (isFinishApp) {
-            super.onBackPressed()
-            finish()
+        if (this is MainActivity) {
+            if (isFinishApp) {
+                finish()
+            } else {
+                backPressedTime = tempTime
+            }
         } else {
-            backPressedTime = tempTime
+            super.onBackPressed()
         }
     }
 
@@ -92,38 +100,12 @@ abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
         return result
     }
 
-    private val networkCallback = object: ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) {
-            super.onAvailable(network)
-            // 인터넷이 연결되면 호출됨.
-        }
-        override fun onLost(network: Network) {
-            super.onLost(network)
-            // 인터넷이 끊어지면 호출됨.
-            onNetworkStateLost(network)
-        }
-    }
-
-    private fun registerNetworkCallback() {
-        val networkRequest = NetworkRequest.Builder()
-            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-            .build()
-        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
-    }
-
-    private fun terminateNetworkCallback() {
-        connectivityManager.unregisterNetworkCallback(networkCallback)
-    }
-
     override fun onResume() {
         super.onResume()
-        registerNetworkCallback()
     }
 
     override fun onStop() {
         super.onStop()
-        terminateNetworkCallback()
     }
 
 }

@@ -9,7 +9,9 @@ data class UserInfo(
     var age: String? = null,    // 생년월일
     var sex: String? = null,   // 성별
     var img: String? = null,    // 프로필 이미지
-    var comment: String? = null    // 하고싶은 말
+    var comment: String? = null,    // 하고싶은 말
+
+    var clubAdmin: String? = null   // 내가 만든 동호회 이름
 ) {
     fun isEmptyData() = (
         age.isNullOrEmpty() ||

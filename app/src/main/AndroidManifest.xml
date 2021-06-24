@@ -25,15 +25,21 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.base.BaseActivity" />
         <activity
             android:name=".ui.main.MainActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.base.BaseActivity" />
         <activity android:name=".ui.login.LoginActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.mypage.MyPageActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.club.create.CreateClubActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.club.ClubActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
 

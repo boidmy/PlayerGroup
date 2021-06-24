@@ -56,4 +56,32 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/btnDropOut"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCreateClub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="동호회 만들기"
+        android:textColor="@color/textColor_Medium_Emphasis"
+        app:cornerRadius="10dp"
+        app:backgroundTint="@color/btnColorPositive"
+        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toBottomOf="@id/btnLogout"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnMyClub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="내가 만든 동호회 가기"
+        android:textColor="@color/textColor_Medium_Emphasis"
+        app:cornerRadius="10dp"
+        app:backgroundTint="@color/btnColorPositive"
+        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toBottomOf="@id/btnLogout"
+        app:layout_constraintStart_toEndOf="@id/btnCreateClub"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

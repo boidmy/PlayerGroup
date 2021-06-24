@@ -34,7 +34,6 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
     private lateinit var galleryImgResult: ActivityResultLauncher<Intent>
 
     override fun getViewBinding(): ActivityMyinfoBinding = ActivityMyinfoBinding.inflate(layoutInflater)
-    override fun onNetworkStateLost(network: Network?) {}
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
         // 처음 진입했을 경우
         val isFirstEntry = intent?.getBooleanExtra(INTENT_EXTRA_PARAM, false) ?: false

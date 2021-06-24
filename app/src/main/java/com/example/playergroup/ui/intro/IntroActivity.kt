@@ -19,9 +19,6 @@ class IntroActivity: BaseActivity<ActivityIntroBinding>() {
     private val authRepository by lazy { AuthRepository() }
 
     override fun getViewBinding(): ActivityIntroBinding = ActivityIntroBinding.inflate(layoutInflater)
-    override fun onNetworkStateLost(network: Network?) {
-        //finishAlert(this@IntroActivity)
-    }
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
         if (!isWIFIConnected()) {
             finishAlert(this@IntroActivity)

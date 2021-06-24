@@ -31,6 +31,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 import kotlin.math.roundToInt
+import io.reactivex.functions.Function
 
 private val PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*#?&]).{8,15}.\$")   // 8 ~ 16 ( 특수문자, 문자, 숫자 모두 포함 )
 
@@ -288,4 +289,14 @@ inline fun <reified T : Any> MutableList<*>.checkItemsAre() =
 
 fun String?.urlEncoded(): String {
     return URLEncoder.encode(this, "utf-8")
+}
+
+fun getZipper(): Function<Array<Any>, MutableList<Any>> {
+    return Function { objects ->
+        val resultList = mutableListOf<Any>()
+        for (ob in objects) {
+            resultList.add(ob)
+        }
+        resultList
+    }
 }

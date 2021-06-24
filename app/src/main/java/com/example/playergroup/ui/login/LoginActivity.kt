@@ -31,9 +31,6 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
     private lateinit var getGoogleSignResult: ActivityResultLauncher<Intent>
 
     override fun getViewBinding(): ActivityLoginBinding = ActivityLoginBinding.inflate(layoutInflater)
-    override fun onNetworkStateLost(network: Network?) {
-        //finishAlert(this@LoginActivity)
-    }
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
         initGifImg()
         initActivityResult()
