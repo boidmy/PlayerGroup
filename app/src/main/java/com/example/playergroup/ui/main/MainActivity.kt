@@ -9,7 +9,9 @@ import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ActivityMainBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.dropout.DropOutBottomSheet
+import com.example.playergroup.ui.login.fragments.BottomSheetLoginFragment
 import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet
+import com.example.playergroup.ui.themeselector.ThemeSelectorBottomSheet
 import com.example.playergroup.util.LandingRouter
 import com.example.playergroup.util.click
 import com.example.playergroup.util.showDefDialog
@@ -57,8 +59,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                         }
                     }
                 }
-
             }
         }
+
+        binding.btnThemeSelector click {
+            val newInstance = ThemeSelectorBottomSheet.newInstance()
+            newInstance.show(supportFragmentManager, newInstance.tag)
+        }
+
     }
 }

@@ -20,12 +20,12 @@ class CalendarItemViewHolder(private val binding: ViewCalendarDayBinding): Recyc
                     Color.parseColor("#ffffff")
                 } else {
                     if (data?.isToday == true) {
-                        ContextCompat.getColor(itemView.context, R.color.textColor_High_Emphasis)
+                        ContextCompat.getColor(itemView.context, R.color.colorPrimaryText)
                     } else {
                         if (adapterPosition % DAYS_OF_WEEK == 0) {
                             Color.parseColor("#e6230a")
                         } else {
-                            ContextCompat.getColor(itemView.context, R.color.textColor_Medium_Emphasis)
+                            ContextCompat.getColor(itemView.context, R.color.colorSecondaryText)
                         }
                     }
                 },
@@ -40,14 +40,14 @@ class CalendarItemViewHolder(private val binding: ViewCalendarDayBinding): Recyc
                         color = if (data.isSelected) {
                             Color.parseColor("#ffffff")
                         } else {
-                            ContextCompat.getColor(itemView.context, R.color.textColor_Medium_Emphasis)
+                            ContextCompat.getColor(itemView.context, R.color.colorSecondaryText)
                         },
                         bold = true
                     )
                 else ""
 
             selectBg.setBackgroundColor(
-                if (data?.isSelected == true) ContextCompat.getColor(itemView.context, R.color.textColor_Medium_Emphasis)
+                if (data?.isSelected == true) ContextCompat.getColor(itemView.context, R.color.colorSecondaryText)
                 else 0
             )
 

@@ -10,6 +10,9 @@ import androidx.viewbinding.ViewBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
+/**
+ * https://yoon-dailylife.tistory.com/57 이거 참고해서 변경해 보기
+ */
 class FragmentViewBindingDelegate<T : ViewBinding>(
     val fragment: Fragment,
     val viewBindingFactory: (View) -> T
@@ -30,7 +33,7 @@ class FragmentViewBindingDelegate<T : ViewBinding>(
             return binding
         }
 
-        val lifecycle = fragment.viewLifecycleOwner.lifecycle
+        val lifecycle = fragment.lifecycle
         if (!lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)) {
             throw IllegalStateException("Should not attempt to get bindings when Fragment views are destroyed.")
         }

@@ -15,7 +15,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#80000000" />
+        android:background="@color/dim_color" />
 
     <TextView
         android:id="@+id/tv_container_login"
@@ -40,7 +40,7 @@
         android:foreground="?android:attr/selectableItemBackground"
         app:cardBackgroundColor="@color/btnColorPositive"
         app:cardCornerRadius="4dp"
-        app:cardElevation="4dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toTopOf="@id/tv_container_login">
 
         <TextView

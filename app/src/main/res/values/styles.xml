@@ -1,11 +1,8 @@
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/textColor_High_Emphasis</item>
+        <item name="colorAccent">@color/colorPrimaryText</item>
         <item name="android:windowContentTransitions">true</item>
     </style>
 
@@ -13,13 +10,6 @@
     <style name="SplashTheme" parent = "Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@drawable/spash_background</item>
         <item name="android:windowFullscreen">true</item>
-    </style>
-
-    <!-- JoinLoginPage -->
-    <style name="JoinLoginTheme" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="android:windowFullscreen">true</item>
-        <!-- TextInputLayout OutLineBox 에서 EditText Focus 시 색을 ColorAccent 를 바라봄. -->
-        <item name="colorAccent">@color/textColor_High_Emphasis</item>
     </style>
 
     <!-- CustomDialog -->
@@ -35,9 +25,9 @@
 
     <!--TextInputLayout-->
     <style name="textInputLayer" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:textColorHint">@color/textColor_Low_Emphasis</item>
-        <item name="hintTextColor">@color/textColor_High_Emphasis</item>
-        <item name="boxStrokeColor">@color/textColor_High_Emphasis</item>
+        <item name="android:textColorHint">@color/colorDisabledHintText</item>
+        <item name="hintTextColor">@color/colorPrimaryText</item>
+        <item name="boxStrokeColor">@color/colorPrimaryText</item>
     </style>
 
     <!--Loading Progress-->
