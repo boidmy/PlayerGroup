@@ -61,6 +61,8 @@ class DropOutBottomSheet: BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.btnDropOut.isEnabled = false
+
         binding.agreeCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             binding.btnDropOut.isEnabled = isChecked
         }

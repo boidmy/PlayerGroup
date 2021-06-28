@@ -59,7 +59,7 @@ class ScrollSelectorViewModel: BaseViewModel() {
 
     fun getSelectorTitle(type: ScrollSelectorType) =
         when(type) {
-            WEIGHT -> "대략적인 몸무게를 선택해주세요.."
+            WEIGHT -> "몸무게를 선택해주세요."
             HEIGHT -> "키를 선택해주세요."
             YEAROFBIRTH -> "출생연도를 선택해주세요."
             SEX -> "성별을 선택해주세요."

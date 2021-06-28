@@ -151,6 +151,12 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
 
     private fun initView(isFirstEntry: Boolean) {
         with(binding)  {
+
+            root.setOnTouchListener { v, event ->
+                hideKeyboard(etMyInfoComment)
+                false
+            }
+
             ivBack.apply {
                 click { onBackPressed() }
                 visibility = if (isFirstEntry) View.GONE else View.VISIBLE

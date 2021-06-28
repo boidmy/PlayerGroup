@@ -12,7 +12,10 @@
     <color name="colorDisabledHintText">#61000000</color>
     <color name="colorDividers">#1F000000</color>
 
+    <color name="colorPrimaryIcon">#8A000000</color>
+
     <color name="btnColorPositive">#CCFF6F00</color>
+    <color name="btnTxtColor">#fafafa</color>
     <color name="btnColorNegative">#525f6f</color>
 
     <color name="dim_color">#66000000</color>

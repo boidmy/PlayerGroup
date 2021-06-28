@@ -94,6 +94,8 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
 
         binding.title.text = viewModel.getSelectorTitle(viewType)
 
+        binding.btnClose click { dismiss() }
+
         binding.selectorList.apply {
             layoutManager = SliderLayoutManager(requireContext()).apply {
                 this.callback = object: SliderLayoutManager.OnItemSelectedListener {
