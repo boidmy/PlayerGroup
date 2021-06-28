@@ -17,9 +17,12 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import com.example.playergroup.BuildConfig
 import com.example.playergroup.R
 import com.example.playergroup.custom.DialogCustom
@@ -39,8 +42,14 @@ infix fun Context.debugToast(message: () -> String) {
     if (BuildConfig.DEBUG) Toast.makeText(this, message(), Toast.LENGTH_SHORT).show()
 }
 
-inline fun Context.showToast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) =
+fun Context.showToast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) =
     Toast.makeText(this, text, duration).show()
+
+infix fun FragmentManager?.goToFragment(pair: Pair<Int, Fragment>) {
+    this?.beginTransaction()
+        ?.replace(pair.first, pair.second)
+        ?.commit()
+}
 
 infix fun View?.click(block: (View) -> Unit) = this?.setOnClickListener(block)
 infix fun TextView?.setUnderLineBold(input: Pair<String, String>): Spannable {

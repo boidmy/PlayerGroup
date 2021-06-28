@@ -5,5 +5,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimaryText</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:isLightTheme">false</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>

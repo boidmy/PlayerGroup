@@ -11,12 +11,14 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.example.playergroup.R
 import com.example.playergroup.data.ClubInfo
 import com.example.playergroup.data.INTENT_EXTRA_STRING_PARAM
 import com.example.playergroup.data.INTENT_EXTRA_URI_TO_STRING_PARAM
 import com.example.playergroup.databinding.ActivityClubBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.club.create.CreateClubViewModel
+import com.example.playergroup.util.goToFragment
 import com.example.playergroup.util.showDefDialog
 import com.example.playergroup.util.showToast
 
@@ -29,17 +31,28 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
         val imgUri = intent?.getStringExtra(INTENT_EXTRA_URI_TO_STRING_PARAM)
         val getClubName = intent?.getStringExtra(INTENT_EXTRA_STRING_PARAM)
+
         if (!imgUri.isNullOrEmpty()) {
             isCreateClubLanding = true
             supportPostponeEnterTransition()
-            initSetClubImgTransition(Uri.parse(imgUri), getClubName)
+            initSetClubImgTransition(Uri.parse(imgUri))
         }
+
         initViewModel()
+
         if (getClubName.isNullOrEmpty()) {
             showToast("해당 동호회는 삭제되었습니다.")
             finish()
         } else {
+            initToolbar(getClubName)
             clubViewModel.getClubData(getClubName)
+        }
+    }
+
+    private fun initToolbar(clubName: String?) {
+        binding.toolbar.title = clubName ?: ""
+        binding.toolbar.setNavigationOnClickListener {
+            finish()
         }
     }
 
@@ -58,10 +71,11 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
 
     private fun initView(clubInfo: ClubInfo) {
         val clubImg = clubInfo.clubImgFullUrl
-        if (!isCreateClubLanding && !clubImg.isNullOrEmpty()) initSetClubImgTransition(clubImg, clubInfo.clubName)
+        if (!isCreateClubLanding && !clubImg.isNullOrEmpty()) initSetClubImgTransition(clubImg)
+        supportFragmentManager.goToFragment(R.id.fragment to ClubMainFragment())
     }
 
-    private fun initSetClubImgTransition(imgUri: Any, clubName: String?) {
+    private fun initSetClubImgTransition(imgUri: Any) {
         val clubImg = if (imgUri is Uri) (imgUri as Uri) else (imgUri as String)
         Glide.with(this)
             .load(clubImg)
@@ -72,7 +86,7 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    setEnterTransition(clubName)
+                    setEnterTransition()
                     return false
                 }
 
@@ -83,15 +97,14 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    setEnterTransition(clubName)
+                    setEnterTransition()
                     return false
                 }
             })
             .into(binding.ivClubImg)
     }
 
-    private fun setEnterTransition(clubName: String?) {
-        binding.tvClubName.text = clubName ?: ""
+    private fun setEnterTransition() {
         if (isCreateClubLanding) supportStartPostponedEnterTransition()
     }
 }
