@@ -18,6 +18,7 @@ import com.example.playergroup.databinding.ActivityClubBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.club.create.CreateClubViewModel
 import com.example.playergroup.util.showDefDialog
+import com.example.playergroup.util.showToast
 
 class ClubActivity: BaseActivity<ActivityClubBinding>() {
 
@@ -35,7 +36,7 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
         }
         initViewModel()
         if (getClubName.isNullOrEmpty()) {
-            showDefDialog("해당 동호회는 삭제되었습니다.")
+            showToast("해당 동호회는 삭제되었습니다.")
             finish()
         } else {
             clubViewModel.getClubData(getClubName)
@@ -46,7 +47,7 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
         clubViewModel.apply {
             firebaseClubDataResult.observe(this@ClubActivity, Observer {
                 if (it == null) {
-                    showDefDialog("동호회가 없어 진입할 수 없습니다.").show()
+                    showToast("해당 동호회는 삭제되었습니다.")
                     finish()
                 } else {
                     initView(it)

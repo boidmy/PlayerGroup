@@ -38,6 +38,10 @@ private val PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[
 infix fun Context.debugToast(message: () -> String) {
     if (BuildConfig.DEBUG) Toast.makeText(this, message(), Toast.LENGTH_SHORT).show()
 }
+
+inline fun Context.showToast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) =
+    Toast.makeText(this, text, duration).show()
+
 infix fun View?.click(block: (View) -> Unit) = this?.setOnClickListener(block)
 infix fun TextView?.setUnderLineBold(input: Pair<String, String>): Spannable {
     val sb = SpannableStringBuilder(input.first)
