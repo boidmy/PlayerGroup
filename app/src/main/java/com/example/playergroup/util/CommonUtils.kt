@@ -1,6 +1,7 @@
 package com.example.playergroup.util
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Typeface
 import android.text.Spannable
@@ -64,6 +65,20 @@ infix fun TextView?.setUnderLineBold(input: Pair<String, String>): Spannable {
     )
     return sb
 }
+
+/**
+ * App version
+ */
+val Context.appVersion: String
+    get() {
+        var versionName = ""
+        try {
+            val info = packageManager.getPackageInfo(packageName, 0)
+            versionName = info.versionName
+        } catch (e: PackageManager.NameNotFoundException) {
+        }
+        return versionName
+    }
 
 fun getSimpleFormat(pattern: String) = SimpleDateFormat(pattern, Locale.getDefault())
 fun getToday(pattern: String) = SimpleDateFormat(pattern, Locale.getDefault()).format(Date())
