@@ -91,6 +91,12 @@ class DialogCustom constructor(context: Context) : AlertDialog(context, R.style.
         return this
     }
 
+    fun setCancelBtnText(@StringRes btnTxtId: Int): DialogCustom {
+        val text = context.getText(btnTxtId) as String?
+        binding.tvNegative.text = if (text.isNullOrEmpty()) "취소" else text
+        return this
+    }
+
     fun setDialogCancelable(isEnable: Boolean): DialogCustom {
         this.setCancelable(isEnable)
         return this
