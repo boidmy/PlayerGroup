@@ -1,15 +1,18 @@
 package com.example.playergroup.ui.club
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playergroup.R
+import com.example.playergroup.custom.AppBarStateChangeListener
 import com.example.playergroup.databinding.FragmentClubMainBinding
 import com.example.playergroup.databinding.ViewClubListItemBinding
 import com.example.playergroup.util.click
@@ -37,6 +40,17 @@ class ClubMainFragment: Fragment() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = ClubMainListAdapter()
+
+            addOnScrollListener(object: RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    Log.d("####", "ClubMainFragment Scroll Y > $dy")
+                    val itemIdx = (layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition()
+                    clubViewModel.setShowTopBtn(
+                        (!(itemIdx == 0 || itemIdx == null || adapter?.itemCount == 0))
+                    )
+                }
+            })
         }
     }
 
@@ -44,6 +58,28 @@ class ClubMainFragment: Fragment() {
         clubViewModel.apply {
             firebaseClubDataResult.observe(viewLifecycleOwner, Observer {
                 (binding.recyclerView.adapter as? ClubMainListAdapter)?.items = it?.clubMainData
+            })
+
+            scrollTopEvent.observe(viewLifecycleOwner, Observer {
+                if (it.peekContent()) {
+                    binding.recyclerView.scrollToPosition(0)
+                }
+            })
+            setViewTopRoundModeEvent.observe(viewLifecycleOwner, Observer {
+                /**
+                 * EXPANDED -> true  //Rounded 처리
+                 * COLLAPSED -> false //Rounded 제거
+                 */
+                when(it) {
+                    AppBarStateChangeListener.AppBarState.EXPANDED -> {
+                        binding.root.setBackgroundColor(0)
+                        binding.root.background = ContextCompat.getDrawable(requireContext(), R.drawable.shape_top_rounded_corner_14dp)
+                    }
+                    AppBarStateChangeListener.AppBarState.COLLAPSED -> {
+                        binding.root.background = null
+                        binding.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.viewOverlayBgColor))
+                    }
+                }
             })
         }
     }
