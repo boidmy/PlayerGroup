@@ -43,6 +43,9 @@
         <activity android:name=".ui.club.ClubActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.search.SearchActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
 
     </application>
 

@@ -9,14 +9,29 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp">
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="24dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/endGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="24dp" />
 
         <ImageView
             android:id="@+id/ivBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:padding="10dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="14dp"
             android:src="@drawable/icon_back"
             android:foreground="?android:attr/selectableItemBackground"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +41,9 @@
             android:id="@+id/ivEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="14dp"
+            android:padding="10dp"
             android:src="@drawable/icon_edit"
             android:foreground="?android:attr/selectableItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,8 +58,8 @@
             app:cardCornerRadius="60dp"
             app:cardElevation="0dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
             app:layout_constraintTop_toTopOf="parent" >
 
             <ImageView
@@ -68,9 +85,9 @@
             app:counterEnabled="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/endGuideLine"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
             app:layout_constraintTop_toBottomOf="@+id/llProfileImg">
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -99,7 +116,7 @@
             android:hint="@string/member_info_height"
             app:layout_constraintEnd_toStartOf="@+id/llMyInfoWeight"
             app:layout_constraintHorizontal_weight="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
             app:layout_constraintTop_toBottomOf="@+id/llMyInfoName">
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -154,7 +171,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             app:layout_constraintBottom_toBottomOf="@+id/llMyInfoHeight"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/endGuideLine"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/llMyInfoWeight"
             app:layout_constraintTop_toTopOf="@+id/llMyInfoHeight">
@@ -187,7 +204,7 @@
             android:focusableInTouchMode="true"
             app:layout_constraintEnd_toStartOf="@+id/llMyInfoAge"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
             app:layout_constraintTop_toBottomOf="@+id/llMyInfoHeight">
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -214,7 +231,7 @@
             android:hint="@string/member_info_age"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/endGuideLine"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/llMyInfoSex"
             app:layout_constraintTop_toTopOf="@+id/llMyInfoSex">
@@ -242,8 +259,8 @@
             android:focusableInTouchMode="true"
             app:counterMaxLength="100"
             app:counterEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
             app:layout_constraintTop_toBottomOf="@+id/llMyInfoSex">
 
             <androidx.appcompat.widget.AppCompatEditText

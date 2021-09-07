@@ -12,6 +12,7 @@ import com.example.playergroup.ui.club.ClubActivity
 import com.example.playergroup.ui.club.create.CreateClubActivity
 import com.example.playergroup.ui.login.LoginActivity
 import com.example.playergroup.ui.mypage.MyPageActivity
+import com.example.playergroup.ui.search.SearchActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.gun0912.tedpermission.PermissionListener
@@ -28,10 +29,17 @@ object LandingRouter {
                 Landing.GALLERY -> checkPermission(context, event)
                 Landing.CREATE_CLUB -> gotoCreateClub(context, event)
                 Landing.CLUB_MAIN -> gotoClubMain(context, event)
+                Landing.SEARCH -> gotoSearch(context, event)
             }
         } catch (e: Exception) {
             Log.e("####", "${event.type} -> ${e.localizedMessage}")
         }
+    }
+
+    private fun gotoSearch(context: Context, event: RouterEvent) {
+        context.startActivity(Intent(context, SearchActivity::class.java).also {
+            //todo Parameter?
+        })
     }
 
     private fun gotoClubMain(context: Context, event: RouterEvent) {

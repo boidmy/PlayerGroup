@@ -64,6 +64,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         }
 
+        binding.btnSearch click {
+            LandingRouter.move(this, RouterEvent(type = Landing.SEARCH))
+        }
+
         binding.btnThemeSelector click {
             val newInstance = ThemeSelectorBottomSheet.newInstance()
             newInstance.show(supportFragmentManager, newInstance.tag)

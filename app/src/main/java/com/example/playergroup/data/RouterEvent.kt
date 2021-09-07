@@ -28,5 +28,6 @@ enum class Landing {
     GALLERY,
     MY_PAGE,
     CREATE_CLUB,
-    CLUB_MAIN
+    CLUB_MAIN,
+    SEARCH
 }
