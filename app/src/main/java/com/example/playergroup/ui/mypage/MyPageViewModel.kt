@@ -25,17 +25,7 @@ class MyPageViewModel: BaseViewModel() {
     val firebaseResult: LiveData<Boolean>
         get() = _firebaseResult
 
-    private val _firebaseUserDataResult: MutableLiveData<UserInfo?> = MutableLiveData()
-    val firebaseUserDataResult: LiveData<UserInfo?>
-        get() = _firebaseUserDataResult
-
     fun getCurrentUser() = authRepository.getCurrentUser()
-
-    fun getUserProfile(userEmail: String?) {
-        authRepository.getUserProfileData(userEmail) {
-            _firebaseUserDataResult.value = it
-        }
-    }
 
     fun getUserProfileImg(userEmail: String?, callback: (String?) -> Unit) {
         authRepository.getUserProfilePhoto(userEmail) {
