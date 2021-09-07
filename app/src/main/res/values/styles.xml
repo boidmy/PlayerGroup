@@ -27,7 +27,7 @@
     <style name="textInputLayer" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textColorHint">@color/colorDisabledHintText</item>
         <item name="hintTextColor">@color/colorPrimaryText</item>
-        <item name="boxStrokeColor">@color/colorPrimaryText</item>
+        <item name="boxStrokeColor">@color/colorSecondaryText</item>
     </style>
 
     <!--Loading Progress-->

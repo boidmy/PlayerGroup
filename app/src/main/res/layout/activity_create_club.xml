@@ -81,6 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
+            android:textCursorDrawable="@drawable/shape_edit_text_cursor_color"
             android:inputType="text"
             android:maxLines="1"
             android:transitionName="clubName"

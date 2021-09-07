@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        app:cardBackgroundColor="#4D000000"
+        app:cardBackgroundColor="@color/windowBackground"
         app:cardCornerRadius="5dp"
         app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
@@ -61,6 +61,7 @@
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:imeOptions="actionSend"
+                    android:textCursorDrawable="@drawable/shape_edit_text_cursor_color"
                     android:nextFocusDown="@id/etJoinPw"
                     android:overScrollMode="always" />
 

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        app:cardBackgroundColor="#4D000000"
+        app:cardBackgroundColor="@color/windowBackground"
         app:cardCornerRadius="5dp"
         app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
@@ -116,6 +116,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
+                    android:textCursorDrawable="@drawable/shape_edit_text_cursor_color"
                     android:nextFocusDown="@id/etLoginPw"
                     android:overScrollMode="always" />
 
@@ -140,6 +141,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionSend"
+                    android:textCursorDrawable="@drawable/shape_edit_text_cursor_color"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:overScrollMode="always" />
