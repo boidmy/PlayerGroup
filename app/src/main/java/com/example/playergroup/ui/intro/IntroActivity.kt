@@ -74,15 +74,6 @@ class IntroActivity: BaseActivity<ActivityIntroBinding>() {
                 LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.LOGIN))
             } else {
                 introViewModel.getUserProfile(introViewModel.currentUser?.email)
-                //프로필 저장되어있는지 확인
-                /*authRepository.isUserInfoEmpty {
-                    if (it) {
-                        LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.MY_PAGE, paramBoolean = true))
-                    } else {
-                        LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.MAIN))
-                    }
-                    finish()
-                }*/
             }
         }
     }
