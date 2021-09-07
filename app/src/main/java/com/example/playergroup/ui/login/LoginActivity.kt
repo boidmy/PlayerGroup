@@ -133,6 +133,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
     }
 
     private fun initGifImg() {
-        Glide.with(this).asGif().load(R.drawable.intro1).into(binding.bgImg)
+        //binding.bg.setAnimation("login_bg.json")
+        //Glide.with(this).asGif().load(R.drawable.intro1).into(binding.bgImg)
     }
 }
