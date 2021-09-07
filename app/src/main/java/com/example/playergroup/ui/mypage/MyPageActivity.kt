@@ -132,7 +132,7 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
     private fun setUserProfileView(userInfo: UserInfo) {
         with (binding) {
             myPageViewModel.getUserProfileImg(userInfo.email) {
-                if (!isDestroyed) {
+                if (!isDestroyed && !it.isNullOrEmpty()) {
                     Glide.with(this@MyPageActivity)
                         .load(it)
                         .into(ivProfileImg)

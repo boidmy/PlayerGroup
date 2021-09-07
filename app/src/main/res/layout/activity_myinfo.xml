@@ -50,7 +50,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                tools:background="@color/colorPrimary"/>
+                tools:background="@color/colorPrimary"
+                android:src="@drawable/icon_user"/>
 
         </androidx.cardview.widget.CardView>
 
