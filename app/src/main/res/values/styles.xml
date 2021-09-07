@@ -4,6 +4,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimaryText</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowLightStatusBar">true</item><!-- 상태바 텍스트 어두운 색으로 -->
     </style>
 
     <!-- Splash -->
