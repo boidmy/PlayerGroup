@@ -1,8 +1,10 @@
 package com.example.playergroup.ui.mypage
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.data.UserInfo
 import com.example.playergroup.ui.base.BaseViewModel
 import io.reactivex.Observable
@@ -50,6 +52,9 @@ class MyPageViewModel: BaseViewModel() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     _firebaseResult.value = it
+                    //todo 다른곳에서 저장을 하는게 좋을거 같은데 .. 구조를 바꿔야 한다 ........
+                    Log.d("####", "userInfo >> "+userInfo.email)
+                    if (it) PlayerGroupApplication.instance.userInfo = userInfo
                 }, {
                     _firebaseResult.value = false
                 })

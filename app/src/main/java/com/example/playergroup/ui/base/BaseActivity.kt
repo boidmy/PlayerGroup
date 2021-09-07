@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.R
 import com.example.playergroup.custom.DialogCustom
 import com.example.playergroup.ui.main.MainActivity
@@ -20,6 +21,7 @@ abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
 
     protected lateinit var binding: B
     val connectivityManager by lazy { getSystemService(ConnectivityManager::class.java) }
+    val pgApplication by lazy { PlayerGroupApplication.instance }
 
     abstract fun getViewBinding(): B
     abstract fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?)

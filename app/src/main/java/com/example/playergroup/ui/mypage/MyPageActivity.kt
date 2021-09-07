@@ -41,6 +41,9 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
 
         initGalleryImgResult()
         initView(isFirstEntry)
+        pgApplication.userInfo?.let {
+            setUserProfileView(it)
+        }
         initViewModel()
 
     }
@@ -107,16 +110,6 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(::setEditMode)
             isEditModeEvent.onNext(isEditMode)
-
-            if (!isEditMode) {
-                getUserProfile(getCurrentUser()?.email)
-            }
-
-            firebaseUserDataResult.observe(this@MyPageActivity, Observer { userInfo ->
-                userInfo?.let {
-                    setUserProfileView(it)
-                }
-            })
 
             firebaseResult.observe(this@MyPageActivity, Observer { isSuccessful ->
                 binding.loadingProgress.publisherLoading(false)

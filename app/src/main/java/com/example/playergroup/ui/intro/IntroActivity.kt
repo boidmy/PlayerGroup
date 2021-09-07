@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.R
 import com.example.playergroup.data.Landing
 import com.example.playergroup.data.RouterEvent
@@ -51,28 +52,37 @@ class IntroActivity: BaseActivity<ActivityIntroBinding>() {
                 }
             })
 
+            firebaseUserDataResult.observe(this@IntroActivity, Observer {
+                if (it?.isEmptyData() == true) {
+                    LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.MY_PAGE, paramBoolean = true))
+                } else {
+                    PlayerGroupApplication.instance.userInfo = it
+                    LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.MAIN))
+                }
+                finish()
+            })
+
             getAppVersionInfo(appVersion)
         }
     }
-
-
 
     private fun goToLanding() {
         CoroutineScope(Dispatchers.Main).launch {
             delay(300L) //todo 스플래시 이미지 보여주는 시간 인데 나중에 작업할때 다시 처리 해 봅시다.
 
-            if (FirebaseAuth.getInstance().currentUser == null) {
+            if (introViewModel.currentUser == null) {
                 LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.LOGIN))
             } else {
+                introViewModel.getUserProfile(introViewModel.currentUser?.email)
                 //프로필 저장되어있는지 확인
-                authRepository.isUserInfoEmpty {
+                /*authRepository.isUserInfoEmpty {
                     if (it) {
                         LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.MY_PAGE, paramBoolean = true))
                     } else {
                         LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.MAIN))
                     }
                     finish()
-                }
+                }*/
             }
         }
     }

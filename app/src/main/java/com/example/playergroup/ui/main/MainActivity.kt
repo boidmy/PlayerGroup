@@ -45,21 +45,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             LandingRouter.move(this, RouterEvent(Landing.CREATE_CLUB))
         }
 
-        binding.btnMyClub click {
-            authRepository.getUserProfileData(authRepository.getCurrentUser()?.email) {
-                val clubName = it?.clubAdmin
-                if (clubName.isNullOrEmpty()) {
-                     showDefDialog("개설한 동호회가 없습니다.").show()
-                } else {
-                    clubRepository.isClubEmpty(clubName) { isClubEmpty ->
-                        if(isClubEmpty) {
-                            showDefDialog("개설한 동호회가 없습니다.").show()
-                        } else {
-                            LandingRouter.move(this, RouterEvent(type = Landing.CLUB_MAIN, paramString = clubName))
-                        }
+        binding.btnMyCreatedClub click {
+            val clubName = pgApplication.userInfo?.clubAdmin
+            if (clubName.isNullOrEmpty()) {
+                showDefDialog("개설한 동호회가 없습니다.").show()
+            } else {
+                clubRepository.isClubEmpty(clubName) { isClubEmpty ->
+                    if(isClubEmpty) {
+                        showDefDialog("개설한 동호회가 없습니다.").show()
+                    } else {
+                        LandingRouter.move(this, RouterEvent(type = Landing.CLUB_MAIN, paramString = clubName))
                     }
                 }
             }
+        }
+
+        binding.btnMyJoinClub click {
+
         }
 
         binding.btnThemeSelector click {
