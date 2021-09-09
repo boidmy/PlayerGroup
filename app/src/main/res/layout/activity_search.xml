@@ -47,12 +47,67 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- 추가 : 롯데 ON 검색결과 처럼 동호회 갯수, 버튼(한줄 or 두개씩), 필터( 최신순, 멤버순 ) -->
+    <TextView
+        android:id="@+id/tvCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:textColor="@color/colorSecondaryText"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintTop_toBottomOf="@id/llSearch"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="10개"/>
+
+    <ImageView
+        android:id="@+id/ivListMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_two"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/llSearch"
+        app:layout_constraintEnd_toStartOf="@id/tvSwap"/>
+
+    <TextView
+        android:id="@+id/tvSwap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorSecondaryText"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/llSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:drawableStartCompat="@drawable/icon_swap"
+        tools:text="인기순"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSearch"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:orientation="vertical"
         android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/llSearch"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/tvSwap"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/view_search_one_item" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/moveToTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/windowBackground"
+        android:src="@drawable/icon_top"
+        android:visibility="gone"
+        app:borderWidth="0dp"
+        app:fabCustomSize="44dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="16dp"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

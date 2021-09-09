@@ -68,4 +68,18 @@ class ClubRepository: BaseRepository() {
                 }
             }
     }
+
+    /**
+     * 클럽 목록 가져오기
+     */
+    fun getClubList(callback: (List<ClubInfo>?) -> Unit) {
+        firebaseClub.get().addOnCompleteListener {
+            if (it.isSuccessful) {
+                val list = it.result?.toObjects(ClubInfo::class.java)
+                callback.invoke(list)
+            } else {
+                callback.invoke(null)
+            }
+        }
+    }
 }

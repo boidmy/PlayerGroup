@@ -13,6 +13,7 @@ import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.R
 import com.example.playergroup.custom.DialogCustom
 import com.example.playergroup.ui.main.MainActivity
+import com.example.playergroup.util.ConfigModule
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.disposables.CompositeDisposable
@@ -30,6 +31,7 @@ abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
     private var backPressedTime: Long = 0
 
     protected val compositeDisposable by lazy { CompositeDisposable() }
+    protected val configModule by lazy { ConfigModule(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
