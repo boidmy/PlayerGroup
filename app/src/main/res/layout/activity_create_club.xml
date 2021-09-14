@@ -29,26 +29,25 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
         android:id="@+id/btnAddPhoto"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:cardCornerRadius="40dp"
-        android:elevation="0dp"
+        android:background="@drawable/shape_rounded_line"
         app:layout_constraintBottom_toTopOf="@id/llClubNameEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintTop_toBottomOf="@id/ivBack"
+        app:layout_constraintVertical_bias="0.2"
         app:layout_constraintVertical_chainStyle="packed">
 
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:src="@drawable/icon_add_photo" />
+            android:src="@drawable/icon_add_photo"
+            android:layout_centerInParent="true"/>
 
         <ImageView
             android:id="@+id/ivClubImg"
@@ -57,7 +56,7 @@
             android:scaleType="centerCrop"
             android:transitionName="clubImg"/>
 
-    </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/llClubNameEditText"
@@ -109,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="24dp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimaryText_reverse"
             android:text="중복확인"
             android:textStyle="bold"
             android:textSize="15dp" />

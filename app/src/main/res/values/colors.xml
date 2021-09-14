@@ -8,8 +8,11 @@
     <color name="viewOverlayBgColor">#ffffff</color>
 
     <color name="colorPrimaryText">#DE000000</color>
+    <color name="colorPrimaryText_reverse">#FFFFFF</color>
     <color name="colorSecondaryText">#8A000000</color>
+    <color name="colorSecondaryText_reverse">#B3FFFFFF</color>
     <color name="colorDisabledHintText">#61000000</color>
+    <color name="colorDisabledHintText_reverse">#80FFFFFF</color>
     <color name="colorDividers">#1F000000</color>
 
     <color name="colorPrimaryIcon">#8A000000</color>
