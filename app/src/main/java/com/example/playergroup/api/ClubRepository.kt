@@ -82,4 +82,21 @@ class ClubRepository: BaseRepository() {
             }
         }
     }
+
+    fun getClubsList() {
+        /*firebaseClubs.whereEqualTo("location", "인천").get().addOnCompleteListener {
+            if(it.isSuccessful) {
+                Log.d("####", "success")
+            } else {
+                Log.d("####", "fail")
+            }
+        }*/
+        /*firebaseClubs.whereIn("location", arrayListOf("인천", "서울")).get().addOnCompleteListener {
+            if(it.isSuccessful) {
+                Log.d("####", "success")
+            } else {
+                Log.d("####", "fail")
+            }
+        }*/
+    }
 }

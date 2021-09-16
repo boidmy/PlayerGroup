@@ -12,6 +12,7 @@ abstract class BaseRepository {
     protected val firebaseDB by lazy { FirebaseFirestore.getInstance() }
     protected val firebaseUser by lazy { firebaseDB.collection("users") }
     protected val firebaseClub by lazy { firebaseDB.collection("club") }
+    protected val firebaseClubs by lazy { firebaseDB.collection("clubs") }
     protected val firebaseInit by lazy { firebaseDB.collection("init") }
     protected val firebaseBoardDB by lazy { firebaseDB.collection("board") }
     protected val firebaseStorageDB by lazy { FirebaseStorage.getInstance().reference }
