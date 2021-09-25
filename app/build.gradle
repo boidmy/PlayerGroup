@@ -104,5 +104,14 @@ dependencies {
     // Lottie
     implementation 'com.airbnb.android:lottie:3.7.0'
 
-
+    //room
+    kaptTest "android.arch.persistence.room:testing:1.1.1"
+    /* optional - RxJava support for Room */
+    implementation "android.arch.persistence.room:rxjava2:1.1.1"
+    /* optional - Guava support for Room, including Optional and ListenableFuture */
+    implementation "android.arch.persistence.room:guava:1.1.1"
+    implementation "androidx.room:room-runtime:2.3.0"
+    kapt "androidx.room:room-compiler:2.3.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
+    //room
 }

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="10dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="10dp" />
+
+    <EditText
+        android:id="@+id/voteTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="투표제목"
+        android:textColor="#000000"
+        android:textColorHint="#B3B3B3"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/voteSub1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="항목 입력"
+        android:textColor="#000000"
+        android:textColorHint="#B3B3B3"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/voteTitle" />
+
+    <EditText
+        android:id="@+id/voteSub2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="항목 입력"
+        android:textColor="#000000"
+        android:textColorHint="#B3B3B3"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/voteSub1" />
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="#e5e5e5"
+        app:layout_constraintTop_toBottomOf="@+id/voteSub2" />
+
+    <TextView
+        android:id="@+id/multipleVote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="복수 선택 허용"
+        android:textColor="#000000"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/divider1" />
+
+    <View
+        android:id="@+id/multipleVoteBtn"
+        android:layout_width="45dp"
+        android:layout_height="26dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/selector_vote_toggle"
+        app:layout_constraintBottom_toBottomOf="@+id/multipleVote"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintTop_toTopOf="@+id/multipleVote" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="만들기"
+        android:textColor="@color/colorSecondaryText"
+        android:textStyle="bold"
+        app:backgroundTint="@color/btnColorPositive"
+        app:cornerRadius="10dp"
+        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/multipleVoteBtn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

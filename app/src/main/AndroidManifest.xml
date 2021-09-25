@@ -46,7 +46,15 @@
         <activity android:name=".ui.search.SearchActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
-
+        <activity android:name=".ui.vote.VoteActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.vote.voteCreate.VoteCreateActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.vote.votePick.VotePickActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

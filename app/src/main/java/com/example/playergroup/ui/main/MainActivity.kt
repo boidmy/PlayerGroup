@@ -1,5 +1,6 @@
 package com.example.playergroup.ui.main
 
+import android.content.Intent
 import android.net.Network
 import android.os.Bundle
 import com.example.playergroup.api.AuthRepository
@@ -12,6 +13,7 @@ import com.example.playergroup.ui.dropout.DropOutBottomSheet
 import com.example.playergroup.ui.login.fragments.BottomSheetLoginFragment
 import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet
 import com.example.playergroup.ui.themeselector.ThemeSelectorBottomSheet
+import com.example.playergroup.ui.vote.VoteActivity
 import com.example.playergroup.util.LandingRouter
 import com.example.playergroup.util.click
 import com.example.playergroup.util.showDefDialog
@@ -71,6 +73,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.btnThemeSelector click {
             val newInstance = ThemeSelectorBottomSheet.newInstance()
             newInstance.show(supportFragmentManager, newInstance.tag)
+        }
+        
+        binding.btnVote click {
+            startActivity(Intent(this, VoteActivity::class.java))
         }
 
     }

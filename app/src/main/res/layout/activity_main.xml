@@ -125,4 +125,18 @@
         app:layout_constraintTop_toBottomOf="@id/btnThemeSelector"
         app:layout_constraintStart_toEndOf="@id/btnMyJoinClub"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnVote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="투표"
+        android:textColor="@color/colorSecondaryText"
+        app:cornerRadius="10dp"
+        app:backgroundTint="@color/btnColorPositive"
+        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toBottomOf="@id/btnThemeSelector"
+        app:layout_constraintStart_toEndOf="@id/btnSearch"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

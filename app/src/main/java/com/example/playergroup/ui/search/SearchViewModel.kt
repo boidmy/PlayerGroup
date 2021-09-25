@@ -25,6 +25,7 @@ class SearchViewModel: BaseViewModel() {
             val data = this.toMutableList().checkItemsAre<ClubInfo>()?.toList()
             _firebaseClubListData.value = data modeChange isTwoItemMode
         }
+
     }
 
     private infix fun List<ClubInfo>?.modeChange(isTwoItemMode: Boolean): List<ClubInfo>? =

@@ -1,0 +1,54 @@
+package com.example.playergroup.ui.vote.voteCreate
+
+import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.playergroup.data.room.VoteData
+import com.example.playergroup.data.room.VoteModel
+import com.example.playergroup.databinding.ActivityVoteCreateBinding
+import com.example.playergroup.ui.base.BaseActivity
+import com.example.playergroup.ui.login.LoginViewModel
+import com.example.playergroup.ui.vote.VoteViewModel
+import com.example.playergroup.util.click
+
+class VoteCreateActivity : BaseActivity<ActivityVoteCreateBinding>() {
+
+    lateinit var viewModel: VoteCreateViewModel
+
+    override fun getViewBinding(): ActivityVoteCreateBinding = ActivityVoteCreateBinding.inflate(layoutInflater)
+
+    override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
+
+        viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))
+            .get(VoteCreateViewModel::class.java)
+
+        binding.complete click {
+            val voteList: ArrayList<VoteData> = ArrayList()
+            voteList.add(VoteData(
+                voteName = binding.voteSub1.text.toString(),
+                count = 0,
+                voteUser = null))
+            voteList.add(VoteData(
+                voteName = binding.voteSub2.text.toString(),
+                count = 0,
+                voteUser = null))
+            val voteModel = VoteModel(
+                sequence = null,
+                title = binding.voteTitle.text.toString(),
+                voteData = voteList,
+                clubKey = "",
+                creater = "고릴라",
+                multipleVote = binding.multipleVoteBtn.isSelected)
+
+            viewModel.insertVote(voteModel)
+            finish()
+        }
+
+        binding.multipleVoteBtn.apply {
+            click {
+                isSelected = !isSelected
+            }
+        }
+    }
+}
