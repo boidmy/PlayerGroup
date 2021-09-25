@@ -13,7 +13,7 @@ data class VoteModel(
     @ColumnInfo(name = "creater") var creater: String?,
     @ColumnInfo(name = "pickCount") var pickCount: Int = 0,
     @ColumnInfo(name = "multipleVote") var multipleVote: Boolean = false,
-    @ColumnInfo(name = "review") var review: List<VoteReview> = arrayListOf()
+    @ColumnInfo(name = "review") var review: List<VoteReview> = listOf()
 ) {
 
     fun clickRadioBtn(index: Int): VoteModel {
@@ -42,5 +42,6 @@ data class VoteData(
 
 data class VoteReview(
     var name: String = "",
-    var review: String = ""
+    var review: String = "",
+    var time: String = ""
 )
