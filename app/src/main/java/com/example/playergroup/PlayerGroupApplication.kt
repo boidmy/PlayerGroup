@@ -6,7 +6,9 @@ import com.example.playergroup.data.UserInfo
 import com.example.playergroup.util.ConfigModule
 import com.example.playergroup.util.applyTheme
 import com.example.playergroup.util.getThemeMode
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class PlayerGroupApplication: Application() {
     companion object {
         lateinit var instance: PlayerGroupApplication

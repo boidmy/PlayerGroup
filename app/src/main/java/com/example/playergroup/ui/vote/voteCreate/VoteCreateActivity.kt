@@ -10,18 +10,18 @@ import com.example.playergroup.databinding.ActivityVoteCreateBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.login.LoginViewModel
 import com.example.playergroup.ui.vote.VoteViewModel
+import com.example.playergroup.ui.vote.votePick.VotePickViewModel
 import com.example.playergroup.util.click
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class VoteCreateActivity : BaseActivity<ActivityVoteCreateBinding>() {
 
-    lateinit var viewModel: VoteCreateViewModel
+    private val viewModel: VoteCreateViewModel by viewModels()
 
     override fun getViewBinding(): ActivityVoteCreateBinding = ActivityVoteCreateBinding.inflate(layoutInflater)
 
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
-
-        viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))
-            .get(VoteCreateViewModel::class.java)
 
         binding.complete click {
             val voteList: ArrayList<VoteData> = ArrayList()

@@ -5,18 +5,22 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.playergroup.R
 import com.example.playergroup.databinding.ActivityVotePickBinding
 import com.example.playergroup.ui.base.BaseActivity
+import com.example.playergroup.ui.vote.VoteViewModel
 import com.example.playergroup.ui.vote.votePick.list.VotePickAdapter
 import com.example.playergroup.ui.vote.votePick.list.VotePickReviewAdapter
 import com.example.playergroup.util.click
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class VotePickActivity : BaseActivity<ActivityVotePickBinding>() {
 
-    lateinit var viewModel: VotePickViewModel
+    private val viewModel: VotePickViewModel by viewModels()
     val adapter: VotePickAdapter = VotePickAdapter()
     val reviewAdapter: VotePickReviewAdapter = VotePickReviewAdapter()
 
@@ -24,8 +28,6 @@ class VotePickActivity : BaseActivity<ActivityVotePickBinding>() {
 
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
 
-        viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))
-            .get(VotePickViewModel::class.java)
         observe()
 
         binding.voteList.adapter = adapter

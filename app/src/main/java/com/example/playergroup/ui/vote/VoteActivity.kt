@@ -3,6 +3,7 @@ package com.example.playergroup.ui.vote
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.playergroup.databinding.ActivityVoteBinding
@@ -11,10 +12,12 @@ import com.example.playergroup.ui.vote.list.VoteAdapter
 import com.example.playergroup.ui.vote.voteCreate.VoteCreateActivity
 import com.example.playergroup.ui.vote.votePick.VotePickActivity
 import com.example.playergroup.util.click
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class VoteActivity : BaseActivity<ActivityVoteBinding>(){
 
-    lateinit var viewModel: VoteViewModel
+    private val viewModel: VoteViewModel by viewModels()
     private val result = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         selectVote()
     }
@@ -28,8 +31,6 @@ class VoteActivity : BaseActivity<ActivityVoteBinding>(){
     override fun getViewBinding(): ActivityVoteBinding = ActivityVoteBinding.inflate(layoutInflater)
 
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))
-            .get(VoteViewModel::class.java)
 
         val createIntent = Intent(this, VoteCreateActivity::class.java)
         binding.voteCreate click {
