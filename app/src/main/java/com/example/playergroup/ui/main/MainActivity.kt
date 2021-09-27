@@ -44,7 +44,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
 
         binding.btnCreateClub click {
-            LandingRouter.move(this, RouterEvent(Landing.CREATE_CLUB))
+            val clubCount = pgApplication.userInfo?.clubAdmin?.size ?: 0
+            if (clubCount == 0) {
+                LandingRouter.move(this, RouterEvent(Landing.CREATE_CLUB))
+            } else {
+                showDefDialog("우선 동호회는 하나만.. 개설 하는걸로 합시다 .. ").show()
+            }
         }
 
         binding.btnMyCreatedClub click {
