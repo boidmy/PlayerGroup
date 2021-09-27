@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.playergroup.R
 import com.example.playergroup.databinding.FragmentSearchmemberinfoBinding
+import com.example.playergroup.ui.login.LoginType
 import com.example.playergroup.ui.login.LoginViewModel
 import com.example.playergroup.util.*
 
@@ -36,9 +37,6 @@ class SearchMemberInfoPageFragment: Fragment() {
 
     private fun initBtnView() {
         with (binding) {
-            tvCancel click {
-                loginViewModel.dismiss?.invoke()
-            }
 
             btnSearch click  {
                 setSearchUser()
@@ -49,6 +47,9 @@ class SearchMemberInfoPageFragment: Fragment() {
                     return@setOnKeyListener true
                 }
                 return@setOnKeyListener false
+            }
+            tvLogin click {
+                loginViewModel.pagerMoveCallback?.invoke(LoginType.LOGIN.value)
             }
         }
     }

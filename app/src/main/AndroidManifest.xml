@@ -31,7 +31,7 @@
             android:name=".ui.main.MainActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.login.LoginActivity"
+        <activity android:name=".ui.login.InitLoginScreenActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.mypage.MyPageActivity"

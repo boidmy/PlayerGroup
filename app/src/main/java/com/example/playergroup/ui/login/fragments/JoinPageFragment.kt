@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.playergroup.R
 import com.example.playergroup.databinding.FragmentJoinBinding
+import com.example.playergroup.ui.login.LoginType
 import com.example.playergroup.ui.login.LoginViewModel
 import com.example.playergroup.util.*
 
@@ -75,8 +76,8 @@ class JoinPageFragment: Fragment() {
                 return@setOnKeyListener false
             }
 
-            tvCancel click {
-                loginViewModel.dismiss?.invoke()
+            tvLogin click {
+                loginViewModel.pagerMoveCallback?.invoke(LoginType.LOGIN.value)
             }
         }
     }

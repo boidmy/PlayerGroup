@@ -8,7 +8,6 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         app:cardBackgroundColor="@color/windowBackground"
         app:cardCornerRadius="5dp"
         app:cardElevation="0dp"
@@ -177,14 +176,14 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/tvCancel"
+                android:id="@+id/tvLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:text="@string/cancel"
+                android:text="@string/go_to_login"
                 android:textColor="@color/colorSecondaryText"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
