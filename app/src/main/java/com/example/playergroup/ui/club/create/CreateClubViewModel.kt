@@ -4,15 +4,17 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.playergroup.ui.base.BaseViewModel
+import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
 class CreateClubViewModel: BaseViewModel() {
 
-    private val _firebaseCreateClubResult: MutableLiveData<Boolean> = MutableLiveData()
-    val firebaseCreateClubResult: LiveData<Boolean>
+    private val _firebaseCreateClubResult: MutableLiveData<Pair<Boolean, String>> = MutableLiveData()
+    val firebaseCreateClubResult: LiveData<Pair<Boolean, String>>
         get() = _firebaseCreateClubResult
 
     private val _isVisibleBtnCreateClub: MutableLiveData<Boolean> = MutableLiveData()
@@ -24,26 +26,25 @@ class CreateClubViewModel: BaseViewModel() {
         val isInsertStorageClubDB = PublishSubject.create<Boolean>()
         val isUpDateFirebaseUserDB = PublishSubject.create<Boolean>()
 
-        compositeDisposable.add(
-            Observable.zip(
-                isInsertFirebaseClubDB,
-                isInsertStorageClubDB,
-                isUpDateFirebaseUserDB,
-                { a, b, c -> (a && b && c) })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    _firebaseCreateClubResult.value = it
-                }
-        )
+        val primaryKey = authRepository.createGetPrimaryKey()
 
-        clubRepository.insertInitCreateClub(clubName, clubImgUri) {
+        Observable.zip(
+            isInsertFirebaseClubDB, isInsertStorageClubDB, isUpDateFirebaseUserDB,
+            { a, b, c -> (a && b && c) })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                _firebaseCreateClubResult.value = Pair(it, primaryKey)
+            }
+            .addTo(compositeDisposable)
+
+        clubRepository.insertInitCreateClub(primaryKey, clubName, clubImgUri) {
             isInsertFirebaseClubDB.onNext(it)
         }
         clubRepository.upLoadClubImg(clubName, clubImgUri) {
             //todo 사진 업로드는 실패해도 일단 패스 하자 ..
             isInsertStorageClubDB.onNext(true)
         }
-        authRepository.upDateClubUserField(clubName) {
+        authRepository.upDateClubUserField(primaryKey) {
             isUpDateFirebaseUserDB.onNext(it)
         }
     }

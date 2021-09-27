@@ -10,7 +10,7 @@ import com.example.playergroup.R
 import com.example.playergroup.data.*
 import com.example.playergroup.ui.club.ClubActivity
 import com.example.playergroup.ui.club.create.CreateClubActivity
-import com.example.playergroup.ui.login.LoginActivity
+import com.example.playergroup.ui.login.InitLoginScreenActivity
 import com.example.playergroup.ui.mypage.MyPageActivity
 import com.example.playergroup.ui.search.SearchActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -46,6 +46,7 @@ object LandingRouter {
         context.startActivity(Intent(context, ClubActivity::class.java).also { intent ->
             intent.putExtra(INTENT_EXTRA_STRING_PARAM, event.paramString)
             intent.putExtra(INTENT_EXTRA_URI_TO_STRING_PARAM, event.paramUriToString)
+            intent.putExtra(INTENT_EXTRA_PRIMARY_KEY, event.primaryKey)
         }, event.options?.toBundle())
     }
 
@@ -66,7 +67,7 @@ object LandingRouter {
     }
 
     private fun gotoLogin(context: Context, event: RouterEvent) {
-        context.startActivity(Intent(context, LoginActivity::class.java).also { intent ->
+        context.startActivity(Intent(context, InitLoginScreenActivity::class.java).also { intent ->
             intent.addFlags(
                 Intent.FLAG_ACTIVITY_CLEAR_TOP or
                         Intent.FLAG_ACTIVITY_SINGLE_TOP or

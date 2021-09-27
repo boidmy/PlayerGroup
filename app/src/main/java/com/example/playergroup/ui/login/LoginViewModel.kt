@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuth
 
 typealias LoadingProgress = ((Boolean) -> Unit)
 typealias GoogleLogin = (() -> Unit)
-typealias NavigationViewDismiss = (() -> Unit)
 typealias PagerMoveCallback = ((Int) -> Unit)
 class LoginViewModel: BaseViewModel() {
 
@@ -33,7 +32,6 @@ class LoginViewModel: BaseViewModel() {
 
     var loadingProgress: LoadingProgress? = null
     var googleLogin: GoogleLogin? = null
-    var dismiss: NavigationViewDismiss? = null
     var pagerMoveCallback: PagerMoveCallback? = null
 
     fun firebaseAuthWithGoogle(idToken: String) {

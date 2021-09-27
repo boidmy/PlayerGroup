@@ -48,7 +48,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
 
         binding.btnMyCreatedClub click {
-            val clubName = pgApplication.userInfo?.clubAdmin
+            //todo 클럽이 여러개 일 경우 어떻게 할지 확인 ! 지금은 0번째 그냥 갖고 온다
+            val clubName = pgApplication.userInfo?.clubAdmin?.getOrNull(0)
             if (clubName.isNullOrEmpty()) {
                 showDefDialog("개설한 동호회가 없습니다.").show()
             } else {
@@ -56,7 +57,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     if(isClubEmpty) {
                         showDefDialog("개설한 동호회가 없습니다.").show()
                     } else {
-                        LandingRouter.move(this, RouterEvent(type = Landing.CLUB_MAIN, paramString = clubName))
+                        LandingRouter.move(this, RouterEvent(type = Landing.CLUB_MAIN, primaryKey = clubName))
                     }
                 }
             }
