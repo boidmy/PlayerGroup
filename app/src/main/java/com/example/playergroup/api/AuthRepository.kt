@@ -2,6 +2,7 @@ package com.example.playergroup.api
 
 import android.net.Uri
 import android.util.Log
+import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.data.FirebaseResultCallback
 import com.example.playergroup.data.UserInfo
 import com.example.playergroup.ui.base.BaseRepository
@@ -11,6 +12,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 
 class AuthRepository: BaseRepository() {
+
+    fun createGetPrimaryKey() = firebaseUser.document().id
 
     /**
      * 구글 로그인 회원 가입
@@ -39,8 +42,10 @@ class AuthRepository: BaseRepository() {
         }
 
         val user = hashMapOf(
-            "email" to userEmail.toString()
+            "email" to userEmail.toString(),
+            "userPrimaryKey" to createGetPrimaryKey()
         )
+
         firebaseUser.document(userEmail).set(user)
             .addOnCompleteListener {
                 callback.invoke(it.isSuccessful)
@@ -50,14 +55,25 @@ class AuthRepository: BaseRepository() {
     /**
      * 클럽을 새로 만들었을 경우 Admin 으로 User 정보에 등록
      */
-    fun upDateClubUserField(clubNameWithAdmin: String, callback: (Boolean) -> Unit) {
+    fun upDateClubUserField(clubPrimaryKey: String, callback: (Boolean) -> Unit) {
         val data = firebaseAuth.currentUser
         val userEmail = data?.email
         if (userEmail.isNullOrEmpty()) {
             callback.invoke(false)
             return
         }
-        firebaseUser.document(userEmail).update("clubAdmin", clubNameWithAdmin)
+
+        firebaseDB.runTransaction {
+            val userDB = firebaseUser.document(userEmail)
+            val userInfo = it.get(userDB).toObject(UserInfo::class.java) ?: return@runTransaction
+            userInfo.clubAdmin?.let {
+                userInfo.clubAdmin?.add(clubPrimaryKey)
+            } ?: run {
+                userInfo.clubAdmin = mutableListOf(clubPrimaryKey)
+            }
+            it.set(userDB, userInfo)
+            PlayerGroupApplication.instance.userInfo = userInfo
+        }
             .addOnCompleteListener {
                 callback.invoke(it.isSuccessful)
             }

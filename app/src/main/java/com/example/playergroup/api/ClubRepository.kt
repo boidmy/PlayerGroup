@@ -10,13 +10,13 @@ class ClubRepository: BaseRepository() {
     /**
      * initCreateClub
      */
-    fun insertInitCreateClub(clubName: String, clubImg: Uri?, callback: (Boolean) -> Unit) {
+    fun insertInitCreateClub(key: String, clubName: String, clubImg: Uri?, callback: (Boolean) -> Unit) {
         val clubData = hashMapOf(
             "clubAdmin" to firebaseAuth.currentUser?.email.toString(),
             "clubName" to clubName
         )
         if (clubImg != null) clubData["clubImg"] = clubName
-        firebaseClub.document(clubName).set(clubData)
+        firebaseClub.document(key).set(clubData)
             .addOnCompleteListener {
                 callback.invoke(it.isSuccessful)
             }
@@ -81,22 +81,5 @@ class ClubRepository: BaseRepository() {
                 callback.invoke(null)
             }
         }
-    }
-
-    fun getClubsList() {
-        /*firebaseClubs.whereEqualTo("location", "인천").get().addOnCompleteListener {
-            if(it.isSuccessful) {
-                Log.d("####", "success")
-            } else {
-                Log.d("####", "fail")
-            }
-        }*/
-        /*firebaseClubs.whereIn("location", arrayListOf("인천", "서울")).get().addOnCompleteListener {
-            if(it.isSuccessful) {
-                Log.d("####", "success")
-            } else {
-                Log.d("####", "fail")
-            }
-        }*/
     }
 }

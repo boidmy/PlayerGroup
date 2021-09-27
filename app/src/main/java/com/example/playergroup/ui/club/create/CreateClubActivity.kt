@@ -43,21 +43,12 @@ class CreateClubActivity: BaseActivity<ActivityCreateClubBinding>() {
 
             firebaseCreateClubResult.observe(this@CreateClubActivity, Observer {
                 binding.loadingProgress.publisherLoading(false)
-                if (it) {
-                    val clubImgView = binding.ivClubImg
-                    val clubNameView = binding.etClubNameEditText
-                    val options = ActivityOptions.makeSceneTransitionAnimation(
-                        this@CreateClubActivity,
-                        UtilPair.create(clubImgView, ViewCompat.getTransitionName(clubImgView).toString()),
-                        UtilPair.create(clubNameView, ViewCompat.getTransitionName(clubNameView).toString())
-                    )
+                if (it.first) {
                     LandingRouter.move(
                         this@CreateClubActivity,
                         RouterEvent(
                             type = Landing.CLUB_MAIN,
-                            options = options,
-                            paramUriToString = clubImgUri?.toString(),
-                            paramString = clubNameView.text.toString()
+                            primaryKey = it.second
                         ))
                     finish()
                 } else {

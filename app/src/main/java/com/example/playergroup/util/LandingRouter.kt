@@ -46,6 +46,7 @@ object LandingRouter {
         context.startActivity(Intent(context, ClubActivity::class.java).also { intent ->
             intent.putExtra(INTENT_EXTRA_STRING_PARAM, event.paramString)
             intent.putExtra(INTENT_EXTRA_URI_TO_STRING_PARAM, event.paramUriToString)
+            intent.putExtra(INTENT_EXTRA_PRIMARY_KEY, event.primaryKey)
         }, event.options?.toBundle())
     }
 

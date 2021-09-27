@@ -11,7 +11,7 @@ data class UserInfo(
     var img: String? = null,    // 프로필 이미지
     var comment: String? = null,    // 하고싶은 말
 
-    var clubAdmin: String? = null   // 내가 만든 동호회 이름
+    var clubAdmin: MutableList<String>? = null   // 내가 만든 동호회 이름 ( 프라이머리 키 )
 ) {
     fun isEmptyData() = (
         age.isNullOrEmpty() ||
