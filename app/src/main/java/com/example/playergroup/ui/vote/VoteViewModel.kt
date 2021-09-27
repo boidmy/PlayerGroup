@@ -5,6 +5,8 @@ import com.example.playergroup.data.repository.DataRepository
 import com.example.playergroup.data.room.VoteModel
 import com.example.playergroup.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,7 +20,7 @@ class VoteViewModel @Inject constructor(private val dataRepository: DataReposito
         get() = _voteList
 
     fun selectVote() {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             _voteList.postValue(dataRepository.requestVoteList())
         }
     }
