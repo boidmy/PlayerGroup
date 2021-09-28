@@ -85,5 +85,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             startActivity(Intent(this, VoteActivity::class.java))
         }
 
+        binding.btnNoticeBoard click {
+            LandingRouter.move(this, RouterEvent(type = Landing.NOTICEBOARD))
+        }
+
     }
 }
