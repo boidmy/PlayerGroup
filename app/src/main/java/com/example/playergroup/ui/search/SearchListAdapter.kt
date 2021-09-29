@@ -13,6 +13,9 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SearchListAdapter(
     private val mCompositeDisposable: CompositeDisposable
@@ -31,18 +34,17 @@ class SearchListAdapter(
         }
 
     private fun calculate(value: MutableList<BaseDataSet>?, callback: (DiffUtil.DiffResult) -> Unit) {
-        mCompositeDisposable.add(
-            Observable.fromCallable { this.diffUtilExtensions(
+        CoroutineScope(Dispatchers.Default).launch {
+            val diffUtil = this@SearchListAdapter.diffUtilExtensions(
                 oldList = items,
                 newList = value,
                 itemCompare = { o, n -> o?.viewType == n?.viewType },
                 contentCompare = { o, n -> o == n }
-            ) }.subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{
-                    callback.invoke(it)
-                }
-        )
+            )
+            CoroutineScope(Dispatchers.Main).launch {
+                callback(diffUtil)
+            }
+        }
     }
 
     override fun getItemCount(): Int = items?.size ?: 0
