@@ -1,11 +1,14 @@
 package com.example.playergroup.ui.board
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.example.playergroup.databinding.ActivityBoardBinding
 import com.example.playergroup.ui.base.BaseActivity
+import com.example.playergroup.ui.board.boardList.BoardListActivity
 import com.example.playergroup.ui.board.list.NoticeCategoryAdapter
+import com.example.playergroup.ui.vote.votePick.VotePickActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -13,7 +16,9 @@ class BoardActivity : BaseActivity<ActivityBoardBinding>() {
 
     private val viewModel: BoardViewModel by viewModels()
     private val adapter = NoticeCategoryAdapter {
-
+        val intent = Intent(this, BoardListActivity::class.java)
+        intent.putExtra("key", it)
+        startActivity(intent)
     }
 
     override fun getViewBinding() = ActivityBoardBinding.inflate(layoutInflater)

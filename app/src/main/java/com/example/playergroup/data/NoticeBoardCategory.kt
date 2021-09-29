@@ -1,6 +1,6 @@
 package com.example.playergroup.data
 
-data class NoticeBoard(
+data class NoticeBoardCategory(
     val categoryKey: String = "",
     val categoryNm: String = ""
 )
