@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/llMyImg"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="14dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivMyImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon_user" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tvAttendanceRate"
+            app:layout_constraintStart_toEndOf="@id/llMyImg"
+            app:layout_constraintTop_toTopOf="@id/llMyImg"
+            tools:text="홍길동" />
+
+        <TextView
+            android:id="@+id/tvAttendanceRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorSecondaryText"
+            app:layout_constraintBottom_toBottomOf="@id/llMyImg"
+            app:layout_constraintStart_toStartOf="@id/tvName"
+            app:layout_constraintTop_toBottomOf="@id/tvName"
+            tools:text="활동지수 : 50%" />
+
+        <TextView
+            android:id="@+id/tvMySchedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="내 일정"
+            android:textColor="@color/colorSecondaryText"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:drawableTopCompat="@drawable/icon_schedule"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llMyImg"
+            app:layout_constraintEnd_toStartOf="@id/tvMyClubs"/>
+
+        <TextView
+            android:id="@+id/tvMyClubs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="내 동호회 관리"
+            android:textColor="@color/colorSecondaryText"
+            app:drawableTopCompat="@drawable/icon_my_club"
+            app:layout_constraintStart_toEndOf="@id/tvMySchedule"
+            app:layout_constraintTop_toBottomOf="@id/llMyImg"
+            app:layout_constraintEnd_toStartOf="@id/tvSearch"/>
+
+        <TextView
+            android:id="@+id/tvSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="동호회 검색"
+            android:textColor="@color/colorSecondaryText"
+            app:drawableTopCompat="@drawable/icon_search"
+            app:layout_constraintStart_toEndOf="@id/tvMyClubs"
+            app:layout_constraintTop_toBottomOf="@id/llMyImg"
+            app:layout_constraintEnd_toStartOf="@id/tvSetting"/>
+
+        <TextView
+            android:id="@+id/tvSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="설정"
+            android:textColor="@color/colorSecondaryText"
+            app:drawableTopCompat="@drawable/icon_setting"
+            app:layout_constraintStart_toEndOf="@id/tvSearch"
+            app:layout_constraintTop_toBottomOf="@id/llMyImg"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

@@ -5,16 +5,22 @@ import android.content.Context
 import android.content.Intent
 import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 import android.util.Log
-import com.example.playergroup.ui.main.MainActivity
+import androidx.fragment.app.commitNow
 import com.example.playergroup.R
 import com.example.playergroup.data.*
+import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.club.ClubActivity
 import com.example.playergroup.ui.club.create.CreateClubActivity
+import com.example.playergroup.ui.dropout.DropOutBottomSheet
 import com.example.playergroup.ui.login.InitLoginScreenActivity
+import com.example.playergroup.ui.login.fragments.BottomSheetLoginFragment
+import com.example.playergroup.ui.main.MainActivity
 import com.example.playergroup.ui.mypage.MyPageActivity
 import com.example.playergroup.ui.search.SearchActivity
+import com.example.playergroup.ui.setting.SettingActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 
@@ -23,16 +29,25 @@ object LandingRouter {
         try {
             when (event.type) {
                 Landing.MAIN -> gotoMain(context, event)
-                Landing.LOGIN -> gotoLogin(context, event)
+                Landing.START_LOGIN_SCREEN -> gotoStartLoginScreen(context, event)
+                Landing.LOGIN -> goToLogin(context, event)
                 Landing.GOOGLE_LOGIN -> gotoGoogleLogin(context, event)
                 Landing.MY_PAGE -> gotoMyPage(context, event)
                 Landing.GALLERY -> checkPermission(context, event)
                 Landing.CREATE_CLUB -> gotoCreateClub(context, event)
                 Landing.CLUB_MAIN -> gotoClubMain(context, event)
                 Landing.SEARCH -> gotoSearch(context, event)
+                Landing.DROP_OUT -> goToDropOut(context, event)
+                Landing.SETTING -> goToSetting(context, event)
             }
         } catch (e: Exception) {
             Log.e("####", "${event.type} -> ${e.localizedMessage}")
+        }
+    }
+
+    private fun goToSetting(context: Context, event: RouterEvent) {
+        context.startActivity(Intent(context, SettingActivity::class.java)).also {
+            //todo Parameter?
         }
     }
 
@@ -66,7 +81,7 @@ object LandingRouter {
             })
     }
 
-    private fun gotoLogin(context: Context, event: RouterEvent) {
+    private fun gotoStartLoginScreen(context: Context, event: RouterEvent) {
         context.startActivity(Intent(context, InitLoginScreenActivity::class.java).also { intent ->
             intent.addFlags(
                 Intent.FLAG_ACTIVITY_CLEAR_TOP or
@@ -74,6 +89,27 @@ object LandingRouter {
                         Intent.FLAG_ACTIVITY_NEW_TASK or
                         Intent.FLAG_ACTIVITY_CLEAR_TASK)
         })
+    }
+
+    private fun goToLogin(context: Context, event: RouterEvent) {
+        (context as? BaseActivity<*>)?.let { activity ->
+            val newInstance = BottomSheetLoginFragment.newInstance(event.paramInt) {
+                activity.onLoginStateChange(FirebaseAuth.getInstance().currentUser != null)
+            }
+            if (newInstance.isVisible) return
+            newInstance.show(activity.supportFragmentManager, newInstance.tag)
+        }
+    }
+
+    private fun goToDropOut(context: Context, event: RouterEvent) {
+        (context as? BaseActivity<*>)?.let { activity ->
+            val newInstance = DropOutBottomSheet.newInstance {
+                FirebaseAuth.getInstance().signOut()
+                activity.onLoginStateChange(FirebaseAuth.getInstance().currentUser != null)
+            }
+            if (newInstance.isVisible) return
+            newInstance.show(activity.supportFragmentManager, newInstance.tag)
+        }
     }
 
     private fun gotoGoogleLogin(context: Context, event: RouterEvent) {
