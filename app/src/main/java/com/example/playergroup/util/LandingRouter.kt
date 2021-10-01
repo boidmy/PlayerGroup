@@ -6,6 +6,7 @@ import android.content.Intent
 import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 import android.util.Log
 import androidx.fragment.app.commitNow
+import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.R
 import com.example.playergroup.data.*
 import com.example.playergroup.ui.base.BaseActivity
@@ -13,6 +14,7 @@ import com.example.playergroup.ui.club.ClubActivity
 import com.example.playergroup.ui.club.create.CreateClubActivity
 import com.example.playergroup.ui.dropout.DropOutBottomSheet
 import com.example.playergroup.ui.login.InitLoginScreenActivity
+import com.example.playergroup.ui.login.LoginType
 import com.example.playergroup.ui.login.fragments.BottomSheetLoginFragment
 import com.example.playergroup.ui.main.MainActivity
 import com.example.playergroup.ui.mypage.MyPageActivity
@@ -25,6 +27,9 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 
 object LandingRouter {
+
+    private val pgApplication by lazy { PlayerGroupApplication.instance }
+
     fun move(context: Context, event: RouterEvent) {
         try {
             when (event.type) {
@@ -46,8 +51,12 @@ object LandingRouter {
     }
 
     private fun goToSetting(context: Context, event: RouterEvent) {
-        context.startActivity(Intent(context, SettingActivity::class.java)).also {
-            //todo Parameter?
+        if (pgApplication.isLogin()) {
+            context.startActivity(Intent(context, SettingActivity::class.java)).also {
+                //todo Parameter?
+            }
+        } else {
+            goToLogin(context, event.apply { paramInt = LoginType.LOGIN.value })
         }
     }
 
@@ -66,9 +75,13 @@ object LandingRouter {
     }
 
     private fun gotoCreateClub(context: Context, event: RouterEvent) {
-        context.startActivity(Intent(context, CreateClubActivity::class.java).also {
-            //todo Parameter?
-        })
+        if (pgApplication.isLogin()) {
+            context.startActivity(Intent(context, CreateClubActivity::class.java).also {
+                //todo Parameter?
+            })
+        } else {
+            goToLogin(context, event.apply { paramInt = LoginType.LOGIN.value })
+        }
     }
 
     private fun gotoMain(context: Context, event: RouterEvent) {
@@ -94,7 +107,7 @@ object LandingRouter {
     private fun goToLogin(context: Context, event: RouterEvent) {
         (context as? BaseActivity<*>)?.let { activity ->
             val newInstance = BottomSheetLoginFragment.newInstance(event.paramInt) {
-                activity.onLoginStateChange(FirebaseAuth.getInstance().currentUser != null)
+                RxBus.publish(LoginStateChange(FirebaseAuth.getInstance().currentUser != null))
             }
             if (newInstance.isVisible) return
             newInstance.show(activity.supportFragmentManager, newInstance.tag)
@@ -105,7 +118,7 @@ object LandingRouter {
         (context as? BaseActivity<*>)?.let { activity ->
             val newInstance = DropOutBottomSheet.newInstance {
                 FirebaseAuth.getInstance().signOut()
-                activity.onLoginStateChange(FirebaseAuth.getInstance().currentUser != null)
+                RxBus.publish(LoginStateChange(FirebaseAuth.getInstance().currentUser != null))
             }
             if (newInstance.isVisible) return
             newInstance.show(activity.supportFragmentManager, newInstance.tag)
@@ -124,9 +137,13 @@ object LandingRouter {
     }
 
     private fun gotoMyPage(context: Context, event: RouterEvent) {
-        context.startActivity(Intent(context, MyPageActivity::class.java).also { intent ->
-            intent.putExtra(INTENT_EXTRA_PARAM, event.paramBoolean)
-        })
+        if (pgApplication.isLogin()) {
+            context.startActivity(Intent(context, MyPageActivity::class.java).also { intent ->
+                intent.putExtra(INTENT_EXTRA_PARAM, event.paramBoolean)
+            })
+        } else {
+            goToLogin(context, event.apply { paramInt = LoginType.LOGIN.value })
+        }
     }
 
     private fun gotoGallery(context: Context, event: RouterEvent) {

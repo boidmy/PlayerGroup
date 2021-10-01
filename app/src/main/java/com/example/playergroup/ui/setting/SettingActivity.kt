@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.example.playergroup.api.AuthRepository
 import com.example.playergroup.api.ClubRepository
 import com.example.playergroup.data.Landing
+import com.example.playergroup.data.LoginStateChange
 import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ActivitySettingBinding
 import com.example.playergroup.ui.base.BaseActivity
@@ -12,9 +13,11 @@ import com.example.playergroup.ui.login.LoginType
 import com.example.playergroup.ui.themeselector.ThemeSelectorBottomSheet
 import com.example.playergroup.ui.vote.VoteActivity
 import com.example.playergroup.util.LandingRouter
+import com.example.playergroup.util.RxBus
 import com.example.playergroup.util.click
 import com.example.playergroup.util.showDefDialog
 import com.google.firebase.auth.FirebaseAuth
+import io.reactivex.rxkotlin.addTo
 
 class SettingActivity: BaseActivity<ActivitySettingBinding>() {
 
@@ -23,6 +26,9 @@ class SettingActivity: BaseActivity<ActivitySettingBinding>() {
 
     override fun getViewBinding(): ActivitySettingBinding = ActivitySettingBinding.inflate(layoutInflater)
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
+
+        initObserver()
+
         binding.btnLogout.apply {
             text = if (FirebaseAuth.getInstance().currentUser == null) "로그인" else "로그아웃"
             click {
@@ -86,16 +92,19 @@ class SettingActivity: BaseActivity<ActivitySettingBinding>() {
         }
     }
 
-    override fun onLoginStateChange(isLogin: Boolean) {
-        val userInfo = pgApplication.userInfo
-        if (isLogin) {
-            if (userInfo?.isEmptyData() == true) {
-                LandingRouter.move(this, RouterEvent(type = Landing.MY_PAGE, paramBoolean = true))
+    private fun initObserver() {
+        RxBus.listen(LoginStateChange::class.java).subscribe {
+            val userInfo = pgApplication.userInfo
+            if (it.isLogin) {
+                if (userInfo?.isEmptyData() == true) {
+                    LandingRouter.move(this, RouterEvent(type = Landing.MY_PAGE, paramBoolean = true))
+                } else {
+                    //todo 메인 화면 업데이트
+                }
             } else {
-                //todo 메인 화면 업데이트
+                LandingRouter.move(this@SettingActivity, RouterEvent(Landing.START_LOGIN_SCREEN))
             }
-        } else {
-            LandingRouter.move(this@SettingActivity, RouterEvent(Landing.START_LOGIN_SCREEN))
-        }
+        }.addTo(compositeDisposable)
     }
+
 }

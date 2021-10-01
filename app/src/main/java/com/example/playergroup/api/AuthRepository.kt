@@ -130,6 +130,7 @@ class AuthRepository: BaseRepository() {
         firebaseUser.document(userEmail).get()
             .addOnCompleteListener {
                 val userInfo = (it.result?.toObject(UserInfo::class.java))
+                PlayerGroupApplication.instance.userInfo = userInfo
                 val isEmpty = userInfo?.isEmptyData() ?: true
                 callback.invoke(isEmpty)
             }

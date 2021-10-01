@@ -18,13 +18,15 @@ import com.google.firebase.auth.FirebaseAuth
  */
 class MainMyInfoViewHolder(parent: ViewGroup):
     BaseViewHolder<ViewMainMyInfoBinding>(parent.viewBinding(ViewMainMyInfoBinding::inflate)) {
+
+    private val pgApplication by lazy { PlayerGroupApplication.instance }
+
     override fun onBindView(data: Any?) {
 
-        val userInfo = PlayerGroupApplication.instance.userInfo
         with (binding) {
-            if (isLogin()) {
+            if (pgApplication.isLogin()) {
                 //todo 프로필 이미지 Full Url 저장 하는 로직 구현 후 여기 구현 하자
-                tvName.text = userInfo?.name ?: ""
+                tvName.text = pgApplication.userInfo?.name ?: ""
                 tvAttendanceRate.text = "-"
             } else {
                 tvName.text = "로그인이 필요합니다."
@@ -32,11 +34,11 @@ class MainMyInfoViewHolder(parent: ViewGroup):
             }
 
             llMyImg click {
-                if (isLogin()) LandingRouter.move(itemView.context, RouterEvent(Landing.MY_PAGE))
+                LandingRouter.move(itemView.context, RouterEvent(Landing.MY_PAGE))
             }
 
             tvName click {
-                if (isLogin()) LandingRouter.move(itemView.context, RouterEvent(Landing.MY_PAGE))
+                LandingRouter.move(itemView.context, RouterEvent(Landing.MY_PAGE))
             }
 
             tvSearch click {
@@ -58,6 +60,4 @@ class MainMyInfoViewHolder(parent: ViewGroup):
             }
         }
     }
-
-    private fun isLogin() = FirebaseAuth.getInstance().currentUser != null
 }

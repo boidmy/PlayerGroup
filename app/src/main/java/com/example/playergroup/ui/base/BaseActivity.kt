@@ -29,8 +29,6 @@ abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
     protected val compositeDisposable by lazy { CompositeDisposable() }
     protected val configModule by lazy { ConfigModule(this) }
 
-    open fun onLoginStateChange(isLogin: Boolean) {}
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = getViewBinding()
