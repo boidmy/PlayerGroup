@@ -62,11 +62,12 @@
 
         <TextView
             android:id="@+id/tvMySchedule"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="내 일정"
+            android:text="일정"
             android:textColor="@color/colorSecondaryText"
+            android:gravity="center"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:drawableTopCompat="@drawable/icon_schedule"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,10 +76,11 @@
 
         <TextView
             android:id="@+id/tvMyClubs"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="내 동호회 관리"
+            android:text="관리"
+            android:gravity="center"
             android:textColor="@color/colorSecondaryText"
             app:drawableTopCompat="@drawable/icon_my_club"
             app:layout_constraintStart_toEndOf="@id/tvMySchedule"
@@ -87,10 +89,11 @@
 
         <TextView
             android:id="@+id/tvSearch"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="동호회 검색"
+            android:text="검색"
+            android:gravity="center"
             android:textColor="@color/colorSecondaryText"
             app:drawableTopCompat="@drawable/icon_search"
             app:layout_constraintStart_toEndOf="@id/tvMyClubs"
@@ -99,10 +102,11 @@
 
         <TextView
             android:id="@+id/tvSetting"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="설정"
+            android:gravity="center"
             android:textColor="@color/colorSecondaryText"
             app:drawableTopCompat="@drawable/icon_setting"
             app:layout_constraintStart_toEndOf="@id/tvSearch"
@@ -110,6 +114,5 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.cardview.widget.CardView>
