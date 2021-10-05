@@ -11,6 +11,7 @@ class ConfigModule(context: Context) {
 
         const val KEY_THEME_MODE: String = "key_theme_mode"
         const val SEARCH_LIST_TWO_TYPE_MODE: String = "search_list_two_type_mode"
+        const val BOARD_SELECT_CATEGORY: String = "board_category"
     }
 
     var configThemeMode: String?
@@ -20,6 +21,10 @@ class ConfigModule(context: Context) {
     var isTwoItemMode: Boolean?
         get() = PrefUtil.getBoolean(configPref, SEARCH_LIST_TWO_TYPE_MODE)
         set(value) = PrefUtil.putBoolean(configPref, SEARCH_LIST_TWO_TYPE_MODE, value)
+
+    var categorySelectMode: String?
+        get() = PrefUtil.getString(configPref, BOARD_SELECT_CATEGORY)
+        set(value) = PrefUtil.putString(configPref, BOARD_SELECT_CATEGORY, value)
 
     /*// 생체 인증 활성화 여부
     var isBiometricEnabled: Boolean?

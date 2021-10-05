@@ -9,6 +9,7 @@ import com.example.playergroup.util.viewBinding
 open class BaseViewHolder<T : ViewBinding>(val binding: T) : RecyclerView.ViewHolder(binding.root) {
     open fun onBindView(data: Any?) {}
     open fun onBindView(data: Any?, param1: Int) {}
+    fun onBindView2(data: Any?) {}
 }
 
 class EmptyErrorViewHolder(parent: ViewGroup): BaseViewHolder<ViewEmptyErrorBinding>(parent.viewBinding(ViewEmptyErrorBinding::inflate))

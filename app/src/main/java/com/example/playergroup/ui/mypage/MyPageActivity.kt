@@ -188,25 +188,25 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
             }
 
             llMyInfoSex.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(SEX) }
-            etMyInfoSex click { setScrollerPicker(SEX) }
+            etMyInfoSex click { setScrollerPicker(SEX, etMyInfoSex.text.toString()) }
 
             llMyInfoAge.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(YEAROFBIRTH) }
-            etMyInfoAge click { setScrollerPicker(YEAROFBIRTH) }
+            etMyInfoAge click { setScrollerPicker(YEAROFBIRTH, etMyInfoAge.text.toString()) }
 
             llMyInfoHeight.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(HEIGHT)}
-            etMyInfoHeight click { setScrollerPicker(HEIGHT) }
+            etMyInfoHeight click { setScrollerPicker(HEIGHT, etMyInfoHeight.text.toString()) }
 
             llMyInfoWeight.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(WEIGHT)}
-            etMyInfoWeight click { setScrollerPicker(WEIGHT) }
+            etMyInfoWeight click { setScrollerPicker(WEIGHT, etMyInfoWeight.text.toString()) }
 
             llMyInfoPosition.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(POSITION)}
-            etMyInfoPosition click { setScrollerPicker(POSITION) }
+            etMyInfoPosition click { setScrollerPicker(POSITION, etMyInfoPosition.text.toString()) }
 
         }
     }
 
-    private fun setScrollerPicker(type: ScrollSelectorType) {
-        val newInstance = ScrollSelectorBottomSheet.newInstance(type) {
+    private fun setScrollerPicker(type: ScrollSelectorType, selectItem: String = "") {
+        val newInstance = ScrollSelectorBottomSheet.newInstance(type, selectItem) {
             when(type) {
                 HEIGHT -> binding.etMyInfoHeight.setText(it)
                 WEIGHT -> binding.etMyInfoWeight.setText(it)

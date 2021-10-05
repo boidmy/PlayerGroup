@@ -7,5 +7,6 @@ data class NoticeBoardList(
 data class NoticeBoardItem(
     val title: String = "",
     val sub: String = "",
-    val userId: String = ""
+    val userId: String = "",
+    val key: String = ""
 )

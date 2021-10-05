@@ -1,11 +1,16 @@
 package com.example.playergroup.ui.scrollselector
 
+import com.example.playergroup.data.NoticeBoardCategory
+import com.example.playergroup.data.NoticeBoardCategoryList
 import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType
 import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
 import com.example.playergroup.ui.base.BaseViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
-class ScrollSelectorViewModel: BaseViewModel() {
+class ScrollSelectorViewModel : BaseViewModel() {
 
     private val positionList = mutableListOf<String>(
         "포인트가드 [1]",
@@ -31,6 +36,9 @@ class ScrollSelectorViewModel: BaseViewModel() {
         "여자"
     )
 
+    private var boardCategoryList: List<Pair<String, String>> =
+        NoticeBoardCategoryList().categoryList
+
     private fun getYearOfBirth(): MutableList<String> {
         val list = mutableListOf<String>()
         val todayYear = Calendar.getInstance().get(Calendar.YEAR)
@@ -49,7 +57,7 @@ class ScrollSelectorViewModel: BaseViewModel() {
     }
 
     fun getSelectorDataList(type: ScrollSelectorType) =
-        when(type) {
+        when (type) {
             WEIGHT -> weightList
             HEIGHT -> getHeight()
             YEAROFBIRTH -> getYearOfBirth()
@@ -57,12 +65,15 @@ class ScrollSelectorViewModel: BaseViewModel() {
             else -> positionList
         }
 
+    fun getSelectorPairList(type: ScrollSelectorType) = boardCategoryList
+
     fun getSelectorTitle(type: ScrollSelectorType) =
-        when(type) {
+        when (type) {
             WEIGHT -> "몸무게를 선택해주세요."
             HEIGHT -> "키를 선택해주세요."
             YEAROFBIRTH -> "출생연도를 선택해주세요."
             SEX -> "성별을 선택해주세요."
+            CATEGORY -> "카테고리를 선택해주세요."
             else -> "포지션을 선택해주세요."
         }
 }

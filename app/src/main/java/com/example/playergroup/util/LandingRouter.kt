@@ -8,7 +8,7 @@ import android.util.Log
 import com.example.playergroup.ui.main.MainActivity
 import com.example.playergroup.R
 import com.example.playergroup.data.*
-import com.example.playergroup.ui.board.BoardActivity
+import com.example.playergroup.ui.board.boardList.BoardListActivity
 import com.example.playergroup.ui.club.ClubActivity
 import com.example.playergroup.ui.club.create.CreateClubActivity
 import com.example.playergroup.ui.login.InitLoginScreenActivity
@@ -31,7 +31,7 @@ object LandingRouter {
                 Landing.CREATE_CLUB -> gotoCreateClub(context, event)
                 Landing.CLUB_MAIN -> gotoClubMain(context, event)
                 Landing.SEARCH -> gotoSearch(context, event)
-                Landing.NOTICEBOARD -> gotoNoticeBoard(context)
+                Landing.NOTICEBOARD -> gotoBoardList(context)
             }
         } catch (e: Exception) {
             Log.e("####", "${event.type} -> ${e.localizedMessage}")
@@ -78,8 +78,8 @@ object LandingRouter {
         })
     }
 
-    private fun gotoNoticeBoard(context: Context) {
-        context.startActivity(Intent(context, BoardActivity::class.java))
+    private fun gotoBoardList(context: Context) {
+        context.startActivity(Intent(context, BoardListActivity::class.java))
     }
 
     private fun gotoGoogleLogin(context: Context, event: RouterEvent) {

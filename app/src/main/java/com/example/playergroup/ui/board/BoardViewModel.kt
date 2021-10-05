@@ -2,18 +2,29 @@ package com.example.playergroup.ui.board
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.playergroup.data.NoticeBoardCategory
+import com.example.playergroup.data.NoticeBoardItem
 import com.example.playergroup.ui.base.BaseViewModel
 
-class BoardViewModel  constructor() : BaseViewModel() {
+class BoardViewModel : BaseViewModel() {
 
-    private val _firebaseNoticeCategoryList: MutableLiveData<MutableList<NoticeBoardCategory>> = MutableLiveData()
-    val firebaseNoticeCategoryList: LiveData<MutableList<NoticeBoardCategory>>
-        get() = _firebaseNoticeCategoryList
+    private val _writeComplete: MutableLiveData<Boolean> = MutableLiveData()
+    private var _boardList: MutableLiveData<MutableList<NoticeBoardItem>> = MutableLiveData()
+    var selectCategory: String? = null
 
-    fun getCategoryList() {
-        noticeRepository.getCategoryList {
-            _firebaseNoticeCategoryList.value = it
+    val writeComplete: LiveData<Boolean>
+        get() = _writeComplete
+    val boardList: MutableLiveData<MutableList<NoticeBoardItem>>
+        get() = _boardList
+
+    fun addBoardItem(key: String, title: String, sub: String, id: String) {
+        noticeRepository.insertBoard(key = key, title = title, sub = sub, id = id) {
+            _writeComplete.value = it
+        }
+    }
+
+    fun getBoardList(key: String) {
+        noticeRepository.getBoardList(key) {
+            _boardList.value = it
         }
     }
 }

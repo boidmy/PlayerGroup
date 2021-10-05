@@ -34,4 +34,15 @@ class NoticeBoardRepository: BaseRepository() {
         }
     }
 
+    /**
+     * 게시판 글 등록
+     */
+    fun insertBoard(key: String, title: String, sub: String, id: String, callback: (Boolean) -> Unit) {
+        val collection = firebaseNoticeBoard.document(key).collection("board")
+        val boardKey  = collection.document().id //데이터를 저장하기전에 미리 난수인 key를 뽑아내서 저장한다
+        val boardData = NoticeBoardItem(title, sub, id, boardKey)
+        collection.document(boardKey).set(boardData).addOnCompleteListener {
+            callback(it.isSuccessful)
+        }
+    }
 }

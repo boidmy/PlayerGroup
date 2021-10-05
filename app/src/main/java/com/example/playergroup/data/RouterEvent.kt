@@ -32,5 +32,6 @@ enum class Landing {
     CREATE_CLUB,
     CLUB_MAIN,
     SEARCH,
-    NOTICEBOARD
+    NOTICEBOARD,
+    NOTICEWRITE
 }
