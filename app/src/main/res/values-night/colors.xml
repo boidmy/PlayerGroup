@@ -21,5 +21,11 @@
     <color name="btnTxtColor">#fafafa</color>
     <color name="btnColorNegative">#525f6f</color>
 
+    <color name="swDisableBgColor">#525f6f</color>
+    <color name="swEnableBgColor">#CCFF6F00</color>
+
+    <color name="commonDividerLine">#303234</color>
+    <color name="commonDividerBox">#1e2023</color>
+
     <color name="dim_color">#66000000</color>
 </resources>

@@ -2,11 +2,8 @@ package com.example.playergroup.ui.base
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.Network
 import android.net.NetworkCapabilities
-import android.net.NetworkRequest
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.example.playergroup.PlayerGroupApplication
@@ -15,7 +12,6 @@ import com.example.playergroup.custom.DialogCustom
 import com.example.playergroup.ui.main.MainActivity
 import com.example.playergroup.util.ConfigModule
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
@@ -107,9 +103,4 @@ abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
     }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
 }

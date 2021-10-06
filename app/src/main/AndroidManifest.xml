@@ -55,6 +55,7 @@
         <activity android:name=".ui.vote.votePick.VotePickActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.setting.SettingActivity" />
     </application>
 
 </manifest>

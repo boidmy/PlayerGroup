@@ -10,17 +10,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.playergroup.R
 import com.example.playergroup.custom.DialogCustom
 import com.example.playergroup.data.Landing
-import com.example.playergroup.data.LoginResultCallback
 import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.DialogLoginContainerBinding
 import com.example.playergroup.ui.login.JoinLoginAdapter
@@ -34,24 +31,23 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import io.reactivex.android.schedulers.AndroidSchedulers
 
 class BottomSheetLoginFragment: BottomSheetDialogFragment() {
 
     private val binding by viewBinding(DialogLoginContainerBinding::bind)
     private val loginViewModel by activityViewModels<LoginViewModel>()
-    private lateinit var callback: (Boolean) ->Unit
 
     //Google Login Activity Result
     private lateinit var getGoogleSignResult: ActivityResultLauncher<Intent>
+    private lateinit var onDismissListener: () -> Unit
 
     companion object {
-        fun newInstance(tabPosition: Int = 0, resultCallback: (Boolean) -> Unit): BottomSheetLoginFragment =
+        fun newInstance(tabPosition: Int = 0, onDismissListener: () -> Unit): BottomSheetLoginFragment =
             BottomSheetLoginFragment().apply {
                 arguments = Bundle().apply {
                     putInt(TAB_POSITION, tabPosition)
                 }
-                callback = resultCallback
+                this.onDismissListener = onDismissListener
             }
         const val TAB_POSITION = "tab_position"
     }
@@ -103,7 +99,8 @@ class BottomSheetLoginFragment: BottomSheetDialogFragment() {
                 firebaseResult.observe(viewLifecycleOwner, Observer { loginResultCallback ->
                     loadingProgress?.invoke(false)
                     if (loginResultCallback.isSuccess) {
-                        callback.invoke(true)
+                        onDismissListener.invoke()
+                        dismiss()
                     } else {
                         DialogCustom(requireContext())
                             .setMessage(R.string.dialog_alert_msg_error)
@@ -178,7 +175,6 @@ class BottomSheetLoginFragment: BottomSheetDialogFragment() {
             setCurrentItem(index, false)
         }
         binding.close click {
-            callback.invoke(false)
             dismiss()
         }
     }
