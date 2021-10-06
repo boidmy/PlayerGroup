@@ -31,6 +31,11 @@ class MainMyInfoViewHolder(parent: ViewGroup):
             } else {
                 tvName.text = "로그인이 필요합니다."
                 tvAttendanceRate.visibility = View.GONE
+                ivAttendanceRateHelp.visibility = View.GONE
+            }
+
+            ivAttendanceRateHelp click {
+                itemView.context debugToast { "준비중 입니다." }
             }
 
             llMyImg click {

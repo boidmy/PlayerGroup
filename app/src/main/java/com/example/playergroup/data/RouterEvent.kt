@@ -28,6 +28,7 @@ enum class Landing {
     MAIN,
     START_LOGIN_SCREEN,
     LOGIN,
+    LOGOUT,
     DROP_OUT,
     GOOGLE_LOGIN,
     GALLERY,
@@ -35,5 +36,7 @@ enum class Landing {
     CREATE_CLUB,
     CLUB_MAIN,
     SEARCH,
-    SETTING
+    SETTING,
+    THEME_SELECTOR,
+    APP_PERMISSION_SETTING
 }

@@ -3,7 +3,9 @@ package com.example.playergroup.util
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+import android.provider.Settings
 import android.util.Log
 import androidx.fragment.app.commitNow
 import com.example.playergroup.PlayerGroupApplication
@@ -20,6 +22,7 @@ import com.example.playergroup.ui.main.MainActivity
 import com.example.playergroup.ui.mypage.MyPageActivity
 import com.example.playergroup.ui.search.SearchActivity
 import com.example.playergroup.ui.setting.SettingActivity
+import com.example.playergroup.ui.themeselector.ThemeSelectorBottomSheet
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -36,6 +39,7 @@ object LandingRouter {
                 Landing.MAIN -> gotoMain(context, event)
                 Landing.START_LOGIN_SCREEN -> gotoStartLoginScreen(context, event)
                 Landing.LOGIN -> goToLogin(context, event)
+                Landing.LOGOUT -> goToLogOut(context, event)
                 Landing.GOOGLE_LOGIN -> gotoGoogleLogin(context, event)
                 Landing.MY_PAGE -> gotoMyPage(context, event)
                 Landing.GALLERY -> checkPermission(context, event)
@@ -43,20 +47,41 @@ object LandingRouter {
                 Landing.CLUB_MAIN -> gotoClubMain(context, event)
                 Landing.SEARCH -> gotoSearch(context, event)
                 Landing.DROP_OUT -> goToDropOut(context, event)
+                Landing.THEME_SELECTOR -> goToThemeSelector(context, event)
                 Landing.SETTING -> goToSetting(context, event)
+                Landing.APP_PERMISSION_SETTING -> gotoAppSettings(context, event)
             }
         } catch (e: Exception) {
             Log.e("####", "${event.type} -> ${e.localizedMessage}")
         }
     }
 
+    private fun gotoAppSettings(context: Context, event: RouterEvent) {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val uri: Uri = Uri.fromParts("package", context.packageName, null)
+        intent.data = uri
+        context.startActivity(intent)
+    }
+
+    private fun goToThemeSelector(context: Context, event: RouterEvent) {
+        (context as? BaseActivity<*>)?.let { activity ->
+            val newInstance = ThemeSelectorBottomSheet.newInstance()
+            if (newInstance.isVisible) return
+            newInstance.show(activity.supportFragmentManager, newInstance.tag)
+        }
+    }
+
+    private fun goToLogOut(context: Context, event: RouterEvent) {
+        FirebaseAuth.getInstance().signOut()
+        if (event.paramBoolean) {
+            RxBus.publish(LoginStateChange(FirebaseAuth.getInstance().currentUser != null))
+        }
+    }
+
     private fun goToSetting(context: Context, event: RouterEvent) {
-        if (pgApplication.isLogin()) {
-            context.startActivity(Intent(context, SettingActivity::class.java)).also {
-                //todo Parameter?
-            }
-        } else {
-            goToLogin(context, event.apply { paramInt = LoginType.LOGIN.value })
+        context.startActivity(Intent(context, SettingActivity::class.java)).also {
+            //todo Parameter?
         }
     }
 

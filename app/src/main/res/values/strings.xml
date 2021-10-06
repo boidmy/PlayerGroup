@@ -55,6 +55,11 @@
     <string name="member_info_position_helper">ex ) 센터, 포워드, 가드.. </string>
     <string name="member_info_detail">간단하게 하고싶은 말</string>
 
+    <!-- 테마 -->
+    <string name="theme_system_default">시스템 기본 테마</string>
+    <string name="theme_light">밝은 테마</string>
+    <string name="theme_dark">어두운 테마</string>
+
     <!-- 캘린더 -->
     <string name="calendar_sun">일</string>
     <string name="calendar_mon">월</string>

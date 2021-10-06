@@ -1,132 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogout"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/logout"
-        android:textColor="@color/colorSecondaryText"
-        app:cornerRadius="10dp"
-        app:backgroundTint="@color/btnColorPositive"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:orientation="horizontal">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnDropOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/dropout"
-        android:textColor="@color/colorSecondaryText"
-        app:cornerRadius="10dp"
-        app:backgroundTint="@color/btnColorPositive"
-        android:textStyle="bold"
-        android:layout_marginStart="10dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnLogout"/>
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:padding="10dp"
+            android:src="@drawable/icon_back"
+            android:layout_alignParentStart="true"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnMyPage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="내프로필보기"
-        android:textColor="@color/colorSecondaryText"
-        app:cornerRadius="10dp"
-        app:backgroundTint="@color/btnColorPositive"
-        android:textStyle="bold"
-        android:layout_marginStart="10dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnDropOut"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryText"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:layout_centerInParent="true"
+            android:text="앱 설정" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnCreateClub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="동호회 만들기"
-        android:textColor="@color/colorSecondaryText"
-        app:cornerRadius="10dp"
-        app:backgroundTint="@color/btnColorPositive"
-        android:textStyle="bold"
-        android:layout_marginStart="10dp"
-        app:layout_constraintTop_toBottomOf="@id/btnLogout"
-        app:layout_constraintStart_toStartOf="parent"/>
+    </RelativeLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnMyCreatedClub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="내가 만든 동호회 가기"
-        android:textColor="@color/colorSecondaryText"
-        app:cornerRadius="10dp"
-        app:backgroundTint="@color/btnColorPositive"
-        android:textStyle="bold"
-        android:layout_marginStart="10dp"
-        app:layout_constraintTop_toBottomOf="@id/btnLogout"
-        app:layout_constraintStart_toEndOf="@id/btnCreateClub"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnThemeSelector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="테마 선택"
-        android:textColor="@color/colorSecondaryText"
-        app:cornerRadius="10dp"
-        app:backgroundTint="@color/btnColorPositive"
-        android:textStyle="bold"
-        android:layout_marginStart="10dp"
-        app:layout_constraintTop_toBottomOf="@id/btnCreateClub"
-        app:layout_constraintStart_toStartOf="parent"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="30dp">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnMyJoinClub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="내가 가입한 클럽"
-        android:textColor="@color/colorSecondaryText"
-        app:cornerRadius="10dp"
-        app:backgroundTint="@color/btnColorPositive"
-        android:textStyle="bold"
-        android:layout_marginStart="10dp"
-        app:layout_constraintTop_toBottomOf="@id/btnThemeSelector"
-        app:layout_constraintStart_toStartOf="parent"/>
+            <!-- 로그인 영역 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="24dp"
+                android:background="@color/colorPrimaryDark"
+                android:paddingHorizontal="24dp">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="동호회 검색"
-        android:textColor="@color/colorSecondaryText"
-        app:cornerRadius="10dp"
-        app:backgroundTint="@color/btnColorPositive"
-        android:textStyle="bold"
-        android:layout_marginStart="10dp"
-        app:layout_constraintTop_toBottomOf="@id/btnThemeSelector"
-        app:layout_constraintStart_toEndOf="@id/btnMyJoinClub"/>
+                <TextView
+                    android:id="@+id/tvUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textStyle="bold"
+                    android:layout_alignParentStart="true"
+                    tools:text="로그인해 주세요"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnVote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="투표"
-        android:textColor="@color/colorSecondaryText"
-        app:cornerRadius="10dp"
-        app:backgroundTint="@color/btnColorPositive"
-        android:textStyle="bold"
-        android:layout_marginStart="10dp"
-        app:layout_constraintTop_toBottomOf="@id/btnThemeSelector"
-        app:layout_constraintStart_toEndOf="@id/btnSearch"/>
+                <com.example.playergroup.custom.IncludeBorderLineTextView
+                    android:id="@+id/tvLoginOut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"
+                    android:layout_alignParentEnd="true"
+                    tools:text="로그인"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorSecondaryText"
+                    android:text="테마 변경하기"
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@id/tvUserName"
+                    android:layout_alignParentStart="true"/>
+
+                <com.example.playergroup.custom.IncludeBorderLineTextView
+                    android:id="@+id/tvCurrentTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@id/tvLoginOut"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/colorSecondaryText"
+                    tools:text="시스템 테마 사용중"/>
+
+            </RelativeLayout>
+
+            <!-- 푸쉬 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:layout_marginTop="24dp"
+                android:textSize="13dp"
+                android:layout_marginStart="24dp"
+                android:textStyle="bold"
+                android:text="앱푸쉬 알림" />
+
+            <include
+                android:id="@+id/llPush"
+                layout="@layout/view_setting_switch"/>
+
+            <include
+                layout="@layout/view_thick_divider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="24dp" />
+
+            <!-- 앱 접근권한 -->
+            <TextView
+                android:id="@+id/tvPermissionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:textSize="13dp"
+                android:layout_marginStart="24dp"
+                android:textStyle="bold"
+                android:text="앱 접근 권한" />
+
+            <include
+                android:id="@+id/llPermission1"
+                layout="@layout/view_setting_permission" />
+
+            <include
+                layout="@layout/view_thin_divider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp" />
+
+            <include
+                android:id="@+id/llPermission2"
+                layout="@layout/view_setting_permission" />
+
+            <include
+                layout="@layout/view_thick_divider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="24dp" />
+
+            <!-- 앱 버전정보 -->
+            <TextView
+                android:id="@+id/tvAppVerTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:textSize="13dp"
+                android:layout_marginStart="24dp"
+                android:textStyle="bold"
+                android:text="앱 버전 정보" />
+
+            <TextView
+                android:id="@+id/tvAppVer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="24dp"
+                android:textSize="15dp"
+                tools:text="버전정보 1.0.0"/>
+
+            <include
+                android:id="@+id/dividerWithDropOutText"
+                layout="@layout/view_thick_divider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="24dp" />
+
+            <com.example.playergroup.custom.IncludeBorderLineTextView
+                android:id="@+id/tvDropOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorSecondaryText"
+                android:text="회원 탈퇴"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>
