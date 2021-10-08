@@ -1,4 +1,4 @@
-package com.example.playergroup.ui.dropout
+package com.example.playergroup.ui.dialog.dropout
 
 import android.annotation.SuppressLint
 import android.app.Dialog

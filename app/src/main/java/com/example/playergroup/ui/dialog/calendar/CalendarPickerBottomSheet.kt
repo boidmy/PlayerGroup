@@ -1,4 +1,4 @@
-package com.example.playergroup.ui.scrollselector
+package com.example.playergroup.ui.dialog.calendar
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -9,42 +9,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playergroup.R
-import com.example.playergroup.custom.SliderLayoutManager
-import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
-import com.example.playergroup.databinding.DialogSelectorBinding
-import com.example.playergroup.util.VerticalMarginDecoration
+import com.example.playergroup.ui.dialog.calendar.BaseCalendar.Companion.DAYS_OF_WEEK
+import com.example.playergroup.databinding.DialogCalendarBottomSheetBinding
 import com.example.playergroup.util.click
-import com.example.playergroup.util.toPx
+import com.example.playergroup.util.setItemAnimatorDuration
 import com.example.playergroup.util.viewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
-
-    private val binding by viewBinding(DialogSelectorBinding::bind)
-    private val viewModel: ScrollSelectorViewModel by viewModels()
-
+class CalendarPickerBottomSheet: BottomSheetDialogFragment() {
     companion object {
         lateinit var callback: (String) -> Unit
-        const val TYPE = "type"
-        fun newInstance(type: ScrollSelectorType, callback: (String) -> Unit): ScrollSelectorBottomSheet =
-            ScrollSelectorBottomSheet().apply {
+        fun newInstance(callback: (String) -> Unit): CalendarPickerBottomSheet =
+            CalendarPickerBottomSheet().apply {
                 this@Companion.callback = callback
-                arguments = Bundle().apply {
-                    putSerializable(TYPE, type)
-                }
+                arguments = Bundle().apply {}
             }
-
-        enum class ScrollSelectorType {
-            HEIGHT,
-            WEIGHT,
-            YEAROFBIRTH,
-            SEX,
-            POSITION
-        }
     }
+
+    private val binding by viewBinding(DialogCalendarBottomSheetBinding::bind)
+    private val calendarViewModel by viewModels<CalendarViewModel>()
 
     @SuppressLint("RestrictedApi")
     override fun setupDialog(dialog: Dialog, style: Int) {
@@ -61,7 +49,6 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
             val behavior = BottomSheetBehavior.from(it)
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
             behavior.peekHeight = 0
-            behavior.isDraggable = false
             behavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     when (newState) {
@@ -72,6 +59,7 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
                         BottomSheetBehavior.STATE_SETTLING -> {}
                     }
                 }
+
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {}
             })
         } ?: run {
@@ -84,40 +72,61 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.dialog_selector, container, false)
+    ): View? = inflater.inflate(R.layout.dialog_calendar_bottom_sheet, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
+        initViewModel()
+    }
 
-        val viewType = (arguments?.get(TYPE) as? ScrollSelectorType) ?: POSITION
-        val selectorList = viewModel.getSelectorDataList(viewType)
-
-        binding.title.text = viewModel.getSelectorTitle(viewType)
-
-        binding.btnClose click { dismiss() }
-
-        binding.selectorList.apply {
-            layoutManager = SliderLayoutManager(requireContext()).apply {
-                this.callback = object: SliderLayoutManager.OnItemSelectedListener {
-                    override fun onItemSelected(layoutPosition: Int) {}
-                }
+    private fun initView() {
+        with (binding) {
+            btnConfirm click {
+                val selectDate = calendarViewModel.getSelectedDate()
+                //Toast.makeText(requireContext(), selectDate, Toast.LENGTH_SHORT).show()
+                callback.invoke(selectDate)
+                dismiss()
             }
 
-            adapter = SliderListAdapter().also {
-                it.items = selectorList
-                val defaultIndex = selectorList.size / 2
-                smoothScrollToPosition(defaultIndex)
+            ivYearBefore click {
+                calendarViewModel.setBeforeYear()
             }
 
-            if (itemDecorationCount == 0)
-                addItemDecoration(VerticalMarginDecoration(itemMargin = 13.toPx))
+            ivYearAfter click {
+                calendarViewModel.setAfterYear()
+            }
+
+            ivMonthBefore click {
+                calendarViewModel.setBeforeMonth()
+            }
+
+            ivMonthAfter click {
+                calendarViewModel.setAfterMonth()
+            }
+
+            calendarList.apply {
+                layoutManager = GridLayoutManager(requireContext(), DAYS_OF_WEEK)
+                adapter = CalendarListAdapter()
+                setItemAnimatorDuration(100L)
+            }
         }
+    }
 
-        binding.btnConfirm click {
-            val index = (binding.selectorList.layoutManager as? SliderLayoutManager)?.selectIndex ?: -1
-            if (index == -1) dismiss()
-            callback.invoke(selectorList.getOrNull(index) ?: "")
-            dismiss()
+    private fun getCalendarList() = (binding.calendarList.adapter as? CalendarListAdapter)?.items
+
+    private fun initViewModel() {
+        calendarViewModel.apply {
+            getCalendarDataSet = this@CalendarPickerBottomSheet::getCalendarList
+            setCalendarData()
+
+            calendarCurrentDateLiveData.observe(viewLifecycleOwner, Observer {
+                binding.tvCurrentDate.text = it
+            })
+
+            calendarListLiveData.observe(viewLifecycleOwner, Observer {
+                (binding.calendarList.adapter as? CalendarListAdapter)?.items = it
+            })
         }
     }
 }

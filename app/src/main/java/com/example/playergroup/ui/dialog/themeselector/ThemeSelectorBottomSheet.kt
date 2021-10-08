@@ -1,4 +1,4 @@
-package com.example.playergroup.ui.themeselector
+package com.example.playergroup.ui.dialog.themeselector
 
 import android.annotation.SuppressLint
 import android.app.Dialog

@@ -1,4 +1,4 @@
-package com.example.playergroup.ui.calendar
+package com.example.playergroup.ui.dialog.calendar
 
 import java.util.*
 

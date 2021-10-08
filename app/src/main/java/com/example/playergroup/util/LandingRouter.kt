@@ -7,14 +7,13 @@ import android.net.Uri
 import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 import android.provider.Settings
 import android.util.Log
-import androidx.fragment.app.commitNow
 import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.R
 import com.example.playergroup.data.*
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.club.ClubActivity
 import com.example.playergroup.ui.club.create.CreateClubActivity
-import com.example.playergroup.ui.dropout.DropOutBottomSheet
+import com.example.playergroup.ui.dialog.dropout.DropOutBottomSheet
 import com.example.playergroup.ui.login.InitLoginScreenActivity
 import com.example.playergroup.ui.login.LoginType
 import com.example.playergroup.ui.login.fragments.BottomSheetLoginFragment
@@ -22,7 +21,7 @@ import com.example.playergroup.ui.main.MainActivity
 import com.example.playergroup.ui.mypage.MyPageActivity
 import com.example.playergroup.ui.search.SearchActivity
 import com.example.playergroup.ui.setting.SettingActivity
-import com.example.playergroup.ui.themeselector.ThemeSelectorBottomSheet
+import com.example.playergroup.ui.dialog.themeselector.ThemeSelectorBottomSheet
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
