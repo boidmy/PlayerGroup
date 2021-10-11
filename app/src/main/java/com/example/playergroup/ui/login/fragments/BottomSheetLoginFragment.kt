@@ -10,17 +10,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.playergroup.R
 import com.example.playergroup.custom.DialogCustom
 import com.example.playergroup.data.Landing
-import com.example.playergroup.data.LoginResultCallback
 import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.DialogLoginContainerBinding
 import com.example.playergroup.ui.login.JoinLoginAdapter
@@ -34,7 +31,6 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import io.reactivex.android.schedulers.AndroidSchedulers
 
 class BottomSheetLoginFragment: BottomSheetDialogFragment() {
 

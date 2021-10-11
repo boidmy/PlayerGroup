@@ -7,7 +7,6 @@ import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.board.BoardViewModel
 import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet
 import com.example.playergroup.ui.scrollselector.ScrollSelectorKeyValueBottomSheet
-import com.example.playergroup.util.CategoryUtil
 import com.example.playergroup.util.click
 
 class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
@@ -23,23 +22,13 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
 
     fun initView() {
         with(binding) {
-            val key = when (configModule.categorySelectMode) {
-                CategoryUtil.RECRUIT_CATEGORY.value -> CategoryUtil.RECRUIT_CATEGORY.key
-                CategoryUtil.FREE_CATEGORY.value -> CategoryUtil.FREE_CATEGORY.key
-                else -> ""
-            }
-
-            if (key.isEmpty()) {
-
-            }
-
             categoryListText click {
                 setScrollerPicker(ScrollSelectorBottomSheet.Companion.ScrollSelectorType.CATEGORY)
             }
 
             btnNoticeBoard click {
                 viewModel.selectCategory?.let { key ->
-                    viewModel.addBoardItem(
+                    viewModel.insertBoard(
                         key = key,
                         title = boardEditTitle.text.toString(),
                         sub = boardEditSub.text.toString(),
@@ -57,11 +46,12 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
     }
 
     private fun setScrollerPicker(type: ScrollSelectorBottomSheet.Companion.ScrollSelectorType) {
-        val newInstance = ScrollSelectorKeyValueBottomSheet.newInstance(type) {
+        ScrollSelectorKeyValueBottomSheet.newInstance(type) {
             binding.categoryListText.setText(it.first)
-            viewModel.selectCategory = it.second
+            viewModel.setSelectCategory(it.second)
+        }.run {
+            if (isVisible) return
+            show(supportFragmentManager, tag)
         }
-        if (newInstance.isVisible) return
-        newInstance.show(supportFragmentManager, newInstance.tag)
     }
 }

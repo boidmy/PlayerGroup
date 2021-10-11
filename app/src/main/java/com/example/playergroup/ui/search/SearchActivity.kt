@@ -2,7 +2,6 @@ package com.example.playergroup.ui.search
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.ImageView
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playergroup.R
-import com.example.playergroup.data.ClubInfo
 import com.example.playergroup.databinding.ActivitySearchBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.util.ViewTypeConst

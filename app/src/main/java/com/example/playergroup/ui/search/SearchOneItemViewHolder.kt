@@ -1,7 +1,6 @@
 package com.example.playergroup.ui.search
 
 import android.view.ViewGroup
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.playergroup.data.ClubInfo
 import com.example.playergroup.databinding.ViewSearchOneItemBinding

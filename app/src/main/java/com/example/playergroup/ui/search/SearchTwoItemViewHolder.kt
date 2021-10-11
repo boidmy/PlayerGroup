@@ -1,11 +1,8 @@
 package com.example.playergroup.ui.search
 
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.playergroup.data.ClubInfo
-import com.example.playergroup.databinding.ViewSearchOneItemBinding
 import com.example.playergroup.databinding.ViewSearchTwoItemBinding
 import com.example.playergroup.ui.base.BaseViewHolder
 import com.example.playergroup.util.viewBinding

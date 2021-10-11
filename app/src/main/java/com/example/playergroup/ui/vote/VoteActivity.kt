@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.playergroup.databinding.ActivityVoteBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.vote.list.VoteAdapter

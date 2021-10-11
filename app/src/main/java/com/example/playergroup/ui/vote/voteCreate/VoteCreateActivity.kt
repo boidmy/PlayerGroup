@@ -2,15 +2,10 @@ package com.example.playergroup.ui.vote.voteCreate
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.playergroup.data.room.VoteData
 import com.example.playergroup.data.room.VoteModel
 import com.example.playergroup.databinding.ActivityVoteCreateBinding
 import com.example.playergroup.ui.base.BaseActivity
-import com.example.playergroup.ui.login.LoginViewModel
-import com.example.playergroup.ui.vote.VoteViewModel
-import com.example.playergroup.ui.vote.votePick.VotePickViewModel
 import com.example.playergroup.util.click
 import dagger.hilt.android.AndroidEntryPoint
 

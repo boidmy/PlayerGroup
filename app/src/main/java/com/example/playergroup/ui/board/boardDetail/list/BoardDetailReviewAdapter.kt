@@ -1,20 +1,19 @@
-package com.example.playergroup.ui.board.boardList.list
+package com.example.playergroup.ui.board.boardDetail.list
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.playergroup.data.NoticeBoardItem
-import com.example.playergroup.databinding.ViewBoardListItemBinding
+import com.example.playergroup.databinding.ViewBoardReviewItemBinding
 import com.example.playergroup.ui.base.BaseViewHolder
-import com.example.playergroup.util.click
 import com.example.playergroup.util.diffUtilExtensions
 import com.example.playergroup.util.viewBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class BoardListAdapter(private val callback: (key: String) -> Unit) : RecyclerView.Adapter<BaseViewHolder<ViewBinding>>() {
+class BoardDetailReviewAdapter : RecyclerView.Adapter<BaseViewHolder<ViewBinding>>() {
 
     var items: MutableList<NoticeBoardItem> = mutableListOf()
         set(value) {
@@ -24,17 +23,13 @@ class BoardListAdapter(private val callback: (key: String) -> Unit) : RecyclerVi
                 it.dispatchUpdatesTo(this)
             }
         }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ViewBinding> {
-        return BoardListViewHolder(parent) as BaseViewHolder<ViewBinding>
+        return BoardDetailReviewViewHolder(parent) as BaseViewHolder<ViewBinding>
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<ViewBinding>, position: Int) {
-        items.getOrNull(position)?.let { item ->
-            holder.itemView click {
-                callback(item.key)
-            }
-            holder.onBindView(item)
+        items.getOrNull(position)?.let {
+            holder.onBindView(it)
         }
     }
 
@@ -44,7 +39,7 @@ class BoardListAdapter(private val callback: (key: String) -> Unit) : RecyclerVi
 
     private fun calculate(value: MutableList<NoticeBoardItem>, callback: (DiffUtil.DiffResult) -> Unit) {
         CoroutineScope(Dispatchers.Default).launch {
-            val diffUtil = this@BoardListAdapter.diffUtilExtensions(
+            val diffUtil = this@BoardDetailReviewAdapter.diffUtilExtensions(
                 oldList = items,
                 newList = value,
                 itemCompare = { o, n -> o?.key == n?.key},
@@ -57,14 +52,14 @@ class BoardListAdapter(private val callback: (key: String) -> Unit) : RecyclerVi
     }
 }
 
-class BoardListViewHolder(parent: ViewGroup) :
-    BaseViewHolder<ViewBoardListItemBinding>(parent.viewBinding(ViewBoardListItemBinding::inflate)) {
+class BoardDetailReviewViewHolder(parent: ViewGroup) :
+    BaseViewHolder<ViewBoardReviewItemBinding>(parent.viewBinding(ViewBoardReviewItemBinding::inflate)) {
 
     override fun onBindView(data: Any?) {
         (data as? NoticeBoardItem)?.let {
             with(binding) {
-                boardTitle.text = it.title
-                boardSub.text = it.sub
+                reviewEditTime.text = it.time
+                reviewSub.text = it.sub
             }
         }
     }

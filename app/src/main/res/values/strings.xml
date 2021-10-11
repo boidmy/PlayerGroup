@@ -77,6 +77,7 @@
     <string name="board_category_select">게시판을 선택해주세요</string>
     <string name="board_title">제목을 입력해주세요.</string>
     <string name="board_sub">내용을 작성해주세요.</string>
+    <string name="board_review_edit">댓글을 작성해보세요.</string>
 
     <string name="service_drop_out_info">정말로 서비스 회원 탈퇴를 진행 하시겠습니까?\n확인을 누르면 바로 회원 탈퇴가 진행됩니다.</string>
 

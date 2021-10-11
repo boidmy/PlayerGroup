@@ -15,7 +15,6 @@ import com.example.playergroup.databinding.ActivityIntroBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.util.LandingRouter
 import com.example.playergroup.util.appVersion
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

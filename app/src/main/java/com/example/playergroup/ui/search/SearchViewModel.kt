@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.playergroup.data.BaseDataSet
 import com.example.playergroup.data.ClubInfo
-import com.example.playergroup.data.UserInfo
 import com.example.playergroup.ui.base.BaseViewModel
 import com.example.playergroup.util.ViewTypeConst.SEARCH_ONE_TYPE
 import com.example.playergroup.util.ViewTypeConst.SEARCH_TWO_TYPE

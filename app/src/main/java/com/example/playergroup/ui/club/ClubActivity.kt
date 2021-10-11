@@ -6,8 +6,6 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.playergroup.data.ClubInfo
 import com.example.playergroup.data.INTENT_EXTRA_PRIMARY_KEY
-import com.example.playergroup.data.INTENT_EXTRA_STRING_PARAM
-import com.example.playergroup.data.INTENT_EXTRA_URI_TO_STRING_PARAM
 import com.example.playergroup.databinding.ActivityClubBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.util.showToast

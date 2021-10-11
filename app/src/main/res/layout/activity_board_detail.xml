@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="10dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="10dp" />
+
+        <TextView
+            android:id="@+id/boardTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="제목입니다." />
+
+        <TextView
+            android:id="@+id/boardEditId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="닉네임자리"
+            app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/boardTitle" />
+
+        <TextView
+            android:id="@+id/boardEditTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/boardEditId"
+            tools:text="2021.01.01 20:11" />
+
+        <TextView
+            android:id="@+id/boardViews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="20"
+            app:layout_constraintStart_toEndOf="@+id/boardEditTime"
+            app:layout_constraintTop_toTopOf="@+id/boardEditTime" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorDividers"
+            app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/boardEditTime" />
+
+        <TextView
+            android:id="@+id/boardSub"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:minHeight="300dp"
+            app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            tools:text="내용입니다" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorDividers"
+            app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/boardSub" />
+
+        <EditText
+            android:id="@+id/boardReviewEdit"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/transparent"
+            android:gravity="top"
+            android:hint="@string/board_review_edit"
+            app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+        <Button
+            android:id="@+id/reviewSend"
+            android:layout_width="90dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/edge_round_send"
+            android:enabled="false"
+            android:text="@string/save"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="@+id/boardReviewEdit"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/boardReviewEdit" />
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorDividers"
+            app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/boardReviewEdit" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/boardReview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/divider3"
+            tools:listitem="@layout/view_board_review_item" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+

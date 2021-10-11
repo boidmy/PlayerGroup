@@ -1,7 +1,6 @@
 package com.example.playergroup.ui.main
 
 import android.content.Intent
-import android.net.Network
 import android.os.Bundle
 import com.example.playergroup.api.AuthRepository
 import com.example.playergroup.api.ClubRepository
@@ -10,8 +9,6 @@ import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ActivityMainBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.dropout.DropOutBottomSheet
-import com.example.playergroup.ui.login.fragments.BottomSheetLoginFragment
-import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet
 import com.example.playergroup.ui.themeselector.ThemeSelectorBottomSheet
 import com.example.playergroup.ui.vote.VoteActivity
 import com.example.playergroup.util.LandingRouter
@@ -86,7 +83,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
 
         binding.btnNoticeBoard click {
-            LandingRouter.move(this, RouterEvent(type = Landing.NOTICEBOARD))
+            LandingRouter.move(this, RouterEvent(type = Landing.BOARD))
         }
 
     }

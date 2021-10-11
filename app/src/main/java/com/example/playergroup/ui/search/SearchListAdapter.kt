@@ -9,10 +9,7 @@ import com.example.playergroup.ui.base.BaseViewHolder
 import com.example.playergroup.ui.base.EmptyErrorViewHolder
 import com.example.playergroup.util.ViewTypeConst
 import com.example.playergroup.util.diffUtilExtensions
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

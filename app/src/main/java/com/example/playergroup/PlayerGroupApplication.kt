@@ -1,7 +1,6 @@
 package com.example.playergroup
 
 import android.app.Application
-import android.content.Context
 import com.example.playergroup.data.UserInfo
 import com.example.playergroup.util.ConfigModule
 import com.example.playergroup.util.applyTheme

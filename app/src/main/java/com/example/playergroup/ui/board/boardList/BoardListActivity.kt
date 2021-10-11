@@ -3,7 +3,7 @@ package com.example.playergroup.ui.board.boardList
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.example.playergroup.data.NoticeBoardItem
+import com.example.playergroup.data.*
 import com.example.playergroup.databinding.ActivityBoardListBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.board.BoardViewModel
@@ -12,13 +12,16 @@ import com.example.playergroup.ui.board.boardList.list.BoardListAdapter
 import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet
 import com.example.playergroup.ui.scrollselector.ScrollSelectorKeyValueBottomSheet
 import com.example.playergroup.util.CategoryUtil
+import com.example.playergroup.util.LandingRouter.move
 import com.example.playergroup.util.click
 import com.example.playergroup.util.observe
 
 class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
 
     private val viewModel: BoardViewModel by viewModels()
-    private val adapter = BoardListAdapter()
+    private val adapter = BoardListAdapter {
+        itemClickEvent(it)
+    }
 
     override fun getViewBinding() = ActivityBoardListBinding.inflate(layoutInflater)
 
@@ -28,20 +31,16 @@ class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
     }
 
     fun initView() {
-        with(binding) {
-            //var key = "0o2JJc0Zyethb84KT8HR" //키 어떻게 처리할지
-            val key = when (configModule.categorySelectMode) {
-                CategoryUtil.RECRUIT_CATEGORY.value -> CategoryUtil.RECRUIT_CATEGORY.key
-                else -> CategoryUtil.FREE_CATEGORY.key
-            }
-            key.let {
-                viewModel.getBoardList(it)
-            }
-            boardRv.adapter = adapter
+        when (configModule.categorySelectMode) {
+            CategoryUtil.RECRUIT_CATEGORY.value -> setSelectCategory(CategoryUtil.RECRUIT_CATEGORY.key)
+            else -> setSelectCategory(CategoryUtil.FREE_CATEGORY.key)
+        }
 
+        with(binding) {
+            boardRv.adapter = adapter
+            categoryListText.setText(configModule.categorySelectMode)
             boardWrite click {
                 val intent = Intent(this@BoardListActivity, BoardCreateActivity::class.java)
-                intent.putExtra("key", key)
                 startActivity(intent) //액티비티리절트 받아서 처리할지 확인후 처리
             }
             categoryListText click {
@@ -57,16 +56,35 @@ class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
     }
 
     private fun setScrollerPicker(type: ScrollSelectorBottomSheet.Companion.ScrollSelectorType) {
-        val newInstance = ScrollSelectorKeyValueBottomSheet.newInstance(type) {
+        ScrollSelectorKeyValueBottomSheet.newInstance(type) {
             binding.categoryListText.setText(it.first)
-            viewModel.getBoardList(it.second)
+            setSelectCategory(it.second)
             configModule.categorySelectMode = it.first
+        }.run {
+            if (isVisible) return
+            show(supportFragmentManager, tag)
         }
-        if (newInstance.isVisible) return
-        newInstance.show(supportFragmentManager, newInstance.tag)
     }
 
     private fun renderBoardList(boardList: MutableList<NoticeBoardItem>?) {
         adapter.items = boardList.orEmpty() as MutableList<NoticeBoardItem>
+    }
+
+    private fun setSelectCategory(key: String) {
+        viewModel.setSelectCategory(key)
+        getBoardList()
+    }
+
+    private fun getBoardList() {
+        viewModel.getBoardList()
+    }
+
+    private fun itemClickEvent(itemKey: String) {
+        Bundle().apply {
+            putString(INTENT_EXTRA_KEY_FIRST, viewModel.selectCategory)
+            putString(INTENT_EXTRA_KEY_SECOND, itemKey)
+        }.run {
+            move(this@BoardListActivity, RouterEvent(type = Landing.BOARD_DETAIL, bundle = this))
+        }
     }
 }

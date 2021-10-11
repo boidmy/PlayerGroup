@@ -7,11 +7,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.ViewModelProvider
 import com.example.playergroup.R
 import com.example.playergroup.databinding.ActivityVotePickBinding
 import com.example.playergroup.ui.base.BaseActivity
-import com.example.playergroup.ui.vote.VoteViewModel
 import com.example.playergroup.ui.vote.votePick.list.VotePickAdapter
 import com.example.playergroup.ui.vote.votePick.list.VotePickReviewAdapter
 import com.example.playergroup.util.click

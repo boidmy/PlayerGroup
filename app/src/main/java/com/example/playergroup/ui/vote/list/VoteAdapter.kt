@@ -6,7 +6,6 @@ import androidx.viewbinding.ViewBinding
 import com.example.playergroup.data.room.VoteModel
 import com.example.playergroup.databinding.VoteListItemBinding
 import com.example.playergroup.ui.base.BaseViewHolder
-import com.example.playergroup.util.click
 import com.example.playergroup.util.viewBinding
 
 class VoteAdapter(private val callback: (Int) -> Unit) : RecyclerView.Adapter<BaseViewHolder<ViewBinding>>() {

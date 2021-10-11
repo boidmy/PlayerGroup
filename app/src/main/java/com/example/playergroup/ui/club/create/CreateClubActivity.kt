@@ -1,8 +1,6 @@
 package com.example.playergroup.ui.club.create
 
-import android.app.ActivityOptions
 import android.content.Intent
-import android.net.Network
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -12,7 +10,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.playergroup.data.Landing
@@ -20,7 +17,6 @@ import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ActivityCreateClubBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.util.*
-import android.util.Pair as UtilPair
 
 class CreateClubActivity: BaseActivity<ActivityCreateClubBinding>() {
 

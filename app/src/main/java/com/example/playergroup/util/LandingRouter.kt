@@ -8,6 +8,7 @@ import android.util.Log
 import com.example.playergroup.ui.main.MainActivity
 import com.example.playergroup.R
 import com.example.playergroup.data.*
+import com.example.playergroup.ui.board.boardDetail.BoardDetailActivity
 import com.example.playergroup.ui.board.boardList.BoardListActivity
 import com.example.playergroup.ui.club.ClubActivity
 import com.example.playergroup.ui.club.create.CreateClubActivity
@@ -31,7 +32,8 @@ object LandingRouter {
                 Landing.CREATE_CLUB -> gotoCreateClub(context, event)
                 Landing.CLUB_MAIN -> gotoClubMain(context, event)
                 Landing.SEARCH -> gotoSearch(context, event)
-                Landing.NOTICEBOARD -> gotoBoardList(context)
+                Landing.BOARD -> gotoBoardList(context)
+                Landing.BOARD_DETAIL -> gotoBoardDetail(context, event)
             }
         } catch (e: Exception) {
             Log.e("####", "${event.type} -> ${e.localizedMessage}")
@@ -130,6 +132,14 @@ object LandingRouter {
     private fun gotoTypeMove(context: Context, event: RouterEvent) {
         when (event.type) {
             Landing.GALLERY -> gotoGallery(context, event)
+        }
+    }
+
+    private fun gotoBoardDetail(context: Context, event: RouterEvent) {
+        Intent(context, BoardDetailActivity::class.java).apply {
+            putExtra(INTENT_BUNDLE, event.bundle)
+        }.run {
+            context.startActivity(this)
         }
     }
 }
