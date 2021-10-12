@@ -36,8 +36,7 @@ class ScrollSelectorViewModel : BaseViewModel() {
         "여자"
     )
 
-    private var boardCategoryList: List<Pair<String, String>> =
-        NoticeBoardCategoryList().categoryList
+    private var boardCategoryList: MutableList<String> = NoticeBoardCategoryList().categoryList
 
     private fun getYearOfBirth(): MutableList<String> {
         val list = mutableListOf<String>()
@@ -62,6 +61,7 @@ class ScrollSelectorViewModel : BaseViewModel() {
             HEIGHT -> getHeight()
             YEAROFBIRTH -> getYearOfBirth()
             SEX -> sexList
+            CATEGORY -> boardCategoryList
             else -> positionList
         }
 

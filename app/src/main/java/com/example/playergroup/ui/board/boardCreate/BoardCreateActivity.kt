@@ -6,7 +6,7 @@ import com.example.playergroup.databinding.ActivityBoardCreateBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.board.BoardViewModel
 import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet
-import com.example.playergroup.ui.scrollselector.ScrollSelectorKeyValueBottomSheet
+import com.example.playergroup.util.CategoryUtil
 import com.example.playergroup.util.click
 
 class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
@@ -21,9 +21,14 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
     }
 
     fun initView() {
+        setSelectCategory(getCateKey(configModule.categorySelectMode))
         with(binding) {
+            categoryListText.setText(configModule.categorySelectMode)
             categoryListText click {
-                setScrollerPicker(ScrollSelectorBottomSheet.Companion.ScrollSelectorType.CATEGORY)
+                setScrollerPicker(
+                    ScrollSelectorBottomSheet.Companion.ScrollSelectorType.CATEGORY,
+                    categoryListText.text.toString()
+                )
             }
 
             btnNoticeBoard click {
@@ -45,13 +50,27 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
         })
     }
 
-    private fun setScrollerPicker(type: ScrollSelectorBottomSheet.Companion.ScrollSelectorType) {
-        ScrollSelectorKeyValueBottomSheet.newInstance(type) {
-            binding.categoryListText.setText(it.first)
-            viewModel.setSelectCategory(it.second)
+    private fun setScrollerPicker(
+        type: ScrollSelectorBottomSheet.Companion.ScrollSelectorType,
+        selectItem: String
+    ) {
+        ScrollSelectorBottomSheet.newInstance(type, selectItem) {
+            binding.categoryListText.setText(it)
+            setSelectCategory(getCateKey(it))
         }.run {
             if (isVisible) return
             show(supportFragmentManager, tag)
+        }
+    }
+
+    private fun setSelectCategory(key: String) {
+        viewModel.setSelectCategory(key)
+    }
+
+    private fun getCateKey(name: String?): String {
+        return when (name) {
+            CategoryUtil.RECRUIT_CATEGORY.value -> CategoryUtil.RECRUIT_CATEGORY.key
+            else -> CategoryUtil.FREE_CATEGORY.key
         }
     }
 }

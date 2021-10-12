@@ -10,7 +10,6 @@ import com.example.playergroup.ui.board.BoardViewModel
 import com.example.playergroup.ui.board.boardCreate.BoardCreateActivity
 import com.example.playergroup.ui.board.boardList.list.BoardListAdapter
 import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet
-import com.example.playergroup.ui.scrollselector.ScrollSelectorKeyValueBottomSheet
 import com.example.playergroup.util.CategoryUtil
 import com.example.playergroup.util.LandingRouter.move
 import com.example.playergroup.util.click
@@ -31,10 +30,7 @@ class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
     }
 
     fun initView() {
-        when (configModule.categorySelectMode) {
-            CategoryUtil.RECRUIT_CATEGORY.value -> setSelectCategory(CategoryUtil.RECRUIT_CATEGORY.key)
-            else -> setSelectCategory(CategoryUtil.FREE_CATEGORY.key)
-        }
+        setSelectCategory(getCateKey(configModule.categorySelectMode))
 
         with(binding) {
             boardRv.adapter = adapter
@@ -44,7 +40,10 @@ class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
                 startActivity(intent) //액티비티리절트 받아서 처리할지 확인후 처리
             }
             categoryListText click {
-                setScrollerPicker(ScrollSelectorBottomSheet.Companion.ScrollSelectorType.CATEGORY)
+                setScrollerPicker(
+                    ScrollSelectorBottomSheet.Companion.ScrollSelectorType.CATEGORY,
+                    categoryListText.text.toString()
+                )
             }
         }
     }
@@ -55,11 +54,21 @@ class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
         }
     }
 
-    private fun setScrollerPicker(type: ScrollSelectorBottomSheet.Companion.ScrollSelectorType) {
-        ScrollSelectorKeyValueBottomSheet.newInstance(type) {
-            binding.categoryListText.setText(it.first)
-            setSelectCategory(it.second)
-            configModule.categorySelectMode = it.first
+    private fun getCateKey(name: String?): String {
+        return when (name) {
+            CategoryUtil.RECRUIT_CATEGORY.value -> CategoryUtil.RECRUIT_CATEGORY.key
+            else -> CategoryUtil.FREE_CATEGORY.key
+        }
+    }
+
+    private fun setScrollerPicker(
+        type: ScrollSelectorBottomSheet.Companion.ScrollSelectorType,
+        selectItem: String
+    ) {
+        ScrollSelectorBottomSheet.newInstance(type, selectItem) {
+            binding.categoryListText.setText(it)
+            setSelectCategory(getCateKey(it))
+            configModule.categorySelectMode = it
         }.run {
             if (isVisible) return
             show(supportFragmentManager, tag)
