@@ -7,14 +7,14 @@ import android.net.Uri
 import android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 import android.provider.Settings
 import android.util.Log
-import androidx.fragment.app.commitNow
 import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.R
 import com.example.playergroup.data.*
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.club.ClubActivity
 import com.example.playergroup.ui.club.create.CreateClubActivity
-import com.example.playergroup.ui.dropout.DropOutBottomSheet
+import com.example.playergroup.ui.dialog.adjust.AdjustBottomSheet
+import com.example.playergroup.ui.dialog.dropout.DropOutBottomSheet
 import com.example.playergroup.ui.login.InitLoginScreenActivity
 import com.example.playergroup.ui.login.LoginType
 import com.example.playergroup.ui.login.fragments.BottomSheetLoginFragment
@@ -22,7 +22,7 @@ import com.example.playergroup.ui.main.MainActivity
 import com.example.playergroup.ui.mypage.MyPageActivity
 import com.example.playergroup.ui.search.SearchActivity
 import com.example.playergroup.ui.setting.SettingActivity
-import com.example.playergroup.ui.themeselector.ThemeSelectorBottomSheet
+import com.example.playergroup.ui.dialog.themeselector.ThemeSelectorBottomSheet
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -50,9 +50,18 @@ object LandingRouter {
                 Landing.THEME_SELECTOR -> goToThemeSelector(context, event)
                 Landing.SETTING -> goToSetting(context, event)
                 Landing.APP_PERMISSION_SETTING -> gotoAppSettings(context, event)
+                Landing.ADJUST_LIST -> goToAdjustList(context, event)
             }
         } catch (e: Exception) {
             Log.e("####", "${event.type} -> ${e.localizedMessage}")
+        }
+    }
+
+    private fun goToAdjustList(context: Context, event: RouterEvent) {
+        (context as? BaseActivity<*>)?.let { activity ->
+            val newInstance = AdjustBottomSheet.newInstance()
+            if (newInstance.isVisible) return
+            newInstance.show(activity.supportFragmentManager, newInstance.tag)
         }
     }
 

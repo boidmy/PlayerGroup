@@ -54,6 +54,10 @@ class MainMyInfoViewHolder(parent: ViewGroup):
                 LandingRouter.move(itemView.context, RouterEvent(Landing.SETTING))
             }
 
+            tvAdjust click {
+                LandingRouter.move(itemView.context, RouterEvent(Landing.ADJUST_LIST))
+            }
+
             tvMySchedule click {
                 //todo 내 일정 보여줄 수 있는 화면 만들기 ( 동호회 참가 하기로 한 일정 노출 )
                 itemView.context debugToast {"준비중입니다."}
