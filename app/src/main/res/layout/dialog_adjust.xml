@@ -35,11 +35,69 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/title"/>
 
+    <TextView
+        android:id="@+id/adjustMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="순서 변경"
+        android:gravity="center_vertical"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:textColor="@color/colorSecondaryText"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintTop_toBottomOf="@id/btnClose"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        app:drawableStartCompat="@drawable/icon_up_down_swap" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/adjustGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="cancel, divider, save" />
+
+    <TextView
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="취소"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:textColor="@color/colorSecondaryText"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintTop_toBottomOf="@id/btnClose"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="10dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorSecondaryText"
+        app:layout_constraintTop_toBottomOf="@id/btnClose"
+        app:layout_constraintEnd_toStartOf="@id/cancel"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView"/>
+
+    <TextView
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="저장"
+        android:layout_marginEnd="8dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:textColor="@color/colorSecondaryText"
+        app:layout_constraintTop_toBottomOf="@id/btnClose"
+        app:layout_constraintEnd_toStartOf="@id/divider"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/title"/>
+        android:layout_marginTop="48dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/view_adjust_item"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

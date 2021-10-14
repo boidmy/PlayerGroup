@@ -24,15 +24,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class AdjustBottomSheet: BottomSheetDialogFragment() {
 
-    private val testList: MutableList<AdjustDataSet> by lazy {
+    private val currentMenuList: MutableList<AdjustDataSet> by lazy {
         mutableListOf(
-            AdjustDataSet(viewType = ViewTypeConst.MAIN_MY_INFO, title = "내정보", subTitle = "내 정보를 볼 수 있는 곳입니다."),
             AdjustDataSet(viewType = ViewTypeConst.MAIN_CLUB_INFO, title = "클럽정보", subTitle = "내가 가입한 클럽 정보를 볼 수 있는 곳 입니다."),
             AdjustDataSet(viewType = ViewTypeConst.MAIN_CLUB_PICK_INFO, title = "내 클럽 PICK", subTitle = "내가 관심 있는 클럽 정보를 볼 수 있는 곳 입니다."),
             AdjustDataSet(viewType = ViewTypeConst.MAIN_PICK_LOCATION_INFO, title = "내 장소 PICK", subTitle = "내가 관심 있는 장소 정보를 볼 수 있는 곳 입니다."),
             AdjustDataSet(viewType = ViewTypeConst.MAIN_APP_COMMON_BOARD_INFO, title = "게시판", subTitle = "새로운 게시판 글을 한눈에 볼 수 있습니다.")
         )
     }
+
+    private var isAdjustMode = false
 
     private val binding by viewBinding(DialogAdjustBinding::bind)
     private val itemTouchHelper by lazy {
@@ -41,27 +42,25 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
             override fun onMove(recyclerView: RecyclerView,
                                 viewHolder: RecyclerView.ViewHolder,
                                 target: RecyclerView.ViewHolder): Boolean {
-
-                val adapter = recyclerView.adapter as AdjustListAdapter
-                val from = viewHolder.adapterPosition
-                val to = target.adapterPosition
-                adapter.moveItem(from, to)
-                adapter.notifyItemMoved(from, to)
+                if (isAdjustMode) {
+                    val adapter = recyclerView.adapter as AdjustListAdapter
+                    val from = viewHolder.adapterPosition
+                    val to = target.adapterPosition
+                    adapter.moveItem(from, to)
+                    adapter.notifyItemMoved(from, to)
+                }
                 return true
             }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            }
-
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
             override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
                 super.onSelectedChanged(viewHolder, actionState)
-                if (actionState == ACTION_STATE_DRAG) {
+                if (actionState == ACTION_STATE_DRAG && isAdjustMode) {
                     viewHolder?.itemView?.alpha = 0.5f
                 }
             }
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
-                viewHolder.itemView.alpha = 1.0f
+                if (isAdjustMode) viewHolder.itemView.alpha = 1.0f
             }
         }
         ItemTouchHelper(simpleItemTouchCallback)
@@ -116,17 +115,52 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding) {
-            btnClose click { dismiss() }
-            recyclerView.apply {
-                itemTouchHelper.attachToRecyclerView(this)
-                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                adapter = AdjustListAdapter{
-                    itemTouchHelper.startDrag(it)
-                }.apply {
-                    submitList(testList)
-                }
+        initBtnView()
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        binding.recyclerView.apply {
+            itemTouchHelper.attachToRecyclerView(this)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = AdjustListAdapter{
+                itemTouchHelper.startDrag(it)
+            }.apply {
+                submitList(currentMenuList)
             }
         }
     }
+
+    private fun initBtnView() {
+        with(binding) {
+            setAdjustModeViewChange(isAdjustMode)  // initSetting
+            btnClose click { dismiss() }
+
+            adjustMenu click {
+                isAdjustMode = true
+                setAdjustModeViewChange(isAdjustMode)
+                (binding.recyclerView.adapter as? AdjustListAdapter)?.setAdjustMode(isAdjustMode)
+            }
+
+            cancel click {
+                isAdjustMode = false
+                setAdjustModeViewChange(isAdjustMode)
+                (binding.recyclerView.adapter as? AdjustListAdapter)?.setAdjustMode(isAdjustMode)
+            }
+
+            save click {
+                isAdjustMode = false
+                setAdjustModeViewChange(isAdjustMode)
+                (binding.recyclerView.adapter as? AdjustListAdapter)?.setAdjustMode(isAdjustMode)
+            }
+        }
+    }
+
+    private fun setAdjustModeViewChange(isState: Boolean) {
+        with(binding) {
+            adjustMenu.visibility = if (isState) View.GONE else View.VISIBLE
+            adjustGroup.visibility = if (isState) View.VISIBLE else View.GONE
+        }
+    }
+
 }

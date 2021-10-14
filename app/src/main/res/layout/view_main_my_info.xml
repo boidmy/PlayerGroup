@@ -142,15 +142,16 @@
         android:id="@+id/tvAdjust"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="컨텐츠 퍈집"
+        android:text="컨텐츠 한눈에 보기"
         android:padding="4dp"
         android:gravity="center"
         android:foreground="?android:attr/selectableItemBackground"
         android:textColor="@color/colorSecondaryText"
         android:layout_marginEnd="20dp"
+        android:drawablePadding="5dp"
         app:layout_constraintTop_toBottomOf="@id/contentLayer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:drawableStartCompat="@drawable/icon_up_down_swap"
+        app:drawableStartCompat="@drawable/icon_menu"
         app:drawableTint="@color/colorSecondaryText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

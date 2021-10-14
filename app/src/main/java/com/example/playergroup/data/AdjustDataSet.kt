@@ -4,5 +4,7 @@ import com.example.playergroup.util.ViewTypeConst
 data class AdjustDataSet(
     override var viewType: ViewTypeConst,
     val title: String,
-    val subTitle: String
+    val subTitle: String,
+    var isAdjustMode: Boolean = false
+    //todo 화면들이 만들질 경우 랜딩타입 정보를 넣어 줄 예정
 ): BaseDataSet()

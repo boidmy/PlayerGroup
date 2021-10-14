@@ -8,9 +8,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.example.playergroup.R
 import com.example.playergroup.data.AdjustDataSet
 import com.example.playergroup.databinding.ViewAdjustItemBinding
 import com.example.playergroup.ui.base.BaseViewHolder
+import com.example.playergroup.util.click
+import com.example.playergroup.util.debugToast
 import com.example.playergroup.util.viewBinding
 
 class AdjustListAdapter(
@@ -28,12 +31,12 @@ class AdjustListAdapter(
         ItemViewHolder(parent) as BaseViewHolder<ViewBinding>
     override fun onBindViewHolder(holder: BaseViewHolder<ViewBinding>, position: Int) {
         holder.onBindView(currentList?.getOrNull(position))
-        holder.itemView.setOnTouchListener { v, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                touchCallback.invoke(holder)
-            }
-            false
-        }
+    }
+
+    fun setAdjustMode(isState: Boolean) {
+        val list = currentList.map { it.copy() }.toMutableList()
+        list.map { it.isAdjustMode = isState }
+        submitList(list)
     }
 
     fun moveItem(from: Int, to: Int) {
@@ -55,8 +58,26 @@ class AdjustListAdapter(
                 with (binding) {
                     tvTitle.text = it.title
                     tvSubTitle.text = it.subTitle
+
+                    ivDrag.setImageResource(
+                        if (it.isAdjustMode) R.drawable.icon_menu
+                        else R.drawable.icon_go
+                    )
+                }
+
+                itemView click {
+                    if (!data.isAdjustMode)
+                        itemView.context debugToast {" 화면이 만들어질 경우 랜딩 예정 "}
+                }
+
+                itemView.setOnTouchListener { v, event ->
+                    if (event.action == MotionEvent.ACTION_DOWN && it.isAdjustMode) {
+                        touchCallback.invoke(this)
+                    }
+                    false
                 }
             }
         }
     }
+
 }
