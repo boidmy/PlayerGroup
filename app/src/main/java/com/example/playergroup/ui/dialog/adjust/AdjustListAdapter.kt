@@ -15,6 +15,7 @@ import com.example.playergroup.ui.base.BaseViewHolder
 import com.example.playergroup.util.click
 import com.example.playergroup.util.debugToast
 import com.example.playergroup.util.viewBinding
+import java.util.*
 
 class AdjustListAdapter(
     private val touchCallback: ((RecyclerView.ViewHolder) -> Unit)
@@ -40,7 +41,7 @@ class AdjustListAdapter(
     }
 
     fun moveItem(from: Int, to: Int) {
-        val list = currentList.toMutableList()
+        /*val list = currentList.toMutableList()
         val fromLocation = list[from]
         list.removeAt(from)
         if (to < from) {
@@ -48,6 +49,9 @@ class AdjustListAdapter(
         } else {
             list.add(to - 1, fromLocation)
         }
+        submitList(list)*/
+        val list = currentList?.map { it.copy() }?.toMutableList()
+        Collections.swap(list, from, to)
         submitList(list)
     }
 

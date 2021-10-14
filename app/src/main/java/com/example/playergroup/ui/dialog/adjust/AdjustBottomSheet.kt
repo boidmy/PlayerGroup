@@ -15,29 +15,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playergroup.R
 import com.example.playergroup.data.AdjustDataSet
 import com.example.playergroup.databinding.DialogAdjustBinding
+import com.example.playergroup.util.ConfigModule
 import com.example.playergroup.util.ViewTypeConst
 import com.example.playergroup.util.click
 import com.example.playergroup.util.viewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.common.reflect.TypeToken
+import java.lang.reflect.Type
+import com.google.gson.Gson
 
 class AdjustBottomSheet: BottomSheetDialogFragment() {
 
-    private val currentMenuList: MutableList<AdjustDataSet> by lazy {
-        mutableListOf(
-            AdjustDataSet(viewType = ViewTypeConst.MAIN_CLUB_INFO, title = "클럽정보", subTitle = "내가 가입한 클럽 정보를 볼 수 있는 곳 입니다."),
-            AdjustDataSet(viewType = ViewTypeConst.MAIN_CLUB_PICK_INFO, title = "내 클럽 PICK", subTitle = "내가 관심 있는 클럽 정보를 볼 수 있는 곳 입니다."),
-            AdjustDataSet(viewType = ViewTypeConst.MAIN_PICK_LOCATION_INFO, title = "내 장소 PICK", subTitle = "내가 관심 있는 장소 정보를 볼 수 있는 곳 입니다."),
-            AdjustDataSet(viewType = ViewTypeConst.MAIN_APP_COMMON_BOARD_INFO, title = "게시판", subTitle = "새로운 게시판 글을 한눈에 볼 수 있습니다.")
-        )
-    }
-
     private var isAdjustMode = false
+    private lateinit var currentMenuList: MutableList<AdjustDataSet>
 
     private val binding by viewBinding(DialogAdjustBinding::bind)
     private val itemTouchHelper by lazy {
-        val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(UP or DOWN or START or END, 0) {
+        val simpleItemTouchCallback = object : SimpleCallback(UP or DOWN or START or END, 0) {
 
             override fun onMove(recyclerView: RecyclerView,
                                 viewHolder: RecyclerView.ViewHolder,
@@ -47,7 +43,6 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
                     val from = viewHolder.adapterPosition
                     val to = target.adapterPosition
                     adapter.moveItem(from, to)
-                    adapter.notifyItemMoved(from, to)
                 }
                 return true
             }
@@ -117,6 +112,25 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         initBtnView()
         initRecyclerView()
+        getData()
+    }
+
+    private fun getData() {
+        val json = ConfigModule(requireContext()).adjustMainMenuList
+        val type: Type = object : TypeToken<MutableList<AdjustDataSet>>() {}.type
+        var list: MutableList<AdjustDataSet> = Gson().fromJson(json, type) ?: mutableListOf<AdjustDataSet>()
+
+        if (list.isNullOrEmpty()) {
+            // 데이터가 저장되어 있는게 없으면 디폴트 값은 아래와 같다.
+            list = mutableListOf(
+                AdjustDataSet(viewType = ViewTypeConst.MAIN_CLUB_INFO, title = "클럽정보", subTitle = "내가 가입한 클럽 정보를 볼 수 있는 곳 입니다."),
+                AdjustDataSet(viewType = ViewTypeConst.MAIN_CLUB_PICK_INFO, title = "내 클럽 PICK", subTitle = "내가 관심 있는 클럽 정보를 볼 수 있는 곳 입니다."),
+                AdjustDataSet(viewType = ViewTypeConst.MAIN_PICK_LOCATION_INFO, title = "내 장소 PICK", subTitle = "내가 관심 있는 장소 정보를 볼 수 있는 곳 입니다."),
+                AdjustDataSet(viewType = ViewTypeConst.MAIN_APP_COMMON_BOARD_INFO, title = "게시판", subTitle = "새로운 게시판 글을 한눈에 볼 수 있습니다.")
+            )
+        }
+        currentMenuList = list.map { it.copy() }.toMutableList()
+        getAdapter()?.submitList(list)
     }
 
     private fun initRecyclerView() {
@@ -125,8 +139,6 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = AdjustListAdapter{
                 itemTouchHelper.startDrag(it)
-            }.apply {
-                submitList(currentMenuList)
             }
         }
     }
@@ -139,22 +151,31 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
             adjustMenu click {
                 isAdjustMode = true
                 setAdjustModeViewChange(isAdjustMode)
-                (binding.recyclerView.adapter as? AdjustListAdapter)?.setAdjustMode(isAdjustMode)
+                getAdapter()?.setAdjustMode(isAdjustMode)
             }
 
             cancel click {
                 isAdjustMode = false
                 setAdjustModeViewChange(isAdjustMode)
-                (binding.recyclerView.adapter as? AdjustListAdapter)?.setAdjustMode(isAdjustMode)
+                getAdapter()?.setAdjustMode(isAdjustMode)
+                binding.recyclerView.post {
+                    getAdapter()?.submitList(currentMenuList)
+                }
             }
 
             save click {
                 isAdjustMode = false
                 setAdjustModeViewChange(isAdjustMode)
-                (binding.recyclerView.adapter as? AdjustListAdapter)?.setAdjustMode(isAdjustMode)
+                getAdapter()?.setAdjustMode(isAdjustMode)
+                binding.recyclerView.post {
+                    currentMenuList = getAdapter()?.currentList?.toMutableList() ?: mutableListOf()
+                    ConfigModule(requireContext()).adjustMainMenuList = Gson().toJson(currentMenuList)
+                }
             }
         }
     }
+
+    private fun getAdapter() = (binding.recyclerView.adapter as? AdjustListAdapter)
 
     private fun setAdjustModeViewChange(isState: Boolean) {
         with(binding) {
