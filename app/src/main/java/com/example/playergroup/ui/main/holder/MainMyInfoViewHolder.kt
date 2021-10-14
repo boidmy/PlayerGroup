@@ -55,7 +55,7 @@ class MainMyInfoViewHolder(parent: ViewGroup):
             }
 
             tvAdjust click {
-                itemView.context debugToast {"준비중입니다."}
+                LandingRouter.move(itemView.context, RouterEvent(Landing.ADJUST_LIST))
             }
 
             tvMySchedule click {

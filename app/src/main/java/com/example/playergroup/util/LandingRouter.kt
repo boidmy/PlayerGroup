@@ -13,6 +13,7 @@ import com.example.playergroup.data.*
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.club.ClubActivity
 import com.example.playergroup.ui.club.create.CreateClubActivity
+import com.example.playergroup.ui.dialog.adjust.AdjustBottomSheet
 import com.example.playergroup.ui.dialog.dropout.DropOutBottomSheet
 import com.example.playergroup.ui.login.InitLoginScreenActivity
 import com.example.playergroup.ui.login.LoginType
@@ -49,9 +50,18 @@ object LandingRouter {
                 Landing.THEME_SELECTOR -> goToThemeSelector(context, event)
                 Landing.SETTING -> goToSetting(context, event)
                 Landing.APP_PERMISSION_SETTING -> gotoAppSettings(context, event)
+                Landing.ADJUST_LIST -> goToAdjustList(context, event)
             }
         } catch (e: Exception) {
             Log.e("####", "${event.type} -> ${e.localizedMessage}")
+        }
+    }
+
+    private fun goToAdjustList(context: Context, event: RouterEvent) {
+        (context as? BaseActivity<*>)?.let { activity ->
+            val newInstance = AdjustBottomSheet.newInstance()
+            if (newInstance.isVisible) return
+            newInstance.show(activity.supportFragmentManager, newInstance.tag)
         }
     }
 
