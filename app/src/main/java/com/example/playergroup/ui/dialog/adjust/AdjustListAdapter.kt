@@ -31,7 +31,7 @@ class AdjustListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ViewBinding> =
         ItemViewHolder(parent) as BaseViewHolder<ViewBinding>
     override fun onBindViewHolder(holder: BaseViewHolder<ViewBinding>, position: Int) {
-        holder.onBindView(currentList?.getOrNull(position))
+        holder.onBindView(currentList.getOrNull(position))
     }
 
     fun setAdjustMode(isState: Boolean) {
@@ -41,16 +41,7 @@ class AdjustListAdapter(
     }
 
     fun moveItem(from: Int, to: Int) {
-        /*val list = currentList.toMutableList()
-        val fromLocation = list[from]
-        list.removeAt(from)
-        if (to < from) {
-            list.add(to + 1 , fromLocation)
-        } else {
-            list.add(to - 1, fromLocation)
-        }
-        submitList(list)*/
-        val list = currentList?.map { it.copy() }?.toMutableList()
+        val list = currentList.map { it.copy() }.toMutableList()
         Collections.swap(list, from, to)
         submitList(list)
     }

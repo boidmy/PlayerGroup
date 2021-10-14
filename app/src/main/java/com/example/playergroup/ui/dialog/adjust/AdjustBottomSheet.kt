@@ -23,8 +23,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.common.reflect.TypeToken
-import java.lang.reflect.Type
 import com.google.gson.Gson
+import java.lang.reflect.Type
 
 class AdjustBottomSheet: BottomSheetDialogFragment() {
 
@@ -84,18 +84,6 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
             behavior.peekHeight = 0
             behavior.isDraggable = false
-            behavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    when (newState) {
-                        BottomSheetBehavior.STATE_EXPANDED -> { }
-                        BottomSheetBehavior.STATE_COLLAPSED -> { dismiss() }
-                        BottomSheetBehavior.STATE_HIDDEN -> {}
-                        BottomSheetBehavior.STATE_DRAGGING -> {}
-                        BottomSheetBehavior.STATE_SETTLING -> {}
-                    }
-                }
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-            })
         } ?: run {
             //TODO 예외 처리 ..?
             dismiss()
@@ -170,6 +158,7 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
                 binding.recyclerView.post {
                     currentMenuList = getAdapter()?.currentList?.toMutableList() ?: mutableListOf()
                     ConfigModule(requireContext()).adjustMainMenuList = Gson().toJson(currentMenuList)
+                    //todo Main 에 알려주고 메인을 업데이트 해야 한다 . 그리고 이 창을 닫는다 .. 
                 }
             }
         }
