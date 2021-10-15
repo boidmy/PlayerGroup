@@ -13,12 +13,13 @@ import io.reactivex.schedulers.Schedulers
 
 class MainViewModel: BaseViewModel() {
 
-    private val _mainDataSetObserve: MutableLiveData<List<MainDataSet>> = MutableLiveData()
-    val mainDataSet: LiveData<List<MainDataSet>>
+    private val _mainDataSetObserve: MutableLiveData<MutableList<MainDataSet>> = MutableLiveData()
+    val mainDataSet: LiveData<MutableList<MainDataSet>>
         get() = _mainDataSetObserve
 
-    fun getMainData() {
-        Observable.fromCallable { createMainDataSet() }
+    // todo Refactoring..
+    fun getMainData(saveList: MutableList<ViewTypeConst>) {
+        Observable.fromCallable { createMainDataSet(saveList) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -29,15 +30,14 @@ class MainViewModel: BaseViewModel() {
             .addTo(compositeDisposable)
     }
 
-    private fun createMainDataSet(): MutableList<MainDataSet> {
+    private fun createMainDataSet(saveList: MutableList<ViewTypeConst>): MutableList<MainDataSet> {
         // todo Refactoring..
-        val moduls = mutableListOf<MainDataSet>(
-            MainDataSet(viewType = ViewTypeConst.MAIN_MY_INFO),
-            MainDataSet(viewType = ViewTypeConst.MAIN_CLUB_INFO),
-            MainDataSet(viewType = ViewTypeConst.MAIN_CLUB_PICK_INFO),
-            MainDataSet(viewType = ViewTypeConst.MAIN_PICK_LOCATION_INFO),
-            MainDataSet(viewType = ViewTypeConst.MAIN_APP_COMMON_BOARD_INFO)
+        val modules = mutableListOf<MainDataSet>(
+            MainDataSet(viewType = ViewTypeConst.MAIN_MY_INFO)
         )
-        return moduls
+        saveList.forEach {
+            modules.add(MainDataSet(viewType = it))
+        }
+        return modules
     }
 }

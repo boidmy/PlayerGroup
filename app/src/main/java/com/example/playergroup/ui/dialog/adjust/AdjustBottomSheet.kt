@@ -62,8 +62,10 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
     }
 
     companion object {
-        fun newInstance(): AdjustBottomSheet =
+        lateinit var callback: () -> Unit
+        fun newInstance(callback: () -> Unit): AdjustBottomSheet =
             AdjustBottomSheet().apply {
+                Companion.callback = callback
                 //todo arguments..
             }
     }
@@ -158,7 +160,9 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
                 binding.recyclerView.post {
                     currentMenuList = getAdapter()?.currentList?.toMutableList() ?: mutableListOf()
                     ConfigModule(requireContext()).adjustMainMenuList = Gson().toJson(currentMenuList)
-                    //todo Main 에 알려주고 메인을 업데이트 해야 한다 . 그리고 이 창을 닫는다 .. 
+                    //todo Main 에 알려주고 메인을 업데이트 해야 한다 . 그리고 이 창을 닫는다 ..
+                    callback.invoke()
+                    dismiss()
                 }
             }
         }

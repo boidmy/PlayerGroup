@@ -59,7 +59,9 @@ object LandingRouter {
 
     private fun goToAdjustList(context: Context, event: RouterEvent) {
         (context as? BaseActivity<*>)?.let { activity ->
-            val newInstance = AdjustBottomSheet.newInstance()
+            val newInstance = AdjustBottomSheet.newInstance {
+                activity.onReload()
+            }
             if (newInstance.isVisible) return
             newInstance.show(activity.supportFragmentManager, newInstance.tag)
         }

@@ -4,14 +4,20 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playergroup.data.AdjustDataSet
 import com.example.playergroup.data.Landing
 import com.example.playergroup.data.LoginStateChange
 import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ActivityMainBinding
 import com.example.playergroup.ui.base.BaseActivity
+import com.example.playergroup.util.ConfigModule
 import com.example.playergroup.util.LandingRouter
 import com.example.playergroup.util.RxBus
+import com.example.playergroup.util.ViewTypeConst
+import com.google.common.reflect.TypeToken
 import io.reactivex.rxkotlin.addTo
+import java.lang.reflect.Type
+import com.google.gson.Gson
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
@@ -28,10 +34,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             mainDataSet.observe(this@MainActivity, Observer { data ->
                 (binding.recyclerView.adapter as? MainListAdapter)?.let { adapter->
                     adapter.items = data
-                    adapter.notifyDataSetChanged()
                 }
             })
-            getMainData()
+            getMainData(getSaveMainList())
         }
 
         RxBus.listen(LoginStateChange::class.java).subscribe {
@@ -41,7 +46,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     LandingRouter.move(this, RouterEvent(type = Landing.MY_PAGE, paramBoolean = true))
                 } else {
                     //todo 메인 화면 업데이트
-                    viewModel.getMainData()
+                    viewModel.getMainData(getSaveMainList())
                 }
             } else {
                 LandingRouter.move(this@MainActivity, RouterEvent(Landing.START_LOGIN_SCREEN))
@@ -52,7 +57,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private fun initRecyclerView() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
-            adapter = MainListAdapter()
+            adapter = MainListAdapter(compositeDisposable)
         }
+    }
+
+    override fun onReload() {
+        viewModel.getMainData(getSaveMainList())
+    }
+
+    private fun getSaveMainList(): MutableList<ViewTypeConst> {
+        val json = ConfigModule(this).adjustMainMenuList
+        val type: Type = object : TypeToken<MutableList<AdjustDataSet>>() {}.type
+        val list: MutableList<AdjustDataSet> = Gson().fromJson(json, type) ?: mutableListOf<AdjustDataSet>()
+        var mainList = list.map { it.viewType }.toMutableList()
+        if (mainList.isNullOrEmpty()) {
+            mainList = mutableListOf(
+                ViewTypeConst.MAIN_CLUB_INFO,
+                ViewTypeConst.MAIN_CLUB_PICK_INFO,
+                ViewTypeConst.MAIN_PICK_LOCATION_INFO,
+                ViewTypeConst.MAIN_APP_COMMON_BOARD_INFO
+            )
+        }
+        return mainList
     }
 }
