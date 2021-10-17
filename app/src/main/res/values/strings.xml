@@ -38,6 +38,7 @@
     <string name="go_to_login">로그인 하러 가기</string>
     <string name="google_login">구글 로그인</string>
     <string name="go_to_login_page">이미 가입하셨나요? 로그인하기</string>
+    <string name="login_skip">둘러보기</string>
     <string name="join_ok">회원가입</string>
     <string name="login_sub_title">with your social network</string>
     <string name="input_name">이름</string>
@@ -53,6 +54,11 @@
     <string name="member_info_position">포지션</string>
     <string name="member_info_position_helper">ex ) 센터, 포워드, 가드.. </string>
     <string name="member_info_detail">간단하게 하고싶은 말</string>
+
+    <!-- 테마 -->
+    <string name="theme_system_default">시스템 기본 테마</string>
+    <string name="theme_light">밝은 테마</string>
+    <string name="theme_dark">어두운 테마</string>
 
     <!-- 캘린더 -->
     <string name="calendar_sun">일</string>

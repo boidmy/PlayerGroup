@@ -5,6 +5,7 @@ import com.example.playergroup.data.UserInfo
 import com.example.playergroup.util.ConfigModule
 import com.example.playergroup.util.applyTheme
 import com.example.playergroup.util.getThemeMode
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -23,6 +24,7 @@ class PlayerGroupApplication: Application() {
      * GlobalData
      */
     var userInfo: UserInfo? = null
+    fun isLogin() = FirebaseAuth.getInstance().currentUser != null
 
     override fun onCreate() {
         super.onCreate()

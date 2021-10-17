@@ -21,6 +21,7 @@ abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
 
     abstract fun getViewBinding(): B
     abstract fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?)
+    open fun onReload() {}
 
     private val FinishIntervalTime: Long = 2000   //화면 종료 버튼 2초 Setting
     private var backPressedTime: Long = 0
@@ -102,9 +103,4 @@ abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
     }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
 }

@@ -23,6 +23,7 @@ open class RouterEvent(
     var paramString: String? = null,
     var paramUriToString: String? = null,
     var paramBoolean: Boolean = false,
+    var paramInt: Int = -1,
     var activityResult: ActivityResultLauncher<Intent>? = null,
     var options: ActivityOptions? = null,
     val bundle: Bundle = Bundle()
@@ -30,7 +31,10 @@ open class RouterEvent(
 
 enum class Landing {
     MAIN,
+    START_LOGIN_SCREEN,
     LOGIN,
+    LOGOUT,
+    DROP_OUT,
     GOOGLE_LOGIN,
     GALLERY,
     MY_PAGE,
@@ -39,5 +43,9 @@ enum class Landing {
     SEARCH,
     BOARD,
     BOARD_WRITE,
-    BOARD_DETAIL
+    BOARD_DETAIL,
+    SETTING,
+    THEME_SELECTOR,
+    APP_PERMISSION_SETTING,
+    ADJUST_LIST
 }

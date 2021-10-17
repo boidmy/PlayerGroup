@@ -14,9 +14,9 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.playergroup.R
 import com.example.playergroup.custom.DialogCustom
-import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet
-import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType
-import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
+import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet
+import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType
+import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
 import com.example.playergroup.data.INTENT_EXTRA_PARAM
 import com.example.playergroup.data.Landing
 import com.example.playergroup.data.RouterEvent

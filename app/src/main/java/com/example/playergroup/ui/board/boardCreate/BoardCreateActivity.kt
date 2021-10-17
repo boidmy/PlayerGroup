@@ -5,7 +5,7 @@ import androidx.activity.viewModels
 import com.example.playergroup.databinding.ActivityBoardCreateBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.board.BoardViewModel
-import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet
+import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet
 import com.example.playergroup.util.CategoryUtil
 import com.example.playergroup.util.click
 

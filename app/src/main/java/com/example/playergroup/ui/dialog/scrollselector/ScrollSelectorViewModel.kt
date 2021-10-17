@@ -1,9 +1,9 @@
-package com.example.playergroup.ui.scrollselector
+package com.example.playergroup.ui.dialog.scrollselector
 
 import com.example.playergroup.data.NoticeBoardCategory
 import com.example.playergroup.data.NoticeBoardCategoryList
-import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType
-import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
+import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType
+import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
 import com.example.playergroup.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

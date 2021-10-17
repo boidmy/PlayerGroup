@@ -9,7 +9,7 @@ import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.board.BoardViewModel
 import com.example.playergroup.ui.board.boardCreate.BoardCreateActivity
 import com.example.playergroup.ui.board.boardList.list.BoardListAdapter
-import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet
+import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet
 import com.example.playergroup.util.CategoryUtil
 import com.example.playergroup.util.LandingRouter.move
 import com.example.playergroup.util.click

@@ -1,4 +1,4 @@
-package com.example.playergroup.ui.calendar
+package com.example.playergroup.ui.dialog.calendar
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playergroup.R
-import com.example.playergroup.ui.calendar.BaseCalendar.Companion.DAYS_OF_WEEK
+import com.example.playergroup.ui.dialog.calendar.BaseCalendar.Companion.DAYS_OF_WEEK
 import com.example.playergroup.databinding.DialogCalendarBottomSheetBinding
 import com.example.playergroup.util.click
 import com.example.playergroup.util.setItemAnimatorDuration

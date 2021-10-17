@@ -36,18 +36,18 @@ class BottomSheetLoginFragment: BottomSheetDialogFragment() {
 
     private val binding by viewBinding(DialogLoginContainerBinding::bind)
     private val loginViewModel by activityViewModels<LoginViewModel>()
-    private lateinit var callback: (Boolean) ->Unit
 
     //Google Login Activity Result
     private lateinit var getGoogleSignResult: ActivityResultLauncher<Intent>
+    private lateinit var onDismissListener: () -> Unit
 
     companion object {
-        fun newInstance(tabPosition: Int = 0, resultCallback: (Boolean) -> Unit): BottomSheetLoginFragment =
+        fun newInstance(tabPosition: Int = 0, onDismissListener: () -> Unit): BottomSheetLoginFragment =
             BottomSheetLoginFragment().apply {
                 arguments = Bundle().apply {
                     putInt(TAB_POSITION, tabPosition)
                 }
-                callback = resultCallback
+                this.onDismissListener = onDismissListener
             }
         const val TAB_POSITION = "tab_position"
     }
@@ -99,7 +99,8 @@ class BottomSheetLoginFragment: BottomSheetDialogFragment() {
                 firebaseResult.observe(viewLifecycleOwner, Observer { loginResultCallback ->
                     loadingProgress?.invoke(false)
                     if (loginResultCallback.isSuccess) {
-                        callback.invoke(true)
+                        onDismissListener.invoke()
+                        dismiss()
                     } else {
                         DialogCustom(requireContext())
                             .setMessage(R.string.dialog_alert_msg_error)
@@ -174,7 +175,6 @@ class BottomSheetLoginFragment: BottomSheetDialogFragment() {
             setCurrentItem(index, false)
         }
         binding.close click {
-            callback.invoke(false)
             dismiss()
         }
     }

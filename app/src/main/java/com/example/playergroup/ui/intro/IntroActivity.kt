@@ -70,7 +70,7 @@ class IntroActivity: BaseActivity<ActivityIntroBinding>() {
             delay(300L) //todo 스플래시 이미지 보여주는 시간 인데 나중에 작업할때 다시 처리 해 봅시다.
 
             if (introViewModel.currentUser == null) {
-                LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.LOGIN))
+                LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.START_LOGIN_SCREEN))
             } else {
                 introViewModel.getUserProfile(introViewModel.currentUser?.email)
             }

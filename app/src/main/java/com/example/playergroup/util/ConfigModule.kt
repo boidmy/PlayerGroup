@@ -12,6 +12,7 @@ class ConfigModule(context: Context) {
         const val KEY_THEME_MODE: String = "key_theme_mode"
         const val SEARCH_LIST_TWO_TYPE_MODE: String = "search_list_two_type_mode"
         const val BOARD_SELECT_CATEGORY: String = "board_category"
+        const val ADJUST_MAIN_MENU_LIST: String = "adjust_main_menu_list"
     }
 
     var configThemeMode: String?
@@ -25,6 +26,10 @@ class ConfigModule(context: Context) {
     var categorySelectMode: String?
         get() = PrefUtil.getString(configPref, BOARD_SELECT_CATEGORY)
         set(value) = PrefUtil.putString(configPref, BOARD_SELECT_CATEGORY, value)
+
+    var adjustMainMenuList: String?
+        get() = PrefUtil.getString(configPref, ADJUST_MAIN_MENU_LIST)
+        set(value) = PrefUtil.putString(configPref, ADJUST_MAIN_MENU_LIST, value)
 
     /*// 생체 인증 활성화 여부
     var isBiometricEnabled: Boolean?

@@ -1,4 +1,4 @@
-package com.example.playergroup.ui.scrollselector
+package com.example.playergroup.ui.dialog.scrollselector
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.playergroup.R
 import com.example.playergroup.custom.SliderLayoutManager
-import com.example.playergroup.ui.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
+import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
 import com.example.playergroup.databinding.DialogSelectorBinding
 import com.example.playergroup.util.VerticalMarginDecoration
 import com.example.playergroup.util.click
