@@ -13,6 +13,7 @@ import com.example.playergroup.data.*
 import com.example.playergroup.ui.board.boardDetail.BoardDetailActivity
 import com.example.playergroup.ui.board.boardList.BoardListActivity
 import com.example.playergroup.ui.base.BaseActivity
+import com.example.playergroup.ui.board.boardCreate.BoardCreateActivity
 import com.example.playergroup.ui.club.ClubActivity
 import com.example.playergroup.ui.club.create.CreateClubActivity
 import com.example.playergroup.ui.dialog.adjust.AdjustBottomSheet
@@ -63,7 +64,11 @@ object LandingRouter {
     }
 
     private fun goToBoardUpdate(context: Context, event: RouterEvent) {
-
+        Intent(context, BoardCreateActivity::class.java).apply {
+            putExtra(INTENT_BUNDLE, event.bundle)
+        }.run {
+            context.startActivity(this)
+        }
     }
 
     private fun goToAdjustList(context: Context, event: RouterEvent) {

@@ -3,6 +3,7 @@ package com.example.playergroup.ui.board.boardCreate
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.example.playergroup.data.INTENT_BUNDLE
+import com.example.playergroup.data.INTENT_SERIALIZABLE
 import com.example.playergroup.data.NoticeBoardItem
 import com.example.playergroup.databinding.ActivityBoardCreateBinding
 import com.example.playergroup.ui.base.BaseActivity
@@ -24,7 +25,9 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
 
     fun updateBoardView() {
         intent.getBundleExtra(INTENT_BUNDLE)?.let {
-
+            val item: NoticeBoardItem = it.getSerializable(INTENT_SERIALIZABLE) as NoticeBoardItem
+            binding.boardEditTitle.setText(item.title)
+            binding.boardEditSub.setText(item.sub)
         }
     }
 
