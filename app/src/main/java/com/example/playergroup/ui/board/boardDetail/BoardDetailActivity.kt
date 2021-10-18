@@ -7,19 +7,15 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import com.example.playergroup.R
-import com.example.playergroup.data.INTENT_BUNDLE
-import com.example.playergroup.data.INTENT_EXTRA_KEY_FIRST
-import com.example.playergroup.data.INTENT_EXTRA_KEY_SECOND
-import com.example.playergroup.data.NoticeBoardItem
+import com.example.playergroup.data.*
 import com.example.playergroup.databinding.ActivityBoardDetailBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.board.BoardViewModel
 import com.example.playergroup.ui.board.boardDetail.list.BoardDetailReviewAdapter
-import com.example.playergroup.util.TextWatcherUse
-import com.example.playergroup.util.click
-import com.example.playergroup.util.observe
-import com.example.playergroup.util.two
+import com.example.playergroup.util.*
+import com.example.playergroup.util.LandingRouter.move
 
 class BoardDetailActivity : BaseActivity<ActivityBoardDetailBinding>() {
 
@@ -55,8 +51,26 @@ class BoardDetailActivity : BaseActivity<ActivityBoardDetailBinding>() {
             reviewSend click {
                 insertReview()
             }
+
+            viewModel.boardItem.value?.let { item ->
+                boardUpdate.isVisible = pgApplication.userInfo?.email ?: "" == item.email
+                boardUpdate click {
+                    itemUpdate(item)
+                }
+            }
         }
-     }
+    }
+
+    private fun itemUpdate(item: NoticeBoardItem) {
+        Bundle().apply {
+            putSerializable(INTENT_SERIALIZABLE, item)
+        }.run {
+            move(
+                this@BoardDetailActivity,
+                RouterEvent(type = Landing.BOARD_WRITE_UPDATE, bundle = this)
+            )
+        }
+    }
 
     private fun observe() {
         with(viewModel) {
@@ -70,7 +84,7 @@ class BoardDetailActivity : BaseActivity<ActivityBoardDetailBinding>() {
             item?.let {
                 boardTitle.text = it.title
                 boardSub.text = it.sub
-                boardEditTime.text = it.time
+                boardEditTime.text = CalendarUtil.getDateFormat(it.time)
             }
         }
     }

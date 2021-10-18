@@ -7,6 +7,7 @@ import androidx.viewbinding.ViewBinding
 import com.example.playergroup.data.NoticeBoardItem
 import com.example.playergroup.databinding.ViewBoardListItemBinding
 import com.example.playergroup.ui.base.BaseViewHolder
+import com.example.playergroup.util.CalendarUtil
 import com.example.playergroup.util.click
 import com.example.playergroup.util.diffUtilExtensions
 import com.example.playergroup.util.viewBinding
@@ -65,6 +66,8 @@ class BoardListViewHolder(parent: ViewGroup) :
             with(binding) {
                 boardTitle.text = it.title
                 boardSub.text = it.sub
+                boardTime.text = CalendarUtil.getDateFormat(it.time)
+                userId.text = it.name
             }
         }
     }

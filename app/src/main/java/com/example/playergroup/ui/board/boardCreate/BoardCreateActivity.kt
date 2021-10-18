@@ -2,6 +2,8 @@ package com.example.playergroup.ui.board.boardCreate
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.example.playergroup.data.INTENT_BUNDLE
+import com.example.playergroup.data.NoticeBoardItem
 import com.example.playergroup.databinding.ActivityBoardCreateBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.board.BoardViewModel
@@ -20,6 +22,12 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
         observe()
     }
 
+    fun updateBoardView() {
+        intent.getBundleExtra(INTENT_BUNDLE)?.let {
+
+        }
+    }
+
     fun initView() {
         setSelectCategory(getCateKey(configModule.categorySelectMode))
         with(binding) {
@@ -33,12 +41,13 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
 
             btnNoticeBoard click {
                 viewModel.selectCategory?.let { key ->
-                    viewModel.insertBoard(
+                    viewModel.insertBoard(NoticeBoardItem(
                         key = key,
                         title = boardEditTitle.text.toString(),
                         sub = boardEditSub.text.toString(),
-                        id = ""
-                    )
+                        email = pgApplication.userInfo?.email ?: "",
+                        name = pgApplication.userInfo?.name ?: ""
+                    ))
                 }
             }
         }

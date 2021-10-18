@@ -9,6 +9,7 @@
     <string name="cancel">취소</string>
     <string name="send">보내기</string>
     <string name="save">등록하기</string>
+    <string name="update">수정하기</string>
 
     <string name="go_home">홈으로</string>
     <string name="register_success">등록되었습니다.</string>

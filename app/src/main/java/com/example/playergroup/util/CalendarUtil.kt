@@ -5,11 +5,15 @@ import java.util.*
 
 object CalendarUtil {
 
-    fun getDate(): String {
+    fun getDate(): Date {
+        return Calendar.getInstance().time
+    }
+
+    fun getDateFormat(date: Date): String {
         return SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.KOREA).apply {
             timeZone = TimeZone.getTimeZone("Asia/Seoul")
         }.run {
-            format(Calendar.getInstance().time)
+            format(date)
         }
     }
 }

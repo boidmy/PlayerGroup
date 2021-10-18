@@ -16,6 +16,7 @@ const val INTENT_EXTRA_URI_TO_STRING_PARAM = "intent_extra_uri_to_string_param"
 const val INTENT_BUNDLE = "bundle"
 const val INTENT_EXTRA_KEY_FIRST = "keyFirst"
 const val INTENT_EXTRA_KEY_SECOND = "keySecond"
+const val INTENT_SERIALIZABLE = "serializable"
 
 open class RouterEvent(
     val type: Landing,
@@ -43,6 +44,7 @@ enum class Landing {
     SEARCH,
     BOARD,
     BOARD_WRITE,
+    BOARD_WRITE_UPDATE,
     BOARD_DETAIL,
     SETTING,
     THEME_SELECTOR,

@@ -4,6 +4,8 @@ import com.example.playergroup.data.NoticeBoardCategory
 import com.example.playergroup.data.NoticeBoardItem
 import com.example.playergroup.ui.base.BaseRepository
 import com.example.playergroup.util.CalendarUtil
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
 
 class NoticeBoardRepository : BaseRepository() {
 
@@ -27,7 +29,7 @@ class NoticeBoardRepository : BaseRepository() {
     fun getBoardList(key: String, callback: (MutableList<NoticeBoardItem>?) -> Unit) {
         firebaseNoticeBoard.document(key).collection(
             "board"
-        ).get().addOnCompleteListener {
+        ).orderBy("time", Query.Direction.DESCENDING).get().addOnCompleteListener {
             if (it.isSuccessful) {
                 val list = it.result?.toObjects(NoticeBoardItem::class.java)
                 callback(list)
@@ -39,15 +41,16 @@ class NoticeBoardRepository : BaseRepository() {
      * 게시판 글 등록
      */
     fun insertBoard(
-        key: String,
-        title: String,
-        sub: String,
-        id: String,
+        item: NoticeBoardItem,
         callback: (Boolean) -> Unit
     ) {
-        val collection = firebaseNoticeBoard.document(key).collection("board")
+        val collection = firebaseNoticeBoard.document(item.key).collection("board")
         val boardKey = collection.document().id //데이터를 저장하기전에 미리 난수인 key를 뽑아내서 저장한다
-        NoticeBoardItem(title, sub, id, boardKey, CalendarUtil.getDate()).run {
+        item.apply {
+            time = CalendarUtil.getDate()
+            key = boardKey
+            //timestamp = FieldValue.serverTimestamp().toString()
+        }.run {
             collection.document(boardKey).set(this).addOnCompleteListener {
                 callback(it.isSuccessful)
             }
@@ -69,7 +72,7 @@ class NoticeBoardRepository : BaseRepository() {
         val boardKey = collection.document().id //데이터를 저장하기전에 미리 난수인 key를 뽑아내서 저장한다
         NoticeBoardItem(
             sub = edit,
-            userId = id,
+            email = id,
             key = boardKey,
             time = CalendarUtil.getDate()
         ).run {

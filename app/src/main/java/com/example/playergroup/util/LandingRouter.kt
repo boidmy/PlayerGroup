@@ -55,10 +55,15 @@ object LandingRouter {
                 Landing.SETTING -> goToSetting(context, event)
                 Landing.APP_PERMISSION_SETTING -> gotoAppSettings(context, event)
                 Landing.ADJUST_LIST -> goToAdjustList(context, event)
+                Landing.BOARD_WRITE_UPDATE -> goToBoardUpdate(context, event)
             }
         } catch (e: Exception) {
             Log.e("####", "${event.type} -> ${e.localizedMessage}")
         }
+    }
+
+    private fun goToBoardUpdate(context: Context, event: RouterEvent) {
+
     }
 
     private fun goToAdjustList(context: Context, event: RouterEvent) {

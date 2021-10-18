@@ -7,6 +7,7 @@ import androidx.viewbinding.ViewBinding
 import com.example.playergroup.data.NoticeBoardItem
 import com.example.playergroup.databinding.ViewBoardReviewItemBinding
 import com.example.playergroup.ui.base.BaseViewHolder
+import com.example.playergroup.util.CalendarUtil
 import com.example.playergroup.util.diffUtilExtensions
 import com.example.playergroup.util.viewBinding
 import kotlinx.coroutines.CoroutineScope
@@ -58,7 +59,7 @@ class BoardDetailReviewViewHolder(parent: ViewGroup) :
     override fun onBindView(data: Any?) {
         (data as? NoticeBoardItem)?.let {
             with(binding) {
-                reviewEditTime.text = it.time
+                reviewEditTime.text = CalendarUtil.getDateFormat(it.time)
                 reviewSub.text = it.sub
             }
         }

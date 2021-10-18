@@ -28,8 +28,8 @@ class BoardViewModel : BaseViewModel() {
     val selectDetail: String?
         get() = _selectDetail
 
-    fun insertBoard(key: String, title: String, sub: String, id: String) {
-        noticeRepository.insertBoard(key = key, title = title, sub = sub, id = id) {
+    fun insertBoard(item: NoticeBoardItem) {
+        noticeRepository.insertBoard(item) {
             _writeComplete.value = it
         }
     }
