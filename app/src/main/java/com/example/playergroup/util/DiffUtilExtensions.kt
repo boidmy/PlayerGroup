@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-fun <T> RecyclerView.Adapter<*>.diffUtilExtensions(
+fun <T> diffUtilResult(
     oldList: MutableList<T>?,
     newList: MutableList<T>?,
     itemCompare: (T?, T?) -> Boolean,

@@ -8,7 +8,7 @@ import com.example.playergroup.data.BaseDataSet
 import com.example.playergroup.ui.base.BaseViewHolder
 import com.example.playergroup.ui.base.EmptyErrorViewHolder
 import com.example.playergroup.util.ViewTypeConst
-import com.example.playergroup.util.diffUtilExtensions
+import com.example.playergroup.util.diffUtilResult
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -32,7 +32,7 @@ class SearchListAdapter(
 
     private fun calculate(value: MutableList<BaseDataSet>?, callback: (DiffUtil.DiffResult) -> Unit) {
         mCompositeDisposable.add(
-            Observable.fromCallable { this.diffUtilExtensions(
+            Observable.fromCallable { diffUtilResult(
                 oldList = items,
                 newList = value,
                 itemCompare = { o, n -> o?.viewType == n?.viewType },

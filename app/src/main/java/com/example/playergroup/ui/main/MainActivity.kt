@@ -31,10 +31,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun initObserver() {
         with(viewModel) {
-            mainDataSet.observe(this@MainActivity, Observer { data ->
-                (binding.recyclerView.adapter as? MainListAdapter)?.let { adapter->
-                    adapter.items = data
-                }
+            viewModel.getCurrentMainListData = { getMainListAdapter()?.items?.map { it.copy() }?.toMutableList() }
+            mainDataSet.observe(this@MainActivity, Observer {
+                getMainListAdapter()?.submitList(it.first, it.second)
             })
             getMainData(getSaveMainList())
         }
@@ -57,13 +56,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private fun initRecyclerView() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
-            adapter = MainListAdapter(compositeDisposable)
+            adapter = MainListAdapter()
         }
     }
 
-    override fun onReload() {
-        viewModel.getMainData(getSaveMainList())
-    }
+    override fun onReload() { viewModel.getMainData(getSaveMainList()) }
+    private fun getMainListAdapter() = binding.recyclerView.adapter as? MainListAdapter
 
     private fun getSaveMainList(): MutableList<ViewTypeConst> {
         val json = ConfigModule(this).adjustMainMenuList
