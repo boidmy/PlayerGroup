@@ -65,11 +65,13 @@ class AdjustListAdapter(
                         itemView.context debugToast {" 화면이 만들어질 경우 랜딩 예정 "}
                 }
 
-                itemView.setOnTouchListener { v, event ->
-                    if (event.action == MotionEvent.ACTION_DOWN && it.isAdjustMode) {
-                        touchCallback.invoke(this)
+                if (it.isAdjustMode) {
+                    itemView.setOnTouchListener { v, event ->
+                        if (event.action == MotionEvent.ACTION_DOWN) {
+                            touchCallback.invoke(this)
+                        }
+                        false
                     }
-                    false
                 }
             }
         }

@@ -125,7 +125,6 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
 
     private fun initRecyclerView() {
         binding.recyclerView.apply {
-            itemTouchHelper.attachToRecyclerView(this)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = AdjustListAdapter{
                 itemTouchHelper.startDrag(it)
@@ -142,6 +141,7 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
                 isAdjustMode = true
                 setAdjustModeViewChange(isAdjustMode)
                 getAdapter()?.setAdjustMode(isAdjustMode)
+                binding.recyclerView.setStateItemTouchHelper(true)
             }
 
             cancel click {
@@ -151,6 +151,7 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
                 binding.recyclerView.post {
                     getAdapter()?.submitList(currentMenuList)
                 }
+                binding.recyclerView.setStateItemTouchHelper(false)
             }
 
             save click {
@@ -164,8 +165,13 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
                     callback.invoke()
                     dismiss()
                 }
+                binding.recyclerView.setStateItemTouchHelper(false)
             }
         }
+    }
+
+    private fun RecyclerView.setStateItemTouchHelper(isState: Boolean) {
+        itemTouchHelper.attachToRecyclerView(if (isState) this else null)
     }
 
     private fun getAdapter() = (binding.recyclerView.adapter as? AdjustListAdapter)
