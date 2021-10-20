@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import com.example.playergroup.data.MainDataSet
-import com.example.playergroup.data.MainMyInfo
 import com.example.playergroup.ui.base.BaseViewModel
 import com.example.playergroup.util.ViewTypeConst
 import com.example.playergroup.util.diffUtilResult
