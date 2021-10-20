@@ -2,6 +2,7 @@ package com.example.playergroup.ui.main.holder
 
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.data.Landing
 import com.example.playergroup.data.RouterEvent
@@ -28,6 +29,9 @@ class MainMyInfoViewHolder(parent: ViewGroup):
                 //todo 프로필 이미지 Full Url 저장 하는 로직 구현 후 여기 구현 하자
                 tvName.text = pgApplication.userInfo?.name ?: ""
                 tvAttendanceRate.text = "-"
+                Glide.with(itemView.context)
+                    .load(pgApplication.userInfo?.img)
+                    .into(ivMyImg)
             } else {
                 tvName.text = "로그인이 필요합니다."
                 tvAttendanceRate.visibility = View.GONE

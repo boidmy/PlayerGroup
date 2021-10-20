@@ -53,7 +53,11 @@ class MainViewModel: BaseViewModel() {
             oldList = getCurrentList,
             newList = data,
             itemCompare = { o, n -> o?.viewType == n?.viewType },
-            contentCompare = { o, n -> o == n }
+            contentCompare = { o, n ->
+                if (n?.viewType == ViewTypeConst.MAIN_MY_INFO) {
+                    false
+                } else o == n
+            }
         )
         return Pair(data, result)
     }

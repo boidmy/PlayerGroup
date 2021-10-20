@@ -123,13 +123,9 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
 
     private fun setUserProfileView(userInfo: UserInfo) {
         with (binding) {
-            myPageViewModel.getUserProfileImg(userInfo.email) {
-                if (!isDestroyed && !it.isNullOrEmpty()) {
-                    Glide.with(this@MyPageActivity)
-                        .load(it)
-                        .into(ivProfileImg)
-                }
-            }
+            Glide.with(this@MyPageActivity)
+                .load(userInfo.img)
+                .into(ivProfileImg)
 
             etMyInfoName.setText(userInfo.name ?: "")
             etMyInfoHeight.setText(userInfo.height ?: "")

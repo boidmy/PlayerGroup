@@ -35,7 +35,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             mainDataSet.observe(this@MainActivity, Observer {
                 getMainListAdapter()?.submitList(it.first, it.second)
             })
-            getMainData(getSaveMainList())
         }
 
         RxBus.listen(LoginStateChange::class.java).subscribe {
@@ -62,6 +61,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onReload() { viewModel.getMainData(getSaveMainList()) }
     private fun getMainListAdapter() = binding.recyclerView.adapter as? MainListAdapter
+
+    override fun onResume() {
+        super.onResume()
+        onReload()
+    }
 
     private fun getSaveMainList(): MutableList<ViewTypeConst> {
         val json = ConfigModule(this).adjustMainMenuList
