@@ -17,5 +17,6 @@ enum class ViewTypeConst {
 
     // -- 내 클럽 정보 --
     MANAGEMENT_ITEM,
-    MANAGEMENT_EMPTY
+    MANAGEMENT_EMPTY,
+    MANAGEMENT_CREATE
 }

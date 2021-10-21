@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.R
 import com.example.playergroup.databinding.DialogManagementBinding
+import com.example.playergroup.util.HorizontalMarginDecoration
+import com.example.playergroup.util.toPx
 import com.example.playergroup.util.viewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -77,12 +79,14 @@ class ManagementBottomSheet: BottomSheetDialogFragment() {
                 adapter = ManagementListAdapter {
                     dismiss()
                 }
+                if (itemDecorationCount == 0) addItemDecoration(HorizontalMarginDecoration(0, 18.toPx, 18.toPx))
             }
             involvedClubList.apply {
                 layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 adapter = ManagementListAdapter {
                     dismiss()
                 }
+                if (itemDecorationCount == 0) addItemDecoration(HorizontalMarginDecoration(0, 18.toPx, 18.toPx))
             }
         }
     }

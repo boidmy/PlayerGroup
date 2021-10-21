@@ -9,6 +9,7 @@ import com.example.playergroup.data.ManagementDataSet
 import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ViewManagementClubEmptyBinding
 import com.example.playergroup.databinding.ViewManagementClubItemBinding
+import com.example.playergroup.databinding.ViewManagementCrateClubBinding
 import com.example.playergroup.ui.base.BaseViewHolder
 import com.example.playergroup.util.LandingRouter
 import com.example.playergroup.util.ViewTypeConst
@@ -30,10 +31,25 @@ class ManagementListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ViewBinding> =
         when(ViewTypeConst.values()[viewType]) {
             ViewTypeConst.MANAGEMENT_ITEM -> ItemViewHolder(parent)
+            ViewTypeConst.MANAGEMENT_CREATE -> CreateItemViewHolder(parent)
             else -> EmptyItemViewHolder(parent)
         } as BaseViewHolder<ViewBinding>
     override fun onBindViewHolder(holder: BaseViewHolder<ViewBinding>, position: Int) {
         holder.onBindView(items?.getOrNull(position))
+    }
+
+    private inner class CreateItemViewHolder(parent: ViewGroup) :
+        BaseViewHolder<ViewManagementCrateClubBinding>(
+            parent.viewBinding(ViewManagementCrateClubBinding::inflate)
+        ) {
+        override fun onBindView(data: Any?) {
+            (data as? ManagementDataSet)?.let {
+                itemView click {
+                    LandingRouter.move(itemView.context, RouterEvent(Landing.CREATE_CLUB))
+                    callback.invoke()
+                }
+            }
+        }
     }
 
     private inner class EmptyItemViewHolder(parent: ViewGroup):

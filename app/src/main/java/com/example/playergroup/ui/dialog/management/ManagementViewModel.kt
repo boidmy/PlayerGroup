@@ -53,6 +53,7 @@ class ManagementViewModel: BaseViewModel() {
                         clubPrimaryKey = makeClubList[index]
                     ))
                 }
+                if (modules.size >= 1) modules.add(ManagementDataSet(ViewTypeConst.MANAGEMENT_CREATE))
                 publishMakeClub.onNext(modules)
             }
         }
