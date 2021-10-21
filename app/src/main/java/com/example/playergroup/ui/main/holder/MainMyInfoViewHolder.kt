@@ -68,8 +68,7 @@ class MainMyInfoViewHolder(parent: ViewGroup):
             }
 
             tvMyClubs click {
-                //todo 내가 가입한 클럽 보여주는 화면 만들기
-                itemView.context debugToast {"준비중입니다."}
+                LandingRouter.move(itemView.context, RouterEvent(Landing.MY_CLUB_MANAGEMENT))
             }
         }
     }

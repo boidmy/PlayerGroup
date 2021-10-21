@@ -15,6 +15,7 @@ import com.example.playergroup.ui.club.ClubActivity
 import com.example.playergroup.ui.club.create.CreateClubActivity
 import com.example.playergroup.ui.dialog.adjust.AdjustBottomSheet
 import com.example.playergroup.ui.dialog.dropout.DropOutBottomSheet
+import com.example.playergroup.ui.dialog.management.ManagementBottomSheet
 import com.example.playergroup.ui.login.InitLoginScreenActivity
 import com.example.playergroup.ui.login.LoginType
 import com.example.playergroup.ui.login.fragments.BottomSheetLoginFragment
@@ -51,9 +52,22 @@ object LandingRouter {
                 Landing.SETTING -> goToSetting(context, event)
                 Landing.APP_PERMISSION_SETTING -> gotoAppSettings(context, event)
                 Landing.ADJUST_LIST -> goToAdjustList(context, event)
+                Landing.MY_CLUB_MANAGEMENT -> goToManagement(context, event)
             }
         } catch (e: Exception) {
             Log.e("####", "${event.type} -> ${e.localizedMessage}")
+        }
+    }
+
+    private fun goToManagement(context: Context, event: RouterEvent) {
+        if (pgApplication.isLogin()) {
+            (context as? BaseActivity<*>)?.let { activity ->
+                val newInstance = ManagementBottomSheet.newInstance()
+                if (newInstance.isVisible) return
+                newInstance.show(activity.supportFragmentManager, newInstance.tag)
+            }
+        } else {
+            goToLogin(context, event.apply { paramInt = LoginType.LOGIN.value })
         }
     }
 

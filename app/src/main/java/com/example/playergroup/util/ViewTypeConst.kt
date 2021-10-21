@@ -13,5 +13,9 @@ enum class ViewTypeConst {
     MAIN_APP_COMMON_BOARD_INFO,
 
     // -- 공통 --
-    EMPTY_ERROR
+    EMPTY_ERROR,
+
+    // -- 내 클럽 정보 --
+    MANAGEMENT_ITEM,
+    MANAGEMENT_EMPTY
 }

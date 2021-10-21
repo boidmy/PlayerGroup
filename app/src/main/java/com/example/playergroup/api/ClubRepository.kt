@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.playergroup.data.ClubInfo
 import com.example.playergroup.data.UserInfo
 import com.example.playergroup.ui.base.BaseRepository
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ClubRepository: BaseRepository() {
     /**
@@ -13,7 +14,8 @@ class ClubRepository: BaseRepository() {
     fun insertInitCreateClub(key: String, clubName: String, clubImg: Uri?, callback: (Boolean) -> Unit) {
         val clubData = hashMapOf(
             "clubAdmin" to firebaseAuth.currentUser?.email.toString(),
-            "clubName" to clubName
+            "clubName" to clubName,
+            "clubPrimaryKey" to key
         )
         if (clubImg != null) clubData["clubImg"] = clubName
         firebaseClub.document(key).set(clubData)
@@ -74,6 +76,20 @@ class ClubRepository: BaseRepository() {
      */
     fun getClubList(callback: (List<ClubInfo>?) -> Unit) {
         firebaseClub.get().addOnCompleteListener {
+            if (it.isSuccessful) {
+                val list = it.result?.toObjects(ClubInfo::class.java)
+                callback.invoke(list)
+            } else {
+                callback.invoke(null)
+            }
+        }
+    }
+
+    /**
+     * whereIn 은 최대 10개까지만 갖고 온다? ( 참고 )
+     */
+    fun getClubList(primaryKeys: List<String>, callback: (List<ClubInfo>?) -> Unit) {
+        firebaseClub.whereIn("clubPrimaryKey", primaryKeys).get().addOnCompleteListener {
             if (it.isSuccessful) {
                 val list = it.result?.toObjects(ClubInfo::class.java)
                 callback.invoke(list)

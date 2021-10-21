@@ -44,9 +44,7 @@ class DropOutBottomSheet: BottomSheetDialogFragment() {
         val bottomSheetDialog = dialogInterface as BottomSheetDialog
         bottomSheetDialog.setCanceledOnTouchOutside(true)  // outside Touch Dismiss Disable
         val bottomSheet = bottomSheetDialog.findViewById<View>(R.id.design_bottom_sheet)
-        bottomSheet?.let {
-            it.setBackgroundColor(Color.TRANSPARENT)
-        } ?: run {
+        bottomSheet?.setBackgroundColor(Color.TRANSPARENT) ?: run {
             //TODO 예외 처리 ..?
             dismiss()
         }
