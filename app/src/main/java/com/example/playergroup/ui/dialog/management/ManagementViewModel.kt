@@ -2,6 +2,7 @@ package com.example.playergroup.ui.dialog.management
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.playergroup.data.Landing
 import com.example.playergroup.data.ManagementDataSet
 import com.example.playergroup.ui.base.BaseViewModel
 import com.example.playergroup.util.ViewTypeConst
@@ -38,7 +39,8 @@ class ManagementViewModel: BaseViewModel() {
         if (makeClubList.isNullOrEmpty()) {
             publishMakeClub.onNext(mutableListOf(ManagementDataSet(
                 viewType = ViewTypeConst.MANAGEMENT_EMPTY,
-                emptyTxt = "새로은 클럽을 만들어보세요!"
+                emptyTxt = "새로은 클럽을 만들어보세요!",
+                emptyLandingType = Landing.CREATE_CLUB
             )))
         } else {
             clubRepository.getClubList(makeClubList.toList()) {
@@ -58,7 +60,8 @@ class ManagementViewModel: BaseViewModel() {
         if (involvedClubList.isNullOrEmpty()) {
             publishInvolvedClub.onNext(mutableListOf(ManagementDataSet(
                 viewType = ViewTypeConst.MANAGEMENT_EMPTY,
-                emptyTxt = "클럽에 가입해 보세요!"
+                emptyTxt = "클럽에 가입해 보세요!",
+                emptyLandingType = Landing.SEARCH
             )))
         } else {
             clubRepository.getClubList(involvedClubList.toList()) {

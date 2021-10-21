@@ -7,5 +7,6 @@ data class ManagementDataSet (
     var clubImg: String? = null,
     var clubName: String? = null,
     var emptyTxt: String? = null,
-    var clubPrimaryKey: String? = null
+    var clubPrimaryKey: String? = null,
+    var emptyLandingType: Landing? = null
 ): BaseDataSet()

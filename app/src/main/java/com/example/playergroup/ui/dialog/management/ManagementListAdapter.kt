@@ -44,7 +44,8 @@ class ManagementListAdapter(
             (data as? ManagementDataSet)?.let {
                 binding.emptyContent.text = it.emptyTxt
                 itemView click {
-                    LandingRouter.move(itemView.context, RouterEvent(Landing.CREATE_CLUB))
+                    val landing = data.emptyLandingType ?: return@click
+                    LandingRouter.move(itemView.context, RouterEvent(landing))
                     callback.invoke()
                 }
             }
