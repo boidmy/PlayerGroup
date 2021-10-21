@@ -1,5 +1,7 @@
 package com.example.playergroup.ui.dialog.management
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding

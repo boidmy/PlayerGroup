@@ -43,7 +43,7 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
 
     private fun initView(clubInfo: ClubInfo) {
         Glide.with(this)
-            .load(clubInfo.clubImgFullUrl)
+            .load(clubInfo.clubImg)
             .into(binding.ivClubImg)
         binding.tvClubName.text = clubInfo.clubName ?: ""
     }

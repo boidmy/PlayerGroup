@@ -21,7 +21,7 @@ class SearchTwoItemViewHolder(parent: ViewGroup):
     private fun initView(data: ClubInfo) {
         with(binding) {
             Glide.with(itemView.context)
-                .load(data.clubImgFullUrl)
+                .load(data.clubImg)
                 .into(binding.img)
 
             tvName.text = data.clubName ?: ""

@@ -6,6 +6,7 @@
     <color name="windowBackground">#fafafa</color>
 
     <color name="viewOverlayBgColor">#ffffff</color>
+    <color name="viewImgOverlayColor">#66FFFFFF</color>
 
     <color name="colorPrimaryText">#DE000000</color>
     <color name="colorPrimaryText_reverse">#FFFFFF</color>

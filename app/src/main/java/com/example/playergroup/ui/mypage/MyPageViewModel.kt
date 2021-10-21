@@ -27,13 +27,17 @@ class MyPageViewModel: BaseViewModel() {
 
     fun saveProfile(userInfo: UserInfo) {
         // 사진을 먼저 저장 후 Full Url 을 갖고 와야 한다.
-        authRepository.upLoadStorageImg(profileImgUri!!) {  // Storage 에 우선 저장
-            authRepository.getUserProfilePhoto(userInfo.email) {    // Storage 에 저장된 Img Full Url을 갖고 온다.
-                userInfo.img = it
+        authRepository.upLoadStorageImg(profileImgUri!!) { isStorageUpLoadState ->   // Storage 에 우선 저장
+            if (isStorageUpLoadState) {
+                authRepository.getUserProfilePhoto(userInfo.email) { storageFullUrl -> // Storage 에 저장된 Img Full Url을 갖고 온다.
+                    userInfo.img = storageFullUrl
 
-                authRepository.insertInitUserDocument(userInfo) {   // user DB 에 userInfo 를 저장한다.
-                    _firebaseResult.value = it
+                    authRepository.insertInitUserDocument(userInfo) {   // user DB 에 userInfo 를 저장한다.
+                        _firebaseResult.value = it
+                    }
                 }
+            } else {
+                _firebaseResult.value = false
             }
         }
     }
