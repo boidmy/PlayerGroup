@@ -22,7 +22,6 @@ class CreateClubViewModel: BaseViewModel() {
         get() = _isVisibleBtnCreateClub
 
     fun insertInitCreateClub(clubName: String, clubImgUri: Uri?) {
-
         clubRepository.upLoadClubImg(clubName, clubImgUri) { isStorageUpLoadState ->   // Storage 에 우선 저장
             if (isStorageUpLoadState) {
                 clubRepository.getUserProfilePhoto(clubName) { storageFullUrl -> // Storage 에 저장된 Img Full Url을 갖고 온다.
@@ -42,33 +41,6 @@ class CreateClubViewModel: BaseViewModel() {
                 _firebaseCreateClubResult.value = Pair(false, "")
             }
         }
-
-
-        /*val isInsertFirebaseClubDB = PublishSubject.create<Boolean>()
-        val isInsertStorageClubDB = PublishSubject.create<Boolean>()
-        val isUpDateFirebaseUserDB = PublishSubject.create<Boolean>()
-
-        val primaryKey = authRepository.createGetPrimaryKey()
-
-        Observable.zip(
-            isInsertFirebaseClubDB, isInsertStorageClubDB, isUpDateFirebaseUserDB,
-            { a, b, c -> (a && b && c) })
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                _firebaseCreateClubResult.value = Pair(it, primaryKey)
-            }
-            .addTo(compositeDisposable)
-
-        clubRepository.insertInitCreateClub(primaryKey, clubName, clubImgUri) {
-            isInsertFirebaseClubDB.onNext(it)
-        }
-        clubRepository.upLoadClubImg(clubName, clubImgUri) {
-            //todo 사진 업로드는 실패해도 일단 패스 하자 ..
-            isInsertStorageClubDB.onNext(true)
-        }
-        authRepository.upDateClubUserField(primaryKey) {
-            isUpDateFirebaseUserDB.onNext(it)
-        }*/
     }
 
     fun isClubEmptyOverlapCheck(clubName: String, callback: (Boolean) -> Unit) {

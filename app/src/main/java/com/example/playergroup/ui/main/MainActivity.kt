@@ -43,7 +43,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 if (userInfo?.isEmptyData() == true) {
                     LandingRouter.move(this, RouterEvent(type = Landing.MY_PAGE, paramBoolean = true))
                 } else {
-                    //todo 메인 화면 업데이트
                     viewModel.getMainData(getSaveMainList())
                 }
             } else {
@@ -74,7 +73,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         var mainList = list.map { it.viewType }.toMutableList()
         if (mainList.isNullOrEmpty()) {
             mainList = mutableListOf(
-                ViewTypeConst.MAIN_CLUB_INFO,
+                ViewTypeConst.MAIN_NEW_CLUB_INFO,
                 ViewTypeConst.MAIN_CLUB_PICK_INFO,
                 ViewTypeConst.MAIN_PICK_LOCATION_INFO,
                 ViewTypeConst.MAIN_APP_COMMON_BOARD_INFO

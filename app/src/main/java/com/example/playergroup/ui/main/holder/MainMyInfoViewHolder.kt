@@ -27,7 +27,6 @@ class MainMyInfoViewHolder(parent: ViewGroup):
 
         with (binding) {
             if (pgApplication.isLogin()) {
-                //todo 프로필 이미지 Full Url 저장 하는 로직 구현 후 여기 구현 하자
                 tvName.text = pgApplication.userInfo?.name ?: ""
                 tvAttendanceRate.text = "-"
                 Glide.with(itemView.context)

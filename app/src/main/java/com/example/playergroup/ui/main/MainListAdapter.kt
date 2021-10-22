@@ -29,7 +29,7 @@ class MainListAdapter: RecyclerView.Adapter<BaseViewHolder<ViewBinding>>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ViewBinding> =
         when(ViewTypeConst.values()[viewType]) {
             ViewTypeConst.MAIN_MY_INFO -> MainMyInfoViewHolder(parent)
-            ViewTypeConst.MAIN_CLUB_INFO -> MainClubInfoViewHolder(parent)
+            ViewTypeConst.MAIN_NEW_CLUB_INFO -> MainClubInfoViewHolder(parent)
             ViewTypeConst.MAIN_CLUB_PICK_INFO -> MainClubPickInfoViewHolder(parent)
             ViewTypeConst.MAIN_PICK_LOCATION_INFO -> MainPickLocationInfoViewHolder(parent)
             ViewTypeConst.MAIN_APP_COMMON_BOARD_INFO -> MainAppCommonBoardInfoViewHolder(parent)

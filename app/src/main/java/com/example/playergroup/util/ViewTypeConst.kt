@@ -7,7 +7,7 @@ enum class ViewTypeConst {
 
     // -- 메인 --
     MAIN_MY_INFO,
-    MAIN_CLUB_INFO,
+    MAIN_NEW_CLUB_INFO,
     MAIN_CLUB_PICK_INFO,
     MAIN_PICK_LOCATION_INFO,
     MAIN_APP_COMMON_BOARD_INFO,

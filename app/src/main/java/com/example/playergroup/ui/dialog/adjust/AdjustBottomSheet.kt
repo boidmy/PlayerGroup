@@ -113,7 +113,7 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
         if (list.isNullOrEmpty()) {
             // 데이터가 저장되어 있는게 없으면 디폴트 값은 아래와 같다.
             list = mutableListOf(
-                AdjustDataSet(viewType = ViewTypeConst.MAIN_CLUB_INFO, title = "클럽정보", subTitle = "내가 가입한 클럽 정보를 볼 수 있는 곳 입니다."),
+                AdjustDataSet(viewType = ViewTypeConst.MAIN_NEW_CLUB_INFO, title = "새로운 클럽 정보", subTitle = "새로 개설된 클럽 정보를 볼 수 있는 곳입니다."),
                 AdjustDataSet(viewType = ViewTypeConst.MAIN_CLUB_PICK_INFO, title = "내 클럽 PICK", subTitle = "내가 관심 있는 클럽 정보를 볼 수 있는 곳 입니다."),
                 AdjustDataSet(viewType = ViewTypeConst.MAIN_PICK_LOCATION_INFO, title = "내 장소 PICK", subTitle = "내가 관심 있는 장소 정보를 볼 수 있는 곳 입니다."),
                 AdjustDataSet(viewType = ViewTypeConst.MAIN_APP_COMMON_BOARD_INFO, title = "게시판", subTitle = "새로운 게시판 글을 한눈에 볼 수 있습니다.")
