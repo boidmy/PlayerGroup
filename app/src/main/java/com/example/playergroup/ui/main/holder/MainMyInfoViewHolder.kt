@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.example.playergroup.PlayerGroupApplication
+import com.example.playergroup.R
 import com.example.playergroup.data.Landing
 import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ViewMainMyInfoBinding
@@ -31,6 +32,8 @@ class MainMyInfoViewHolder(parent: ViewGroup):
                 tvAttendanceRate.text = "-"
                 Glide.with(itemView.context)
                     .load(pgApplication.userInfo?.img)
+                    .placeholder(R.drawable.icon_user)
+                    .error(R.drawable.icon_user)
                     .into(ivMyImg)
             } else {
                 tvName.text = "로그인이 필요합니다."

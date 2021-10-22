@@ -249,7 +249,9 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
         age = binding.etMyInfoAge.text.toString(),
         sex = binding.etMyInfoSex.text.toString(),
         img = myPageViewModel.getCurrentUser()?.email,
-        comment = binding.etMyInfoComment.text.toString()
+        comment = binding.etMyInfoComment.text.toString(),
+        clubAdmin = pgApplication.userInfo?.clubAdmin,
+        clubInvolved = pgApplication.userInfo?.clubInvolved
     )
 
     private fun setEditMode(isEditMode: Boolean) {
