@@ -45,12 +45,13 @@ class ManagementViewModel: BaseViewModel() {
         } else {
             clubRepository.getClubList(makeClubList.toList()) {
                 val modules = mutableListOf<ManagementDataSet>()
-                it?.forEachIndexed { index, clubInfo ->
+                val sortList = it?.sortedBy { it.clubCreateDate }
+                sortList?.forEachIndexed { index, clubInfo ->
                     modules.add(ManagementDataSet(
                         viewType = ViewTypeConst.MANAGEMENT_ITEM,
                         clubImg = clubInfo.clubImg,
                         clubName = clubInfo.clubName,
-                        clubPrimaryKey = makeClubList[index]
+                        clubPrimaryKey = clubInfo.clubPrimaryKey
                     ))
                 }
                 if (modules.size >= 1) modules.add(ManagementDataSet(ViewTypeConst.MANAGEMENT_CREATE))
@@ -67,12 +68,13 @@ class ManagementViewModel: BaseViewModel() {
         } else {
             clubRepository.getClubList(involvedClubList.toList()) {
                 val modules = mutableListOf<ManagementDataSet>()
-                it?.forEachIndexed { index, clubInfo ->
+                val sortList = it?.sortedBy { it.clubCreateDate }
+                sortList?.forEachIndexed { index, clubInfo ->
                     modules.add(ManagementDataSet(
                         viewType = ViewTypeConst.MANAGEMENT_ITEM,
                         clubImg = clubInfo.clubImg,
                         clubName = clubInfo.clubName,
-                        clubPrimaryKey = involvedClubList[index]
+                        clubPrimaryKey = clubInfo.clubPrimaryKey
                     ))
                 }
                 publishInvolvedClub.onNext(modules)
