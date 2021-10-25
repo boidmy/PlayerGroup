@@ -105,7 +105,9 @@ class CreateClubActivity: BaseActivity<ActivityCreateClubBinding>() {
                 //todo 활동 지역 확인할 수 있는 다이얼로그 뿌리기
                 hideKeyboard(etClubNameEditText)
                 loadingProgress.publisherLoading(true)
-                createClubViewModel.insertInitCreateClub(etClubNameEditText.text.toString(), clubImgUri, etLocation.text.toString())
+                var location = etLocation.text.toString()
+                if (location.isEmpty()) location = "전체"
+                createClubViewModel.insertInitCreateClub(etClubNameEditText.text.toString(), clubImgUri, location)
             }
 
             btnAddPhoto click {
