@@ -19,7 +19,9 @@
             android:id="@+id/img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            app:tint="@color/viewLightImgOverlayColor"
+            app:tintMode="src_over"/>
 
     </androidx.cardview.widget.CardView>
 

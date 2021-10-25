@@ -31,7 +31,6 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>() {
 
         isTwoItemMode = configModule.isTwoItemMode ?: false
 
-        binding.ivBack click { onBackPressed() }
         binding.tvSwap click {}
         binding.moveToTop click { binding.rvSearch.scrollToPosition(0) }
 
@@ -75,8 +74,6 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>() {
     private fun initEditTextView() {
         binding.etsearch.setOnKeyListener { _, keyCode, event ->
             if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                //mainViewModel.requestMovieData(binding.userInputEditText.text.toString())
-                //binding.progressBar isShow true
                 hideKeyboard(binding.etsearch)
                 return@setOnKeyListener true
             }
