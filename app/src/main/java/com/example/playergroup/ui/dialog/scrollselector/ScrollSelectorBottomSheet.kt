@@ -11,12 +11,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.playergroup.R
 import com.example.playergroup.custom.SliderLayoutManager
-import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
 import com.example.playergroup.databinding.DialogSelectorBinding
-import com.example.playergroup.util.VerticalMarginDecoration
-import com.example.playergroup.util.click
-import com.example.playergroup.util.toPx
-import com.example.playergroup.util.viewBinding
+import com.example.playergroup.util.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -29,21 +25,15 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
     companion object {
         lateinit var callback: (String) -> Unit
         const val TYPE = "type"
-        fun newInstance(type: ScrollSelectorType, callback: (String) -> Unit): ScrollSelectorBottomSheet =
+        const val SELECTED_ITEM = "selected_item"
+        fun newInstance(type: ViewTypeConst, selectItem: String = "", callback: (String) -> Unit): ScrollSelectorBottomSheet =
             ScrollSelectorBottomSheet().apply {
                 this@Companion.callback = callback
                 arguments = Bundle().apply {
                     putSerializable(TYPE, type)
+                    putString(SELECTED_ITEM, selectItem)
                 }
             }
-
-        enum class ScrollSelectorType {
-            HEIGHT,
-            WEIGHT,
-            YEAROFBIRTH,
-            SEX,
-            POSITION
-        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -89,7 +79,7 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewType = (arguments?.get(TYPE) as? ScrollSelectorType) ?: POSITION
+        val viewType = (arguments?.get(TYPE) as? ViewTypeConst) ?: ViewTypeConst.SCROLLER_POSITION
         val selectorList = viewModel.getSelectorDataList(viewType)
 
         binding.title.text = viewModel.getSelectorTitle(viewType)
@@ -103,10 +93,18 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
                 }
             }
 
-            adapter = SliderListAdapter().also {
-                it.items = selectorList
-                val defaultIndex = selectorList.size / 2
-                smoothScrollToPosition(defaultIndex)
+            adapter = SliderListAdapter().apply {
+                items = selectorList
+
+                val selectedIndex = arguments?.getString(SELECTED_ITEM)
+
+                val index = if (selectedIndex.isNullOrEmpty()) {
+                    selectorList.size / 2
+                } else {
+                    selectorList.indexOfFirst { it == selectedIndex }
+                }
+
+                smoothScrollToPosition(index)
             }
 
             if (itemDecorationCount == 0)

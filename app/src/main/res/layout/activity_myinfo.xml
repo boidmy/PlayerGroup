@@ -196,13 +196,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
             android:hint="@string/member_info_sex"
             android:maxLength="10"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            app:layout_constraintEnd_toStartOf="@+id/llMyInfoAge"
+            app:layout_constraintEnd_toStartOf="@+id/llActivityArea"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="@id/startGuideLine"
             app:layout_constraintTop_toBottomOf="@+id/llMyInfoHeight">
@@ -222,6 +220,33 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- 활동지역 -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/llActivityArea"
+            style="@style/textInputLayer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="활동지역"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_marginHorizontal="5dp"
+            app:layout_constraintEnd_toStartOf="@id/llMyInfoAge"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/llMyInfoSex"
+            app:layout_constraintTop_toTopOf="@+id/llMyInfoSex">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etActivityArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:textCursorDrawable="@drawable/shape_edit_text_cursor_color"
+                android:focusable="false"
+                android:textColor="@color/selector_edit_text_enable_color"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <!-- 생년월일 -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/llMyInfoAge"
@@ -233,7 +258,7 @@
             android:focusableInTouchMode="true"
             app:layout_constraintEnd_toEndOf="@id/endGuideLine"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/llMyInfoSex"
+            app:layout_constraintStart_toEndOf="@+id/llActivityArea"
             app:layout_constraintTop_toTopOf="@+id/llMyInfoSex">
 
             <androidx.appcompat.widget.AppCompatEditText

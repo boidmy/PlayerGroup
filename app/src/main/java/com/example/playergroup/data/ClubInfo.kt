@@ -9,5 +9,6 @@ data class ClubInfo (
     var clubName: String? = null,
     var clubCreateDate: String? = null,
     var clubPrimaryKey: String? = null,
+    var clubActivityArea: String? = null,
     override var viewType: ViewTypeConst = EMPTY_ERROR
 ): BaseDataSet(viewType)

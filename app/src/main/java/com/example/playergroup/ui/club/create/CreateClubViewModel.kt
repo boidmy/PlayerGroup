@@ -21,13 +21,13 @@ class CreateClubViewModel: BaseViewModel() {
     val isVisibleBtnCreateClub: LiveData<Boolean>
         get() = _isVisibleBtnCreateClub
 
-    fun insertInitCreateClub(clubName: String, clubImgUri: Uri?) {
+    fun insertInitCreateClub(clubName: String, clubImgUri: Uri?, location: String) {
         clubRepository.upLoadClubImg(clubName, clubImgUri) { isStorageUpLoadState ->   // Storage 에 우선 저장
             if (isStorageUpLoadState) {
                 clubRepository.getUserProfilePhoto(clubName) { storageFullUrl -> // Storage 에 저장된 Img Full Url을 갖고 온다.
                     val primaryKey = authRepository.createGetPrimaryKey()
                     //todo storageFullUrl... 사진 업로드는 실패해도 일단 패스 하자 ..
-                    clubRepository.insertInitCreateClub(primaryKey, clubName, storageFullUrl ?: "") {
+                    clubRepository.insertInitCreateClub(primaryKey, clubName, storageFullUrl ?: "", location) {
                         if (it) {
                             authRepository.upDateClubUserField(primaryKey) {
                                 _firebaseCreateClubResult.value = Pair(it, primaryKey)

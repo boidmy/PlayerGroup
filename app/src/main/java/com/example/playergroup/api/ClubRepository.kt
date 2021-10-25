@@ -13,13 +13,14 @@ class ClubRepository: BaseRepository() {
     /**
      * initCreateClub
      */
-    fun insertInitCreateClub(key: String, clubName: String, clubImg: String, callback: (Boolean) -> Unit) {
+    fun insertInitCreateClub(key: String, clubName: String, clubImg: String, location: String, callback: (Boolean) -> Unit) {
         val clubData = hashMapOf(
             "clubAdmin" to firebaseAuth.currentUser?.email.toString(),
             "clubName" to clubName,
             "clubPrimaryKey" to key,
             "clubImg" to clubImg,
-            "clubCreateDate" to getToday(DATE_FORMAT_YYYYMMDDHHMMSS).toString()
+            "clubCreateDate" to getToday(DATE_FORMAT_YYYYMMDDHHMMSS).toString(),
+            "clubActivityArea" to location
         )
         firebaseClub.document(key).set(clubData)
             .addOnCompleteListener {
