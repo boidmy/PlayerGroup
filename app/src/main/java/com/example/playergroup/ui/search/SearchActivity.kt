@@ -16,6 +16,7 @@ import com.example.playergroup.R
 import com.example.playergroup.data.ClubInfo
 import com.example.playergroup.databinding.ActivitySearchBinding
 import com.example.playergroup.ui.base.BaseActivity
+import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet
 import com.example.playergroup.util.ViewTypeConst
 import com.example.playergroup.util.click
 import com.example.playergroup.util.hideKeyboard
@@ -25,14 +26,30 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>() {
 
     private val viewModel by viewModels<SearchViewModel>()
     private var isTwoItemMode: Boolean = false
+    lateinit var currentActivityArea: String
 
     override fun getViewBinding(): ActivitySearchBinding = ActivitySearchBinding.inflate(layoutInflater)
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
 
         isTwoItemMode = configModule.isTwoItemMode ?: false
+        currentActivityArea = pgApplication.userInfo?.activityArea ?: ""
 
         binding.tvSwap click {}
         binding.moveToTop click { binding.rvSearch.scrollToPosition(0) }
+        binding.llLocation click {
+            val newInstance = ScrollSelectorBottomSheet.newInstance(
+                type = ViewTypeConst.SCROLLER_ACTIVITY_AREA,
+                selectItem = currentActivityArea,
+                customTitle = "검색할 지역을 선택해 주세요."
+            ) {
+                currentActivityArea = it
+                binding.tvLocation.text = it
+                viewModel.getData(it)
+            }
+            if (newInstance.isVisible) return@click
+            newInstance.show(supportFragmentManager, newInstance.tag)
+        }
+        binding.tvLocation.text = currentActivityArea
 
         binding.ivListMode.apply {
             changeSearchIconUI(isTwoItemMode)
@@ -60,7 +77,7 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>() {
 
     private infix fun RecyclerView.changeSearchListUI(isTwoItemMode: Boolean) {
         with(viewModel) {
-            (adapter as? SearchListAdapter)?.items.getClubAllList(isTwoItemMode)
+            //(adapter as? SearchListAdapter)?.items.getClubAllList(isTwoItemMode)
             post {
                 layoutManager = if (isTwoItemMode) {
                     GridLayoutManager(this@SearchActivity, 2)
@@ -88,7 +105,8 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>() {
                 val count = it?.size ?: 0
                 binding.tvCount.text = "$count 개"
             })
-            (binding.rvSearch.adapter as? SearchListAdapter)?.items.getClubAllList(configModule.isTwoItemMode ?: false)
+            //(binding.rvSearch.adapter as? SearchListAdapter)?.items.getClubAllList(configModule.isTwoItemMode ?: false)
+            getData(currentActivityArea)
         }
     }
 
@@ -159,6 +177,5 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>() {
             }
         }
     }
-
     private fun showMoveTopBtn(isShow: Boolean) { if (isShow) binding.moveToTop.show() else binding.moveToTop.hide() }
 }

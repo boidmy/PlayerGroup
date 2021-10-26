@@ -16,6 +16,14 @@ class SearchViewModel: BaseViewModel() {
     val firebaseClubListData: LiveData<List<ClubInfo>?>
         get() = _firebaseClubListData
 
+    fun getData(location: String) {
+        clubRepository.getClubList(location) {
+            _firebaseClubListData.value = it modeChange false
+        }
+    }
+
+
+
     fun List<BaseDataSet>?.getClubAllList(isTwoItemMode: Boolean) {
         if (this.isNullOrEmpty()) {
             clubRepository.getClubList {
@@ -25,7 +33,6 @@ class SearchViewModel: BaseViewModel() {
             val data = this.toMutableList().checkItemsAre<ClubInfo>()?.toList()
             _firebaseClubListData.value = data modeChange isTwoItemMode
         }
-
     }
 
     private infix fun List<ClubInfo>?.modeChange(isTwoItemMode: Boolean): List<ClubInfo>? =

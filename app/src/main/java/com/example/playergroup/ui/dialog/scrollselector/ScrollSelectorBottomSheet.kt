@@ -26,12 +26,19 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
         lateinit var callback: (String) -> Unit
         const val TYPE = "type"
         const val SELECTED_ITEM = "selected_item"
-        fun newInstance(type: ViewTypeConst, selectItem: String = "", callback: (String) -> Unit): ScrollSelectorBottomSheet =
+        const val CUSTOM_TITLE = "custom_title"
+        fun newInstance(
+            type: ViewTypeConst,
+            selectItem: String = "",
+            customTitle: String = "",
+            callback: (String) -> Unit
+        ): ScrollSelectorBottomSheet =
             ScrollSelectorBottomSheet().apply {
                 this@Companion.callback = callback
                 arguments = Bundle().apply {
                     putSerializable(TYPE, type)
                     putString(SELECTED_ITEM, selectItem)
+                    putString(CUSTOM_TITLE, customTitle)
                 }
             }
     }
@@ -81,8 +88,9 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
 
         val viewType = (arguments?.get(TYPE) as? ViewTypeConst) ?: ViewTypeConst.SCROLLER_POSITION
         val selectorList = viewModel.getSelectorDataList(viewType)
+        val customTitle = arguments?.getString(CUSTOM_TITLE) ?: ""
 
-        binding.title.text = viewModel.getSelectorTitle(viewType)
+        binding.title.text = if (customTitle.isEmpty()) viewModel.getSelectorTitle(viewType) else customTitle
 
         binding.btnClose click { dismiss() }
 

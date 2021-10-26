@@ -121,4 +121,15 @@ class ClubRepository: BaseRepository() {
             }
         }
     }
+
+    fun getClubList(clubActivityArea: String, callback: (List<ClubInfo>?) -> Unit) {
+        firebaseClub.whereEqualTo("clubActivityArea", clubActivityArea).get().addOnCompleteListener {
+            if (it.isSuccessful) {
+                val list = it.result?.toObjects(ClubInfo::class.java)
+                callback.invoke(list)
+            } else {
+                callback.invoke(null)
+            }
+        }
+    }
 }
