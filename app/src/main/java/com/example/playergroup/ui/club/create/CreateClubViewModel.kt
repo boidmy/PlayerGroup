@@ -21,6 +21,23 @@ class CreateClubViewModel: BaseViewModel() {
     val isVisibleBtnCreateClub: LiveData<Boolean>
         get() = _isVisibleBtnCreateClub
 
+    val clubNamePublishSubject: PublishSubject<Boolean> = PublishSubject.create()
+    val clubLocationPublishSubject: PublishSubject<Boolean> = PublishSubject.create()
+
+    init {
+        Observable.combineLatest(
+            clubNamePublishSubject,
+            clubLocationPublishSubject,
+            { a, b -> a && b })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                _isVisibleBtnCreateClub.value = it
+            }, {
+                _isVisibleBtnCreateClub.value = false
+            })
+            .addTo(compositeDisposable)
+    }
+
     fun insertInitCreateClub(clubName: String, clubImgUri: Uri?, location: String) {
         clubRepository.upLoadClubImg(clubName, clubImgUri) { isStorageUpLoadState ->   // Storage 에 우선 저장
             if (isStorageUpLoadState) {
@@ -54,7 +71,7 @@ class CreateClubViewModel: BaseViewModel() {
             Observable.create<CharSequence> { emitter -> emitter.onNext(editTextString) }
                 .subscribeOn(Schedulers.computation())
                 .map { // 최소 1글자 이상 최대 20글자 이하
-                    it.length in 2..20
+                    //it.length in 2..20
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
