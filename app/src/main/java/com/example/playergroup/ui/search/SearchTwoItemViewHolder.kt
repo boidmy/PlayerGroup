@@ -5,9 +5,13 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.playergroup.data.ClubInfo
+import com.example.playergroup.data.Landing
+import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ViewSearchOneItemBinding
 import com.example.playergroup.databinding.ViewSearchTwoItemBinding
 import com.example.playergroup.ui.base.BaseViewHolder
+import com.example.playergroup.util.LandingRouter
+import com.example.playergroup.util.click
 import com.example.playergroup.util.viewBinding
 
 class SearchTwoItemViewHolder(parent: ViewGroup):
@@ -32,6 +36,10 @@ class SearchTwoItemViewHolder(parent: ViewGroup):
                 val atIndex = this.indexOf("@", 0)
                 substring(0, atIndex)
             } ?: ""
+        }
+
+        itemView click {
+            LandingRouter.move(itemView.context, RouterEvent(type = Landing.CLUB_MAIN, primaryKey = data.clubPrimaryKey))
         }
     }
 }

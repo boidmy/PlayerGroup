@@ -4,8 +4,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.playergroup.data.ClubInfo
+import com.example.playergroup.data.Landing
+import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ViewSearchOneItemBinding
 import com.example.playergroup.ui.base.BaseViewHolder
+import com.example.playergroup.util.LandingRouter
+import com.example.playergroup.util.click
 import com.example.playergroup.util.viewBinding
 
 class SearchOneItemViewHolder(parent: ViewGroup):
@@ -30,6 +34,10 @@ class SearchOneItemViewHolder(parent: ViewGroup):
                 val atIndex = this.indexOf("@", 0)
                 substring(0, atIndex)
             } ?: ""
+        }
+
+        itemView click {
+            LandingRouter.move(itemView.context, RouterEvent(type = Landing.CLUB_MAIN, primaryKey = data.clubPrimaryKey))
         }
     }
 }
