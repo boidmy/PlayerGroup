@@ -8,6 +8,7 @@ import com.example.playergroup.ui.base.BaseRepository
 import com.example.playergroup.ui.dialog.calendar.BaseCalendar.Companion.DATE_FORMAT_YYYYMMDDHHMMSS
 import com.example.playergroup.util.getToday
 import com.google.firebase.firestore.FirebaseFirestore
+import io.reactivex.Single
 
 class ClubRepository: BaseRepository() {
     /**
@@ -122,14 +123,15 @@ class ClubRepository: BaseRepository() {
         }
     }
 
-    fun getClubList(clubActivityArea: String, callback: (List<ClubInfo>?) -> Unit) {
-        firebaseClub.whereEqualTo("clubActivityArea", clubActivityArea).get().addOnCompleteListener {
-            if (it.isSuccessful) {
-                val list = it.result?.toObjects(ClubInfo::class.java)
-                callback.invoke(list)
-            } else {
-                callback.invoke(null)
-            }
+    fun getClubList(clubActivityArea: String) =
+        Single.create<List<ClubInfo>?> { emitter ->
+            firebaseClub
+                .whereEqualTo("clubActivityArea", clubActivityArea)
+                .get()
+                .addOnSuccessListener {
+                    emitter.onSuccess(it.toObjects(ClubInfo::class.java))
+                }.addOnFailureListener {
+                    emitter.onError(it)
+                }
         }
-    }
 }

@@ -22,6 +22,6 @@ fun RecyclerView.setItemAnimatorDuration(duration: Long): RecyclerView.ItemAnima
     DefaultItemAnimator().apply {
         addDuration = duration
         removeDuration = duration
-        moveDuration = 0
+        moveDuration = duration
         changeDuration = duration
     }

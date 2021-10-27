@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.playergroup.data.BaseDataSet
+import com.example.playergroup.data.MainDataSet
+import com.example.playergroup.data.SearchDataSet
 import com.example.playergroup.ui.base.BaseViewHolder
 import com.example.playergroup.ui.base.EmptyErrorViewHolder
 import com.example.playergroup.util.ViewTypeConst
@@ -14,35 +16,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class SearchListAdapter(
-    private val mCompositeDisposable: CompositeDisposable
-): RecyclerView.Adapter<BaseViewHolder<ViewBinding>>() {
-    var items: MutableList<BaseDataSet>? = mutableListOf()
-        set(value) {
-            value?.let {
-                calculate(value) {
-                    field?.clear()
-                    field?.addAll(value)
-                    it.dispatchUpdatesTo(this)
-                }
-            } ?: run {
-                return
-            }
+class SearchListAdapter: RecyclerView.Adapter<BaseViewHolder<ViewBinding>>() {
+    var items: MutableList<SearchDataSet>? = null
+    fun submitList(newList: MutableList<SearchDataSet>?, diffResult: DiffUtil.DiffResult) {
+        if (newList.isNullOrEmpty()) return
+        items?.let {
+            it.clear()
+            it.addAll(newList)
+        } ?: run {
+            items = newList
         }
-
-    private fun calculate(value: MutableList<BaseDataSet>?, callback: (DiffUtil.DiffResult) -> Unit) {
-        mCompositeDisposable.add(
-            Observable.fromCallable { diffUtilResult(
-                oldList = items,
-                newList = value,
-                itemCompare = { o, n -> o?.viewType == n?.viewType },
-                contentCompare = { o, n -> o == n }
-            ) }.subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{
-                    callback.invoke(it)
-                }
-        )
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun getItemCount(): Int = items?.size ?: 0
@@ -55,6 +39,6 @@ class SearchListAdapter(
         } as BaseViewHolder<ViewBinding>
 
     override fun onBindViewHolder(holder: BaseViewHolder<ViewBinding>, position: Int) {
-        holder.onBindView(items?.getOrNull(position))
+        holder.onBindView(items?.getOrNull(position)?.data)
     }
 }
