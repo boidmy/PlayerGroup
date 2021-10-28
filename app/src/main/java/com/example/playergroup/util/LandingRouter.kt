@@ -105,28 +105,26 @@ object LandingRouter {
     }
 
     private fun goToSetting(context: Context, event: RouterEvent) {
-        context.startActivity(Intent(context, SettingActivity::class.java)).also {
+        context.startActivity(Intent(context, SettingActivity::class.java)).apply {
             //todo Parameter?
         }
     }
 
     private fun gotoSearch(context: Context, event: RouterEvent) {
-        context.startActivity(Intent(context, SearchActivity::class.java).also {
+        context.startActivity(Intent(context, SearchActivity::class.java).apply {
             //todo Parameter?
         })
     }
 
     private fun gotoClubMain(context: Context, event: RouterEvent) {
-        context.startActivity(Intent(context, ClubActivity::class.java).also { intent ->
-            intent.putExtra(INTENT_EXTRA_STRING_PARAM, event.paramString)
-            intent.putExtra(INTENT_EXTRA_URI_TO_STRING_PARAM, event.paramUriToString)
-            intent.putExtra(INTENT_EXTRA_PRIMARY_KEY, event.primaryKey)
-        }, event.options?.toBundle())
+        context.startActivity(Intent(context, ClubActivity::class.java).apply {
+            putExtra(INTENT_EXTRA_PRIMARY_KEY, event.primaryKey)
+        })
     }
 
     private fun gotoCreateClub(context: Context, event: RouterEvent) {
         if (pgApplication.isLogin()) {
-            context.startActivity(Intent(context, CreateClubActivity::class.java).also {
+            context.startActivity(Intent(context, CreateClubActivity::class.java).apply {
                 //todo Parameter?
             })
         } else {
@@ -135,22 +133,24 @@ object LandingRouter {
     }
 
     private fun gotoMain(context: Context, event: RouterEvent) {
-        context.startActivity(Intent(context, MainActivity::class.java).also { intent ->
-                intent.addFlags(
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP or
-                            Intent.FLAG_ACTIVITY_NEW_TASK or
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
-    }
-
-    private fun gotoStartLoginScreen(context: Context, event: RouterEvent) {
-        context.startActivity(Intent(context, InitLoginScreenActivity::class.java).also { intent ->
-            intent.addFlags(
+        context.startActivity(Intent(context, MainActivity::class.java).apply {
+            addFlags(
                 Intent.FLAG_ACTIVITY_CLEAR_TOP or
                         Intent.FLAG_ACTIVITY_SINGLE_TOP or
                         Intent.FLAG_ACTIVITY_NEW_TASK or
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+            )
+        })
+    }
+
+    private fun gotoStartLoginScreen(context: Context, event: RouterEvent) {
+        context.startActivity(Intent(context, InitLoginScreenActivity::class.java).apply {
+            addFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP or
+                        Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+            )
         })
     }
 
@@ -188,8 +188,8 @@ object LandingRouter {
 
     private fun gotoMyPage(context: Context, event: RouterEvent) {
         if (pgApplication.isLogin()) {
-            context.startActivity(Intent(context, MyPageActivity::class.java).also { intent ->
-                intent.putExtra(INTENT_EXTRA_PARAM, event.paramBoolean)
+            context.startActivity(Intent(context, MyPageActivity::class.java).apply {
+                putExtra(INTENT_EXTRA_PARAM, event.paramBoolean)
             })
         } else {
             goToLogin(context, event.apply { paramInt = LoginType.LOGIN.value })
@@ -197,8 +197,8 @@ object LandingRouter {
     }
 
     private fun gotoGallery(context: Context, event: RouterEvent) {
-        val intent = Intent(Intent.ACTION_PICK).also {
-            it.setDataAndType(EXTERNAL_CONTENT_URI, "image/*")
+        val intent = Intent(Intent.ACTION_PICK).apply {
+            setDataAndType(EXTERNAL_CONTENT_URI, "image/*")
         }
         event.activityResult?.launch(intent)
     }

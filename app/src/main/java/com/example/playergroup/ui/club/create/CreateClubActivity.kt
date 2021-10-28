@@ -28,7 +28,7 @@ class CreateClubActivity: BaseActivity<ActivityCreateClubBinding>() {
 
     private lateinit var galleryImgResult: ActivityResultLauncher<Intent>
     private val createClubViewModel by viewModels<CreateClubViewModel>()
-    private var clubImgUri: Uri? = null
+    private lateinit var clubImgUri: Uri
 
     override fun getViewBinding(): ActivityCreateClubBinding = ActivityCreateClubBinding.inflate(layoutInflater)
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
