@@ -57,6 +57,9 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
             ivShare click {
                 debugToast { "준비중" }
             }
+            btnJoinClub click {
+                debugToast { "준비중" }
+            }
         }
         initTabList()
         initContent()
