@@ -26,5 +26,14 @@ enum class ViewTypeConst {
     SCROLLER_YEAROFBIRTH,
     SCROLLER_SEX,
     SCROLLER_POSITION,
-    SCROLLER_ACTIVITY_AREA
+    SCROLLER_ACTIVITY_AREA,
+
+    // -- 클럽 탭 화면 타입 --
+    CLUB_TAB_TYPE_INFO,
+    CLUB_TAB_TYPE_PHOTO,
+    CLUB_TAB_TYPE_SCHEDULER,
+    CLUB_TAB_TYPE_MEMBER
+
+    // 클럽 내부 아이템 타입.
+
 }

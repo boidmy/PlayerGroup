@@ -3,15 +3,18 @@ package com.example.playergroup.ui.club
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.playergroup.R
 import com.example.playergroup.data.*
 import com.example.playergroup.databinding.ActivityClubBinding
 import com.example.playergroup.ui.base.BaseActivity
-import com.example.playergroup.util.click
-import com.example.playergroup.util.debugToast
-import com.example.playergroup.util.showToast
+import com.example.playergroup.ui.club.fragment.ClubCommonFragment
+import com.example.playergroup.util.*
+import com.google.android.material.appbar.AppBarLayout
 
 class ClubActivity: BaseActivity<ActivityClubBinding>() {
 
@@ -56,24 +59,56 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
             }
         }
         initTabList()
+        initContent()
+    }
+
+    private fun initContent() {
+        //초기 진입에는 클럽 정보화면을 노출 함.
+        setFragment(ClubCommonFragment.newInstance(ViewTypeConst.CLUB_TAB_TYPE_INFO))
+    }
+
+    private fun setFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_out, R.anim.fade_in)
+            .replace(R.id.frameLayout, fragment)
+            .commit()
     }
 
     private fun initTabList() {
         binding.tab.apply {
             layoutManager = LinearLayoutManager(this@ClubActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = ClubTabListAdapter {
-
+                moveToTabContent(it)
             }
 
+            itemAnimator = setItemAnimatorDuration(150L)
+
             val testTabList = mutableListOf<ClubTabInfo>(
-                ClubTabInfo(name = "클럽정보", primaryKey = "", isSelected = true),
-                ClubTabInfo(name = "모임일정", primaryKey = ""),
-                ClubTabInfo(name = "사진첩", primaryKey = "", isNewFeed = true),
-                ClubTabInfo(name = "멤버", primaryKey = "")
+                ClubTabInfo(name = "클럽정보", primaryKey = "", isSelected = true, tabType = ViewTypeConst.CLUB_TAB_TYPE_INFO),
+                ClubTabInfo(name = "모임일정", primaryKey = "", tabType = ViewTypeConst.CLUB_TAB_TYPE_SCHEDULER),
+                ClubTabInfo(name = "사진첩", primaryKey = "", isNewFeed = true, tabType = ViewTypeConst.CLUB_TAB_TYPE_PHOTO),
+                ClubTabInfo(name = "멤버", primaryKey = "", tabType = ViewTypeConst.CLUB_TAB_TYPE_MEMBER)
             )
 
             (adapter as? ClubTabListAdapter)?.submitList(testTabList)
         }
+    }
+
+    private fun moveToTabContent(type: ViewTypeConst) {
+        val isHeaderExpandable = type == ViewTypeConst.CLUB_TAB_TYPE_INFO
+        binding.appBar.setExpanded(isHeaderExpandable, true)
+        setFragment(ClubCommonFragment.newInstance(type))
+
+        val params = binding.appBar.layoutParams as CoordinatorLayout.LayoutParams
+        if (params.behavior == null)
+            params.behavior = AppBarLayout.Behavior()
+        val behaviour = params.behavior as AppBarLayout.Behavior
+        behaviour.setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
+            override fun canDrag(appBarLayout: AppBarLayout): Boolean {
+                return isHeaderExpandable
+            }
+        })
     }
 
 }

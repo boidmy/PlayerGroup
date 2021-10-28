@@ -9,12 +9,13 @@ import com.example.playergroup.R
 import com.example.playergroup.data.ClubTabInfo
 import com.example.playergroup.databinding.ViewClubTabItemBinding
 import com.example.playergroup.ui.base.BaseViewHolder
+import com.example.playergroup.util.ViewTypeConst
 import com.example.playergroup.util.click
 import com.example.playergroup.util.getSpannedColorText
 import com.example.playergroup.util.viewBinding
 
 class ClubTabListAdapter(
-    private val clickCallback: ((Int) -> Unit)
+    private val clickCallback: ((ViewTypeConst) -> Unit)
 ) : ListAdapter<ClubTabInfo, BaseViewHolder<ViewBinding>>(
     object : DiffUtil.ItemCallback<ClubTabInfo>() {
         override fun areItemsTheSame(oldItem: ClubTabInfo, newItem: ClubTabInfo): Boolean = oldItem.name == newItem.name
@@ -38,7 +39,7 @@ class ClubTabListAdapter(
             } else {
                 data.getOrNull(selectedItem)?.isSelected = false   // 같은게 아닐 경우 서로 바꿈.
                 data.getOrNull(index)?.isSelected = true
-                clickCallback.invoke(index)
+                clickCallback.invoke(data[index].tabType)
             }
         }
         submitList(data)

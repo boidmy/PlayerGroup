@@ -17,5 +17,6 @@ data class ClubTabInfo(
     val name: String,
     val primaryKey: String,
     var isNewFeed: Boolean = false,
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
+    val tabType: ViewTypeConst
 )
