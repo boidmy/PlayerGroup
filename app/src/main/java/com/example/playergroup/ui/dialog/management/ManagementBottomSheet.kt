@@ -64,9 +64,12 @@ class ManagementBottomSheet: BottomSheetDialogFragment() {
         val makeClubList = PlayerGroupApplication.instance.userInfo?.clubAdmin
         val involvedClubList = PlayerGroupApplication.instance.userInfo?.clubInvolved
 
-        viewModel.managementLiveData.observe(requireActivity(), Observer {
-            (binding.makeClubList.adapter as? ManagementListAdapter)?.submitList(it.first)
-            (binding.involvedClubList.adapter as? ManagementListAdapter)?.submitList(it.second)
+        viewModel.makeClubLiveData.observe(requireActivity(), Observer {
+            (binding.makeClubList.adapter as? ManagementListAdapter)?.submitList(it)
+        })
+
+        viewModel.involvedClubLiveData.observe(requireActivity(), Observer {
+            (binding.involvedClubList.adapter as? ManagementListAdapter)?.submitList(it)
         })
 
         viewModel.getClubList(makeClubList, involvedClubList)

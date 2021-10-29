@@ -6,8 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import com.example.playergroup.data.*
 import com.example.playergroup.ui.base.BaseViewModel
-import com.example.playergroup.util.ViewTypeConst.SEARCH_ONE_TYPE
-import com.example.playergroup.util.ViewTypeConst.SEARCH_TWO_TYPE
+import com.example.playergroup.util.ViewTypeConst.*
 import com.example.playergroup.util.checkItemsAre
 import com.example.playergroup.util.diffUtilResult
 import io.reactivex.Single
@@ -43,6 +42,7 @@ class SearchViewModel: BaseViewModel() {
         data.forEach {
             modules.add(SearchDataSet(viewType = if (isTwoItemMode) SEARCH_TWO_TYPE else SEARCH_ONE_TYPE, data = it))
         }
+        if (modules.isNullOrEmpty()) modules.add(SearchDataSet(viewType = EMPTY_ERROR))
         return modules
     }
 
@@ -59,9 +59,14 @@ class SearchViewModel: BaseViewModel() {
 
     fun modeChange(isTwoItemMode: Boolean) {
         Single.fromCallable {
-            val data = getCurrentSearchListData?.invoke()
+            var data = getCurrentSearchListData?.invoke()
             data?.map { it.viewType = if (isTwoItemMode) SEARCH_TWO_TYPE else SEARCH_ONE_TYPE }?.toMutableList()
-            data?.checkItemsAre<SearchDataSet>()?.toMutableList()
+
+            if (data.isNullOrEmpty()) {
+                data = mutableListOf(SearchDataSet(viewType = EMPTY_ERROR))
+            }
+
+            data.checkItemsAre<SearchDataSet>()?.toMutableList()
         }
             .subscribeOn(Schedulers.computation())
             .map(::calculateDiffUtilResult)

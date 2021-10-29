@@ -4,22 +4,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.example.playergroup.data.BaseDataSet
-import com.example.playergroup.data.MainDataSet
 import com.example.playergroup.data.SearchDataSet
 import com.example.playergroup.ui.base.BaseViewHolder
 import com.example.playergroup.ui.base.EmptyErrorViewHolder
+import com.example.playergroup.ui.search.holder.SearchEmptyViewHolder
+import com.example.playergroup.ui.search.holder.SearchOneItemViewHolder
+import com.example.playergroup.ui.search.holder.SearchTwoItemViewHolder
 import com.example.playergroup.util.ViewTypeConst
-import com.example.playergroup.util.diffUtilResult
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 class SearchListAdapter: RecyclerView.Adapter<BaseViewHolder<ViewBinding>>() {
     var items: MutableList<SearchDataSet>? = null
     fun submitList(newList: MutableList<SearchDataSet>?, diffResult: DiffUtil.DiffResult) {
-        if (newList.isNullOrEmpty()) return
+        if (newList == null) return
         items?.let {
             it.clear()
             it.addAll(newList)
@@ -35,7 +31,7 @@ class SearchListAdapter: RecyclerView.Adapter<BaseViewHolder<ViewBinding>>() {
         when(ViewTypeConst.values()[viewType]) {
             ViewTypeConst.SEARCH_ONE_TYPE -> SearchOneItemViewHolder(parent)
             ViewTypeConst.SEARCH_TWO_TYPE -> SearchTwoItemViewHolder(parent)
-            else -> EmptyErrorViewHolder(parent)
+            else -> SearchEmptyViewHolder(parent)
         } as BaseViewHolder<ViewBinding>
 
     override fun onBindViewHolder(holder: BaseViewHolder<ViewBinding>, position: Int) {

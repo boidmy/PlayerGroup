@@ -14,72 +14,68 @@ import io.reactivex.subjects.PublishSubject
 
 class ManagementViewModel: BaseViewModel() {
 
-    private val _managementLiveData: MutableLiveData<Pair<MutableList<ManagementDataSet>?, MutableList<ManagementDataSet>?>> = MutableLiveData()
-    val managementLiveData: LiveData<Pair<MutableList<ManagementDataSet>?, MutableList<ManagementDataSet>?>>
-        get() = _managementLiveData
+    private val _makeClubLiveData: MutableLiveData<MutableList<ManagementDataSet>?> = MutableLiveData()
+    val makeClubLiveData: LiveData<MutableList<ManagementDataSet>?>
+        get() = _makeClubLiveData
+
+    private val _involvedClubLiveData: MutableLiveData<MutableList<ManagementDataSet>?> = MutableLiveData()
+    val involvedClubLiveData: LiveData<MutableList<ManagementDataSet>?>
+        get() = _involvedClubLiveData
 
     fun getClubList(makeClubList: MutableList<String>?, involvedClubList: MutableList<String>?) {
-        // todo club 정보 갖고 와서 ManagementDataSet 만들어 주기
-
-        val publishMakeClub = PublishSubject.create<MutableList<ManagementDataSet>>()
-        val publishInvolvedClub = PublishSubject.create<MutableList<ManagementDataSet>>()
-
-        Observable.zip(publishMakeClub, publishInvolvedClub, {a, b ->
-            Pair(a, b)
-        })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _managementLiveData.value = it
-            }, {
-                _managementLiveData.value = null
-            }).addTo(compositeDisposable)
-
-
+        val makeClubModule = mutableListOf<ManagementDataSet>()
         if (makeClubList.isNullOrEmpty()) {
-            publishMakeClub.onNext(mutableListOf(ManagementDataSet(
+            makeClubModule.add(ManagementDataSet(
                 viewType = ViewTypeConst.MANAGEMENT_EMPTY,
                 emptyTxt = "새로은 클럽을 만들어보세요!",
                 emptyLandingType = Landing.CREATE_CLUB
-            )))
+            ))
         } else {
             clubRepository.getClubList(makeClubList.toList()) {
-                val modules = mutableListOf<ManagementDataSet>()
                 val sortList = it?.sortedBy { it.clubCreateDate }
                 sortList?.forEachIndexed { index, clubInfo ->
-                    modules.add(ManagementDataSet(
+                    makeClubModule.add(ManagementDataSet(
                         viewType = ViewTypeConst.MANAGEMENT_ITEM,
                         clubImg = clubInfo.clubImg,
                         clubName = clubInfo.clubName,
                         clubPrimaryKey = clubInfo.clubPrimaryKey
                     ))
                 }
-                if (modules.size >= 1) modules.add(ManagementDataSet(ViewTypeConst.MANAGEMENT_CREATE))
-                publishMakeClub.onNext(modules)
+                if (makeClubModule.size == 0) {
+                    makeClubModule.add(ManagementDataSet(
+                        viewType = ViewTypeConst.MANAGEMENT_EMPTY,
+                        emptyTxt = "새로은 클럽을 만들어보세요!",
+                        emptyLandingType = Landing.CREATE_CLUB
+                    ))
+                }
             }
         }
+        _makeClubLiveData.value = makeClubModule
+
+        val involvedClubModule = mutableListOf<ManagementDataSet>()
 
         if (involvedClubList.isNullOrEmpty()) {
-            publishInvolvedClub.onNext(mutableListOf(ManagementDataSet(
+            involvedClubModule.add(ManagementDataSet(
                 viewType = ViewTypeConst.MANAGEMENT_EMPTY,
                 emptyTxt = "클럽에 가입해 보세요!",
                 emptyLandingType = Landing.SEARCH
-            )))
+            ))
         } else {
             clubRepository.getClubList(involvedClubList.toList()) {
-                val modules = mutableListOf<ManagementDataSet>()
                 val sortList = it?.sortedBy { it.clubCreateDate }
                 sortList?.forEachIndexed { index, clubInfo ->
-                    modules.add(ManagementDataSet(
-                        viewType = ViewTypeConst.MANAGEMENT_ITEM,
-                        clubImg = clubInfo.clubImg,
-                        clubName = clubInfo.clubName,
-                        clubPrimaryKey = clubInfo.clubPrimaryKey
-                    ))
+                    involvedClubModule.add(
+                        ManagementDataSet(
+                            viewType = ViewTypeConst.MANAGEMENT_ITEM,
+                            clubImg = clubInfo.clubImg,
+                            clubName = clubInfo.clubName,
+                            clubPrimaryKey = clubInfo.clubPrimaryKey
+                        )
+                    )
                 }
-                publishInvolvedClub.onNext(modules)
             }
         }
+        _involvedClubLiveData.value = involvedClubModule
     }
 
 }
