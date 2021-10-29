@@ -12,3 +12,11 @@ data class ClubInfo (
     var clubActivityArea: String? = null,
     override var viewType: ViewTypeConst = EMPTY_ERROR
 ): BaseDataSet(viewType)
+
+data class ClubTabInfo(
+    val name: String,
+    val primaryKey: String,
+    var isNewFeed: Boolean = false,
+    var isSelected: Boolean = false,
+    val tabType: ViewTypeConst
+)

@@ -109,7 +109,8 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>() {
             viewModel.getCurrentSearchListData = { getSearchListAdapter()?.items?.map { it.copy() }?.toMutableList() }
             firebaseClubListData.observe(this@SearchActivity, Observer {
                 getSearchListAdapter()?.submitList(it.first, it.second)
-                val count = it.first?.size ?: 0
+                val isEmpty = it.first?.indexOfFirst { it.viewType == ViewTypeConst.EMPTY_ERROR } == 0
+                val count = if (isEmpty) 0 else (it.first?.size ?: 0)
                 binding.tvCount.text = "$count 개"
             })
             getData(currentActivityArea, isTwoItemMode)

@@ -38,7 +38,7 @@ class CreateClubViewModel: BaseViewModel() {
             .addTo(compositeDisposable)
     }
 
-    fun insertInitCreateClub(clubName: String, clubImgUri: Uri?, location: String) {
+    fun insertInitCreateClub(clubName: String, clubImgUri: Uri, location: String) {
         clubRepository.upLoadClubImg(clubName, clubImgUri) { isStorageUpLoadState ->   // Storage 에 우선 저장
             if (isStorageUpLoadState) {
                 clubRepository.getUserProfilePhoto(clubName) { storageFullUrl -> // Storage 에 저장된 Img Full Url을 갖고 온다.
