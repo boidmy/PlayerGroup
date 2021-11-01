@@ -7,7 +7,9 @@ import com.example.playergroup.data.UserInfo
 import com.example.playergroup.ui.base.BaseRepository
 import com.example.playergroup.ui.dialog.calendar.BaseCalendar.Companion.DATE_FORMAT_YYYYMMDDHHMMSS
 import com.example.playergroup.util.getToday
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import io.reactivex.Completable
 import io.reactivex.Single
 
 class ClubRepository: BaseRepository() {
@@ -59,8 +61,8 @@ class ClubRepository: BaseRepository() {
     /**
      * 클럽 데이터 가져오기
      */
-    fun getClubData(clubName: String, callback: (ClubInfo?) -> Unit) {
-        firebaseClub.document(clubName).get()
+    fun getClubData(primaryKey: String, callback: (ClubInfo?) -> Unit) {
+        firebaseClub.document(primaryKey).get()
             .addOnCompleteListener {
                 val clubInfo = (it.result?.toObject(ClubInfo::class.java))
                 callback.invoke(clubInfo)
@@ -112,13 +114,17 @@ class ClubRepository: BaseRepository() {
     /**
      * whereIn 은 최대 10개까지만 갖고 온다? ( 참고 )
      */
-    fun getClubList(primaryKeys: List<String>, callback: (List<ClubInfo>?) -> Unit) {
-        firebaseClub.whereIn("clubPrimaryKey", primaryKeys).get().addOnCompleteListener {
-            if (it.isSuccessful) {
-                val list = it.result?.toObjects(ClubInfo::class.java)
-                callback.invoke(list)
-            } else {
-                callback.invoke(null)
+    fun getClubList(primaryKeys: List<String>?, callback: (List<ClubInfo>?) -> Unit) {
+        if (primaryKeys.isNullOrEmpty()) {
+            callback.invoke(null)
+        } else {
+            firebaseClub.whereIn("clubPrimaryKey", primaryKeys).get().addOnCompleteListener {
+                if (it.isSuccessful) {
+                    val list = it.result?.toObjects(ClubInfo::class.java)
+                    callback.invoke(list)
+                } else {
+                    callback.invoke(null)
+                }
             }
         }
     }
@@ -131,6 +137,47 @@ class ClubRepository: BaseRepository() {
                 .addOnSuccessListener {
                     emitter.onSuccess(it.toObjects(ClubInfo::class.java))
                 }.addOnFailureListener {
+                    emitter.onError(it)
+                }
+        }
+
+    /**
+    // Atomically add a new region to the "regions" array field.
+    washingtonRef.update("regions", FieldValue.arrayUnion("greater_virginia"))
+
+    // Atomically remove a region from the "regions" array field.
+    washingtonRef.update("regions", FieldValue.arrayRemove("east_coast"))
+     */
+    fun addClubJoinProgress(primaryKey: String, email: String) =
+        Completable.create { emitter ->
+            firebaseClub.document(primaryKey).update("joinProgress", FieldValue.arrayUnion(email))
+                .addOnSuccessListener {
+                    firebaseUser.document(email).update("joinProgress", FieldValue.arrayUnion(primaryKey))
+                        .addOnSuccessListener { emitter.onComplete() }
+                        .addOnFailureListener {
+                            Log.d("####", "[Join중..] User 에 저장하다가 실패 ${it.message}")
+                            emitter.onError(it) }
+                }
+                .addOnFailureListener {
+                    Log.d("####", "[Join중..] Club 에 저장하다가 실패 ${it.message}")
+                    emitter.onError(it)
+                }
+
+        }
+
+    fun removeClubJoinProgress(primaryKey: String, email: String) =
+        Completable.create { emitter ->
+            firebaseClub.document(primaryKey).update("joinProgress", FieldValue.arrayRemove(email))
+                .addOnSuccessListener {
+                    firebaseUser.document(email).update("joinProgress", FieldValue.arrayRemove(primaryKey))
+                        .addOnSuccessListener { emitter.onComplete() }
+                        .addOnFailureListener {
+                            Log.d("####", "[Remove중..] User 에 저장하다가 실패 ${it.message}")
+                            emitter.onError(it)
+                        }
+                }
+                .addOnFailureListener {
+                    Log.d("####", "[Remove중..] Club 에 저장하다가 실패 ${it.message}")
                     emitter.onError(it)
                 }
         }

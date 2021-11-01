@@ -53,7 +53,7 @@ class IntroActivity: BaseActivity<ActivityIntroBinding>() {
 
             firebaseUserDataResult.observe(this@IntroActivity, Observer {
                 if (it?.isEmptyData() == true) {
-                    LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.MY_PAGE, paramBoolean = true))
+                    LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.MY_PAGE))
                 } else {
                     PlayerGroupApplication.instance.userInfo = it
                     LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.MAIN))

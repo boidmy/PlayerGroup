@@ -1,4 +1,4 @@
-package com.example.playergroup.ui.club
+package com.example.playergroup.ui.club.adapter
 
 import android.view.View
 import android.view.ViewGroup

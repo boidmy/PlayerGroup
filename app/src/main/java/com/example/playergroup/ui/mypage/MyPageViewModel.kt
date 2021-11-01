@@ -23,7 +23,17 @@ class MyPageViewModel: BaseViewModel() {
     val firebaseResult: LiveData<Boolean>
         get() = _firebaseResult
 
+    private val _userProfileData: MutableLiveData<UserInfo?> = MutableLiveData()
+    val userProfileData: LiveData<UserInfo?>
+        get() = _userProfileData
+
     fun getCurrentUser() = authRepository.getCurrentUser()
+
+    fun getUserProfile(email: String) {
+        authRepository.getUserProfileData(email) {
+            _userProfileData.value = it
+        }
+    }
 
     fun saveProfile(userInfo: UserInfo) {
         // 사진을 먼저 저장 후 Full Url 을 갖고 와야 한다.
