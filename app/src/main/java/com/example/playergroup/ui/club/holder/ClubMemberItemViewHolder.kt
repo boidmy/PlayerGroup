@@ -36,6 +36,7 @@ class ClubMemberItemViewHolder(parent: ViewGroup): BaseViewHolder<ViewClubMember
             btnApprove.visibility = if (data.isJoiningUser) View.VISIBLE else View.GONE
 
             btnApprove click {
+                //todo 사용자에게 푸시 보내기
                 itemView.context debugToast { "준비중" }
             }
         }
