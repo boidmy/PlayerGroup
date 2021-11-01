@@ -30,12 +30,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun initObserver() {
         with(viewModel) {
-            mainDataSet.observe(this@MainActivity, Observer { data ->
-                (binding.recyclerView.adapter as? MainListAdapter)?.let { adapter->
-                    adapter.items = data
-                }
+            viewModel.getCurrentMainListData = { getMainListAdapter()?.items?.map { it.copy() }?.toMutableList() }
+            mainDataSet.observe(this@MainActivity, Observer {
+                getMainListAdapter()?.submitList(it.first, it.second)
             })
-            getMainData(getSaveMainList())
         }
 
         RxBus.listen(LoginStateChange::class.java).subscribe {
@@ -44,7 +42,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 if (userInfo?.isEmptyData() == true) {
                     LandingRouter.move(this, RouterEvent(type = Landing.MY_PAGE, paramBoolean = true))
                 } else {
-                    //todo 메인 화면 업데이트
                     viewModel.getMainData(getSaveMainList())
                 }
             } else {
@@ -56,12 +53,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private fun initRecyclerView() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
-            adapter = MainListAdapter(compositeDisposable)
+            adapter = MainListAdapter()
         }
     }
 
-    override fun onReload() {
-        viewModel.getMainData(getSaveMainList())
+    override fun onReload() { viewModel.getMainData(getSaveMainList()) }
+    private fun getMainListAdapter() = binding.recyclerView.adapter as? MainListAdapter
+
+    override fun onResume() {
+        super.onResume()
+        onReload()
     }
 
     private fun getSaveMainList(): MutableList<ViewTypeConst> {
@@ -71,7 +72,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         var mainList = list.map { it.viewType }.toMutableList()
         if (mainList.isNullOrEmpty()) {
             mainList = mutableListOf(
-                ViewTypeConst.MAIN_CLUB_INFO,
+                ViewTypeConst.MAIN_NEW_CLUB_INFO,
                 ViewTypeConst.MAIN_CLUB_PICK_INFO,
                 ViewTypeConst.MAIN_PICK_LOCATION_INFO,
                 ViewTypeConst.MAIN_APP_COMMON_BOARD_INFO

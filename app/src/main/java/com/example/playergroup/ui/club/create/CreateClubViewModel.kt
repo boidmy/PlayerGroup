@@ -21,31 +21,42 @@ class CreateClubViewModel: BaseViewModel() {
     val isVisibleBtnCreateClub: LiveData<Boolean>
         get() = _isVisibleBtnCreateClub
 
-    fun insertInitCreateClub(clubName: String, clubImgUri: Uri?) {
-        val isInsertFirebaseClubDB = PublishSubject.create<Boolean>()
-        val isInsertStorageClubDB = PublishSubject.create<Boolean>()
-        val isUpDateFirebaseUserDB = PublishSubject.create<Boolean>()
+    val clubNamePublishSubject: PublishSubject<Boolean> = PublishSubject.create()
+    val clubLocationPublishSubject: PublishSubject<Boolean> = PublishSubject.create()
 
-        val primaryKey = authRepository.createGetPrimaryKey()
-
-        Observable.zip(
-            isInsertFirebaseClubDB, isInsertStorageClubDB, isUpDateFirebaseUserDB,
-            { a, b, c -> (a && b && c) })
+    init {
+        Observable.combineLatest(
+            clubNamePublishSubject,
+            clubLocationPublishSubject,
+            { a, b -> a && b })
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                _firebaseCreateClubResult.value = Pair(it, primaryKey)
-            }
+            .subscribe({
+                _isVisibleBtnCreateClub.value = it
+            }, {
+                _isVisibleBtnCreateClub.value = false
+            })
             .addTo(compositeDisposable)
+    }
 
-        clubRepository.insertInitCreateClub(primaryKey, clubName, clubImgUri) {
-            isInsertFirebaseClubDB.onNext(it)
-        }
-        clubRepository.upLoadClubImg(clubName, clubImgUri) {
-            //todo 사진 업로드는 실패해도 일단 패스 하자 ..
-            isInsertStorageClubDB.onNext(true)
-        }
-        authRepository.upDateClubUserField(primaryKey) {
-            isUpDateFirebaseUserDB.onNext(it)
+    fun insertInitCreateClub(clubName: String, clubImgUri: Uri, location: String) {
+        clubRepository.upLoadClubImg(clubName, clubImgUri) { isStorageUpLoadState ->   // Storage 에 우선 저장
+            if (isStorageUpLoadState) {
+                clubRepository.getUserProfilePhoto(clubName) { storageFullUrl -> // Storage 에 저장된 Img Full Url을 갖고 온다.
+                    val primaryKey = authRepository.createGetPrimaryKey()
+                    //todo storageFullUrl... 사진 업로드는 실패해도 일단 패스 하자 ..
+                    clubRepository.insertInitCreateClub(primaryKey, clubName, storageFullUrl ?: "", location) {
+                        if (it) {
+                            authRepository.upDateClubUserField(primaryKey) {
+                                _firebaseCreateClubResult.value = Pair(it, primaryKey)
+                            }
+                        } else {
+                            _firebaseCreateClubResult.value = Pair(false, "")
+                        }
+                    }
+                }
+            } else {
+                _firebaseCreateClubResult.value = Pair(false, "")
+            }
         }
     }
 
@@ -60,7 +71,7 @@ class CreateClubViewModel: BaseViewModel() {
             Observable.create<CharSequence> { emitter -> emitter.onNext(editTextString) }
                 .subscribeOn(Schedulers.computation())
                 .map { // 최소 1글자 이상 최대 20글자 이하
-                    it.length in 2..20
+                    //it.length in 2..20
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {

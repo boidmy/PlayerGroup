@@ -9,7 +9,7 @@ import com.example.playergroup.databinding.ViewBoardListItemBinding
 import com.example.playergroup.ui.base.BaseViewHolder
 import com.example.playergroup.util.CalendarUtil
 import com.example.playergroup.util.click
-import com.example.playergroup.util.diffUtilExtensions
+import com.example.playergroup.util.diffUtilResult
 import com.example.playergroup.util.viewBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +45,7 @@ class BoardListAdapter(private val callback: (key: String) -> Unit) : RecyclerVi
 
     private fun calculate(value: MutableList<NoticeBoardItem>, callback: (DiffUtil.DiffResult) -> Unit) {
         CoroutineScope(Dispatchers.Default).launch {
-            val diffUtil = this@BoardListAdapter.diffUtilExtensions(
+            val diffUtil = diffUtilResult(
                 oldList = items,
                 newList = value,
                 itemCompare = { o, n -> o?.key == n?.key},

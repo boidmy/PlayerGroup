@@ -11,12 +11,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.playergroup.R
 import com.example.playergroup.custom.SliderLayoutManager
-import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
 import com.example.playergroup.databinding.DialogSelectorBinding
-import com.example.playergroup.util.VerticalMarginDecoration
-import com.example.playergroup.util.click
-import com.example.playergroup.util.toPx
-import com.example.playergroup.util.viewBinding
+import com.example.playergroup.util.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -30,7 +26,14 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
         lateinit var callback: (String) -> Unit
         const val TYPE = "type"
         const val SELECT_ITEM = "selectText"
-        fun newInstance(type: ScrollSelectorType, selectItem: String, callback: (String) -> Unit): ScrollSelectorBottomSheet =
+        const val SELECTED_ITEM = "selected_item"
+        const val CUSTOM_TITLE = "custom_title"
+        fun newInstance(
+            type: ViewTypeConst,
+            selectItem: String = "",
+            customTitle: String = "",
+            callback: (String) -> Unit
+        ): ScrollSelectorBottomSheet =
             ScrollSelectorBottomSheet().apply {
                 this@Companion.callback = callback
                 arguments = Bundle().apply {
@@ -39,14 +42,6 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
                 }
             }
 
-        enum class ScrollSelectorType {
-            HEIGHT,
-            WEIGHT,
-            YEAROFBIRTH,
-            SEX,
-            POSITION,
-            CATEGORY
-        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -65,16 +60,23 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
             behavior.peekHeight = 0
             behavior.isDraggable = false
-            behavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
+            behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     when (newState) {
-                        BottomSheetBehavior.STATE_EXPANDED -> { }
-                        BottomSheetBehavior.STATE_COLLAPSED -> { dismiss() }
-                        BottomSheetBehavior.STATE_HIDDEN -> {}
-                        BottomSheetBehavior.STATE_DRAGGING -> {}
-                        BottomSheetBehavior.STATE_SETTLING -> {}
+                        BottomSheetBehavior.STATE_EXPANDED -> {
+                        }
+                        BottomSheetBehavior.STATE_COLLAPSED -> {
+                            dismiss()
+                        }
+                        BottomSheetBehavior.STATE_HIDDEN -> {
+                        }
+                        BottomSheetBehavior.STATE_DRAGGING -> {
+                        }
+                        BottomSheetBehavior.STATE_SETTLING -> {
+                        }
                     }
                 }
+
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {}
             })
         } ?: run {
@@ -92,23 +94,25 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewType = (arguments?.get(TYPE) as? ScrollSelectorType) ?: POSITION
+        val viewType = (arguments?.get(TYPE) as? ViewTypeConst) ?: ViewTypeConst.SCROLLER_POSITION
         val selectorList = viewModel.getSelectorDataList(viewType)
         val selectItem = arguments?.get(SELECT_ITEM)
+        val customTitle = arguments?.getString(CUSTOM_TITLE) ?: ""
 
-        binding.title.text = viewModel.getSelectorTitle(viewType)
+        binding.title.text =
+            if (customTitle.isEmpty()) viewModel.getSelectorTitle(viewType) else customTitle
 
         binding.btnClose click { dismiss() }
 
         binding.selectorList.apply {
             layoutManager = SliderLayoutManager(requireContext()).apply {
-                this.callback = object: SliderLayoutManager.OnItemSelectedListener {
+                this.callback = object : SliderLayoutManager.OnItemSelectedListener {
                     override fun onItemSelected(layoutPosition: Int) {}
                 }
             }
 
             adapter = SliderListAdapter().also {
-                if (viewType == CATEGORY) {
+                if (viewType == ViewTypeConst.SCROLLER_CATEGORY) {
                     it.items = selectorList
                 }
                 it.items = selectorList
@@ -121,17 +125,31 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
                     }
                 }
                 smoothScrollToPosition(defaultIndex)
+                adapter = SliderListAdapter().apply {
+                    items = selectorList
+
+                    val selectedIndex = arguments?.getString(SELECTED_ITEM)
+
+                    val index = if (selectedIndex.isNullOrEmpty()) {
+                        selectorList.size / 2
+                    } else {
+                        selectorList.indexOfFirst { it == selectedIndex }
+                    }
+
+                    smoothScrollToPosition(index)
+                }
+
+                if (itemDecorationCount == 0)
+                    addItemDecoration(VerticalMarginDecoration(itemMargin = 13.toPx))
             }
 
-            if (itemDecorationCount == 0)
-                addItemDecoration(VerticalMarginDecoration(itemMargin = 13.toPx))
-        }
-
-        binding.btnConfirm click {
-            val index = (binding.selectorList.layoutManager as? SliderLayoutManager)?.selectIndex ?: -1
-            if (index == -1) dismiss()
-            callback.invoke(selectorList.getOrNull(index) ?: "")
-            dismiss()
+            binding.btnConfirm click {
+                val index =
+                    (binding.selectorList.layoutManager as? SliderLayoutManager)?.selectIndex ?: -1
+                if (index == -1) dismiss()
+                callback.invoke(selectorList.getOrNull(index) ?: "")
+                dismiss()
+            }
         }
     }
 }

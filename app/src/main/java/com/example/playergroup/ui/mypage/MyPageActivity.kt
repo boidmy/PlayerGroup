@@ -15,8 +15,6 @@ import com.bumptech.glide.Glide
 import com.example.playergroup.R
 import com.example.playergroup.custom.DialogCustom
 import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet
-import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType
-import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet.Companion.ScrollSelectorType.*
 import com.example.playergroup.data.INTENT_EXTRA_PARAM
 import com.example.playergroup.data.Landing
 import com.example.playergroup.data.RouterEvent
@@ -24,6 +22,7 @@ import com.example.playergroup.data.UserInfo
 import com.example.playergroup.databinding.ActivityMyinfoBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.util.*
+import com.example.playergroup.util.ViewTypeConst.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
@@ -123,13 +122,9 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
 
     private fun setUserProfileView(userInfo: UserInfo) {
         with (binding) {
-            myPageViewModel.getUserProfileImg(userInfo.email) {
-                if (!isDestroyed && !it.isNullOrEmpty()) {
-                    Glide.with(this@MyPageActivity)
-                        .load(it)
-                        .into(ivProfileImg)
-                }
-            }
+            Glide.with(this@MyPageActivity)
+                .load(userInfo.img)
+                .into(ivProfileImg)
 
             etMyInfoName.setText(userInfo.name ?: "")
             etMyInfoHeight.setText(userInfo.height ?: "")
@@ -137,6 +132,7 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
             etMyInfoPosition.setText(userInfo.position ?: "")
             etMyInfoAge.setText(userInfo.age ?: "")
             etMyInfoSex.setText(userInfo.sex ?: "")
+            etActivityArea.setText(userInfo.activityArea ?: "")
             etMyInfoComment.setText(userInfo.comment ?: "")
         }
     }
@@ -186,31 +182,34 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
                 LandingRouter.move(this@MyPageActivity, RouterEvent(type = Landing.GALLERY, activityResult = galleryImgResult))
             }
 
-            llMyInfoSex.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(SEX) }
-            etMyInfoSex click { setScrollerPicker(SEX, etMyInfoSex.text.toString()) }
+            llMyInfoSex.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(SCROLLER_SEX, etMyInfoSex.text.toString()) }
+            etMyInfoSex click { setScrollerPicker(SCROLLER_SEX, etMyInfoSex.text.toString()) }
 
-            llMyInfoAge.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(YEAROFBIRTH) }
-            etMyInfoAge click { setScrollerPicker(YEAROFBIRTH, etMyInfoAge.text.toString()) }
+            llMyInfoAge.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(SCROLLER_YEAROFBIRTH, etMyInfoAge.text.toString()) }
+            etMyInfoAge click { setScrollerPicker(SCROLLER_YEAROFBIRTH, etMyInfoAge.text.toString()) }
 
-            llMyInfoHeight.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(HEIGHT)}
-            etMyInfoHeight click { setScrollerPicker(HEIGHT, etMyInfoHeight.text.toString()) }
+            llMyInfoHeight.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(SCROLLER_HEIGHT, etMyInfoHeight.text.toString())}
+            etMyInfoHeight click { setScrollerPicker(SCROLLER_HEIGHT, etMyInfoHeight.text.toString()) }
 
-            llMyInfoWeight.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(WEIGHT)}
-            etMyInfoWeight click { setScrollerPicker(WEIGHT, etMyInfoWeight.text.toString()) }
+            llMyInfoWeight.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(SCROLLER_WEIGHT, etMyInfoWeight.text.toString())}
+            etMyInfoWeight click { setScrollerPicker(SCROLLER_WEIGHT, etMyInfoWeight.text.toString()) }
 
-            llMyInfoPosition.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(POSITION)}
-            etMyInfoPosition click { setScrollerPicker(POSITION, etMyInfoPosition.text.toString()) }
+            llMyInfoPosition.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(SCROLLER_POSITION, etMyInfoPosition.text.toString())}
+            etMyInfoPosition click { setScrollerPicker(SCROLLER_POSITION, etMyInfoPosition.text.toString()) }
 
+            llActivityArea.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) setScrollerPicker(SCROLLER_ACTIVITY_AREA, etActivityArea.text.toString())}
+            etActivityArea click { setScrollerPicker(SCROLLER_ACTIVITY_AREA, etActivityArea.text.toString()) }
         }
     }
 
-    private fun setScrollerPicker(type: ScrollSelectorType, selectItem: String = "") {
-        val newInstance = ScrollSelectorBottomSheet.newInstance(type, selectItem) {
+    private fun setScrollerPicker(type: ViewTypeConst, selectItem: String = "") {
+        val newInstance = ScrollSelectorBottomSheet.newInstance(type = type, selectItem = selectItem) {
             when(type) {
-                HEIGHT -> binding.etMyInfoHeight.setText(it)
-                WEIGHT -> binding.etMyInfoWeight.setText(it)
-                YEAROFBIRTH -> binding.etMyInfoAge.setText(it)
-                SEX -> binding.etMyInfoSex.setText(it)
+                SCROLLER_HEIGHT -> binding.etMyInfoHeight.setText(it)
+                SCROLLER_WEIGHT -> binding.etMyInfoWeight.setText(it)
+                SCROLLER_YEAROFBIRTH -> binding.etMyInfoAge.setText(it)
+                SCROLLER_SEX -> binding.etMyInfoSex.setText(it)
+                SCROLLER_ACTIVITY_AREA -> binding.etActivityArea.setText(it)
                 else -> binding.etMyInfoPosition.setText(it)
             }
         }
@@ -241,6 +240,7 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
                     binding.etMyInfoAge.text.isNullOrEmpty() ||
                     binding.etMyInfoHeight.text.isNullOrEmpty() ||
                     binding.etMyInfoWeight.text.isNullOrEmpty() ||
+                    binding.etActivityArea.text.isNullOrEmpty() ||
                     binding.etMyInfoPosition.text.isNullOrEmpty()
             )
 
@@ -253,7 +253,10 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
         age = binding.etMyInfoAge.text.toString(),
         sex = binding.etMyInfoSex.text.toString(),
         img = myPageViewModel.getCurrentUser()?.email,
-        comment = binding.etMyInfoComment.text.toString()
+        activityArea = binding.etActivityArea.text.toString(),
+        comment = binding.etMyInfoComment.text.toString(),
+        clubAdmin = pgApplication.userInfo?.clubAdmin,
+        clubInvolved = pgApplication.userInfo?.clubInvolved
     )
 
     private fun setEditMode(isEditMode: Boolean) {
@@ -265,6 +268,7 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
             etMyInfoHeight.isEnabled = isEditMode
             etMyInfoWeight.isEnabled = isEditMode
             etMyInfoPosition.isEnabled = isEditMode
+            etActivityArea.isEnabled = isEditMode
             etMyInfoComment.isEnabled = isEditMode
         }
     }

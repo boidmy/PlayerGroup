@@ -5,42 +5,27 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.playergroup.data.BaseDataSet
+import com.example.playergroup.data.SearchDataSet
 import com.example.playergroup.ui.base.BaseViewHolder
 import com.example.playergroup.ui.base.EmptyErrorViewHolder
+import com.example.playergroup.ui.search.holder.SearchEmptyViewHolder
+import com.example.playergroup.ui.search.holder.SearchOneItemViewHolder
+import com.example.playergroup.ui.search.holder.SearchTwoItemViewHolder
 import com.example.playergroup.util.ViewTypeConst
-import com.example.playergroup.util.diffUtilExtensions
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SearchListAdapter(
-    private val mCompositeDisposable: CompositeDisposable
-): RecyclerView.Adapter<BaseViewHolder<ViewBinding>>() {
-    var items: MutableList<BaseDataSet>? = mutableListOf()
-        set(value) {
-            value?.let {
-                calculate(value) {
-                    field?.clear()
-                    field?.addAll(value)
-                    it.dispatchUpdatesTo(this)
-                }
-            } ?: run {
-                return
-            }
-        }
-
-    private fun calculate(value: MutableList<BaseDataSet>?, callback: (DiffUtil.DiffResult) -> Unit) {
-        CoroutineScope(Dispatchers.Default).launch {
-            val diffUtil = this@SearchListAdapter.diffUtilExtensions(
-                oldList = items,
-                newList = value,
-                itemCompare = { o, n -> o?.viewType == n?.viewType },
-                contentCompare = { o, n -> o == n }
-            )
-            CoroutineScope(Dispatchers.Main).launch {
-                callback(diffUtil)
-            }
+class SearchListAdapter: RecyclerView.Adapter<BaseViewHolder<ViewBinding>>() {
+    var items: MutableList<SearchDataSet>? = null
+    fun submitList(newList: MutableList<SearchDataSet>?, diffResult: DiffUtil.DiffResult) {
+        if (newList == null) return
+        items?.let {
+            it.clear()
+            it.addAll(newList)
+        } ?: run {
+            items = newList
         }
     }
 
@@ -50,10 +35,10 @@ class SearchListAdapter(
         when(ViewTypeConst.values()[viewType]) {
             ViewTypeConst.SEARCH_ONE_TYPE -> SearchOneItemViewHolder(parent)
             ViewTypeConst.SEARCH_TWO_TYPE -> SearchTwoItemViewHolder(parent)
-            else -> EmptyErrorViewHolder(parent)
+            else -> SearchEmptyViewHolder(parent)
         } as BaseViewHolder<ViewBinding>
 
     override fun onBindViewHolder(holder: BaseViewHolder<ViewBinding>, position: Int) {
-        holder.onBindView(items?.getOrNull(position))
+        holder.onBindView(items?.getOrNull(position)?.data)
     }
 }

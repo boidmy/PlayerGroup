@@ -113,7 +113,7 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
         if (list.isNullOrEmpty()) {
             // 데이터가 저장되어 있는게 없으면 디폴트 값은 아래와 같다.
             list = mutableListOf(
-                AdjustDataSet(viewType = ViewTypeConst.MAIN_CLUB_INFO, title = "클럽정보", subTitle = "내가 가입한 클럽 정보를 볼 수 있는 곳 입니다."),
+                AdjustDataSet(viewType = ViewTypeConst.MAIN_NEW_CLUB_INFO, title = "새로운 클럽 정보", subTitle = "새로 개설된 클럽 정보를 볼 수 있는 곳입니다."),
                 AdjustDataSet(viewType = ViewTypeConst.MAIN_CLUB_PICK_INFO, title = "내 클럽 PICK", subTitle = "내가 관심 있는 클럽 정보를 볼 수 있는 곳 입니다."),
                 AdjustDataSet(viewType = ViewTypeConst.MAIN_PICK_LOCATION_INFO, title = "내 장소 PICK", subTitle = "내가 관심 있는 장소 정보를 볼 수 있는 곳 입니다."),
                 AdjustDataSet(viewType = ViewTypeConst.MAIN_APP_COMMON_BOARD_INFO, title = "게시판", subTitle = "새로운 게시판 글을 한눈에 볼 수 있습니다.")
@@ -125,11 +125,11 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
 
     private fun initRecyclerView() {
         binding.recyclerView.apply {
-            itemTouchHelper.attachToRecyclerView(this)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = AdjustListAdapter{
                 itemTouchHelper.startDrag(it)
             }
+            binding.recyclerView.setStateItemTouchHelper(true)
         }
     }
 
@@ -141,14 +141,13 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
             adjustMenu click {
                 isAdjustMode = true
                 setAdjustModeViewChange(isAdjustMode)
-                getAdapter()?.setAdjustMode(isAdjustMode)
+                getAdapter()?.setAdjustMode(isAdjustMode) {}
             }
 
             cancel click {
                 isAdjustMode = false
                 setAdjustModeViewChange(isAdjustMode)
-                getAdapter()?.setAdjustMode(isAdjustMode)
-                binding.recyclerView.post {
+                getAdapter()?.setAdjustMode(isAdjustMode) {
                     getAdapter()?.submitList(currentMenuList)
                 }
             }
@@ -156,16 +155,18 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
             save click {
                 isAdjustMode = false
                 setAdjustModeViewChange(isAdjustMode)
-                getAdapter()?.setAdjustMode(isAdjustMode)
-                binding.recyclerView.post {
-                    currentMenuList = getAdapter()?.currentList?.toMutableList() ?: mutableListOf()
+                getAdapter()?.setAdjustMode(isAdjustMode) {
+                    currentMenuList = it
                     ConfigModule(requireContext()).adjustMainMenuList = Gson().toJson(currentMenuList)
-                    //todo Main 에 알려주고 메인을 업데이트 해야 한다 . 그리고 이 창을 닫는다 ..
                     callback.invoke()
                     dismiss()
                 }
             }
         }
+    }
+
+    private fun RecyclerView.setStateItemTouchHelper(isState: Boolean) {
+        itemTouchHelper.attachToRecyclerView(if (isState) this else null)
     }
 
     private fun getAdapter() = (binding.recyclerView.adapter as? AdjustListAdapter)

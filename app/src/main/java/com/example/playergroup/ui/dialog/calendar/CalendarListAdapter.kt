@@ -6,14 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playergroup.ui.dialog.calendar.CalendarViewModel.*
 import com.example.playergroup.databinding.ViewCalendarDayBinding
 import com.example.playergroup.util.click
-import com.example.playergroup.util.diffUtilExtensions
+import com.example.playergroup.util.diffUtilResult
 
 class CalendarListAdapter: RecyclerView.Adapter<CalendarItemViewHolder>() {
 
     var items: MutableList<CalendarData>? = null
         set(value) {
             value?.let {
-                diffUtilExtensions(
+                diffUtilResult(
                     oldList = field,
                     newList = it,
                     itemCompare = { o, n -> o?.id == n?.id },

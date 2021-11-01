@@ -5,17 +5,24 @@ import android.util.Log
 import com.example.playergroup.data.ClubInfo
 import com.example.playergroup.data.UserInfo
 import com.example.playergroup.ui.base.BaseRepository
+import com.example.playergroup.ui.dialog.calendar.BaseCalendar.Companion.DATE_FORMAT_YYYYMMDDHHMMSS
+import com.example.playergroup.util.getToday
+import com.google.firebase.firestore.FirebaseFirestore
+import io.reactivex.Single
 
 class ClubRepository: BaseRepository() {
     /**
      * initCreateClub
      */
-    fun insertInitCreateClub(key: String, clubName: String, clubImg: Uri?, callback: (Boolean) -> Unit) {
+    fun insertInitCreateClub(key: String, clubName: String, clubImg: String, location: String, callback: (Boolean) -> Unit) {
         val clubData = hashMapOf(
             "clubAdmin" to firebaseAuth.currentUser?.email.toString(),
-            "clubName" to clubName
+            "clubName" to clubName,
+            "clubPrimaryKey" to key,
+            "clubImg" to clubImg,
+            "clubCreateDate" to getToday(DATE_FORMAT_YYYYMMDDHHMMSS).toString(),
+            "clubActivityArea" to location
         )
-        if (clubImg != null) clubData["clubImg"] = clubName
         firebaseClub.document(key).set(clubData)
             .addOnCompleteListener {
                 callback.invoke(it.isSuccessful)
@@ -56,7 +63,8 @@ class ClubRepository: BaseRepository() {
         firebaseClub.document(clubName).get()
             .addOnCompleteListener {
                 val clubInfo = (it.result?.toObject(ClubInfo::class.java))
-                val clubImg = clubInfo?.clubImg
+                callback.invoke(clubInfo)
+                /*val clubImg = clubInfo?.clubImg
                 if (clubImg.isNullOrEmpty()) {
                     callback.invoke(clubInfo)
                 } else {
@@ -65,6 +73,24 @@ class ClubRepository: BaseRepository() {
                             clubInfo.clubImgFullUrl = it.result.toString()
                             callback.invoke(clubInfo)
                         }
+                }*/
+            }
+    }
+
+    /**
+     * Storage 에서 사진 URL 가져오기
+     */
+    fun getUserProfilePhoto(clubName: String?, callback: (String?) -> Unit) {
+        if (clubName.isNullOrEmpty()) {
+            callback.invoke(null)
+            return
+        }
+        firebaseStorageClubDB.child(clubName).downloadUrl
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    callback.invoke(it.result.toString())
+                } else {
+                    callback.invoke(null)
                 }
             }
     }
@@ -82,4 +108,30 @@ class ClubRepository: BaseRepository() {
             }
         }
     }
+
+    /**
+     * whereIn 은 최대 10개까지만 갖고 온다? ( 참고 )
+     */
+    fun getClubList(primaryKeys: List<String>, callback: (List<ClubInfo>?) -> Unit) {
+        firebaseClub.whereIn("clubPrimaryKey", primaryKeys).get().addOnCompleteListener {
+            if (it.isSuccessful) {
+                val list = it.result?.toObjects(ClubInfo::class.java)
+                callback.invoke(list)
+            } else {
+                callback.invoke(null)
+            }
+        }
+    }
+
+    fun getClubList(clubActivityArea: String) =
+        Single.create<List<ClubInfo>?> { emitter ->
+            firebaseClub
+                .whereEqualTo("clubActivityArea", clubActivityArea)
+                .get()
+                .addOnSuccessListener {
+                    emitter.onSuccess(it.toObjects(ClubInfo::class.java))
+                }.addOnFailureListener {
+                    emitter.onError(it)
+                }
+        }
 }

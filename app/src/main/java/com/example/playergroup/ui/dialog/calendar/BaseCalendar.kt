@@ -12,6 +12,7 @@ class BaseCalendar {
         const val DATE_FORMAT_D = "d"
         const val DATE_FORMAT_YYYYMMDD = "yyyyMMdd"
         const val DATE_FORMAT_YYYY_MM_DD = "yyyy년 MM월 dd일"
+        const val DATE_FORMAT_YYYYMMDDHHMMSS = "yyyyMMddHHmmss"
     }
 
     val calendar = Calendar.getInstance()

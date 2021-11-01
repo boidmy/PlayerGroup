@@ -7,11 +7,34 @@ enum class ViewTypeConst {
 
     // -- 메인 --
     MAIN_MY_INFO,
-    MAIN_CLUB_INFO,
+    MAIN_NEW_CLUB_INFO,
     MAIN_CLUB_PICK_INFO,
     MAIN_PICK_LOCATION_INFO,
     MAIN_APP_COMMON_BOARD_INFO,
 
     // -- 공통 --
-    EMPTY_ERROR
+    EMPTY_ERROR,
+
+    // -- 내 클럽 정보 --
+    MANAGEMENT_ITEM,
+    MANAGEMENT_EMPTY,
+    MANAGEMENT_CREATE,
+
+    // -- 선택적 팝업 --
+    SCROLLER_HEIGHT,
+    SCROLLER_WEIGHT,
+    SCROLLER_YEAROFBIRTH,
+    SCROLLER_SEX,
+    SCROLLER_POSITION,
+    SCROLLER_ACTIVITY_AREA,
+    SCROLLER_CATEGORY,
+
+    // -- 클럽 탭 화면 타입 --
+    CLUB_TAB_TYPE_INFO,
+    CLUB_TAB_TYPE_PHOTO,
+    CLUB_TAB_TYPE_SCHEDULER,
+    CLUB_TAB_TYPE_MEMBER
+
+    // 클럽 내부 아이템 타입.
+
 }

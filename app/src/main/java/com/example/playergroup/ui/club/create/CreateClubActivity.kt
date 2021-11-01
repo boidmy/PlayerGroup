@@ -10,19 +10,25 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
+import com.example.playergroup.R
+import com.example.playergroup.custom.DialogCustom
 import com.example.playergroup.data.Landing
 import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ActivityCreateClubBinding
 import com.example.playergroup.ui.base.BaseActivity
+import com.example.playergroup.ui.dialog.dropout.DropOutBottomSheet
+import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet
 import com.example.playergroup.util.*
+import io.reactivex.subjects.PublishSubject
 
 class CreateClubActivity: BaseActivity<ActivityCreateClubBinding>() {
 
     private lateinit var galleryImgResult: ActivityResultLauncher<Intent>
     private val createClubViewModel by viewModels<CreateClubViewModel>()
-    private var clubImgUri: Uri? = null
+    private lateinit var clubImgUri: Uri
 
     override fun getViewBinding(): ActivityCreateClubBinding = ActivityCreateClubBinding.inflate(layoutInflater)
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
@@ -34,7 +40,7 @@ class CreateClubActivity: BaseActivity<ActivityCreateClubBinding>() {
     private fun initViewModel() {
         createClubViewModel.apply {
             isVisibleBtnCreateClub.observe(this@CreateClubActivity, Observer {
-                binding.btnCreateClub.visibility = if (it) View.VISIBLE else View.GONE
+                binding.btnCreateClub.isEnabled = it
             })
 
             firebaseCreateClubResult.observe(this@CreateClubActivity, Observer {
@@ -75,9 +81,7 @@ class CreateClubActivity: BaseActivity<ActivityCreateClubBinding>() {
             false
             }
 
-            ivBack click {
-                finish()
-            }
+            binding.btnCreateClub.isEnabled = false
 
             btnClubNameOverlapCheck click {
                 hideKeyboard(etClubNameEditText)
@@ -87,17 +91,40 @@ class CreateClubActivity: BaseActivity<ActivityCreateClubBinding>() {
                         val mas = if (it) "사용 가능한 동호회 이름 입니다."
                         else "이미 있는 동호회 이름 입니다."
                         showDefDialog(mas).show()
-                        binding.btnCreateClub.visibility = if (it) View.VISIBLE else View.GONE
+                        createClubViewModel.clubNamePublishSubject.onNext(it)
                     }
                 } else {
                     showDefDialog("정확히 입력해 주세요.").show()
                 }
             }
 
+            etLocation click {
+                val newInstance = ScrollSelectorBottomSheet.newInstance(type = ViewTypeConst.SCROLLER_ACTIVITY_AREA, selectItem = etLocation.text.toString()) {
+                    binding.etLocation.setText(it)
+                    createClubViewModel.clubLocationPublishSubject.onNext(true)
+                }
+                if (newInstance.isVisible) return@click
+                newInstance.show(supportFragmentManager, newInstance.tag)
+            }
+
             btnCreateClub click {
                 hideKeyboard(etClubNameEditText)
-                loadingProgress.publisherLoading(true)
-                createClubViewModel.insertInitCreateClub(etClubNameEditText.text.toString(), clubImgUri)
+                DialogCustom(this@CreateClubActivity)
+                    .setMessage("입력하신 정보를 바탕으로\n클럽을 생성하시겠습니까?")
+                    .setConfirmBtnText(R.string.ok)
+                    .showCancelBtn(true)
+                    .setConfirmClickListener(object: DialogCustom.DialogCustomClickListener {
+                        override fun onClick(dialogCustom: DialogCustom) {
+                            dialogCustom.dismiss()
+                            loadingProgress.publisherLoading(true)
+                            createClubViewModel.insertInitCreateClub(etClubNameEditText.text.toString(), clubImgUri, etLocation.text.toString())
+                        }
+                    })
+                    .setCancelBtnText(getString(R.string.cancel))
+                    .setCancelClickListener(object: DialogCustom.DialogCustomClickListener {
+                        override fun onClick(dialogCustom: DialogCustom) { dialogCustom.dismiss() }
+                    })
+                    .show()
             }
 
             btnAddPhoto click {

@@ -34,10 +34,11 @@ class AdjustListAdapter(
         holder.onBindView(currentList.getOrNull(position))
     }
 
-    fun setAdjustMode(isState: Boolean) {
+    fun setAdjustMode(isState: Boolean, callback: (MutableList<AdjustDataSet>) -> Unit) {
         val list = currentList.map { it.copy() }.toMutableList()
         list.map { it.isAdjustMode = isState }
         submitList(list)
+        callback.invoke(list)
     }
 
     fun moveItem(from: Int, to: Int) {

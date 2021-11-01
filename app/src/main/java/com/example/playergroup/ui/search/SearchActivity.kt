@@ -14,38 +14,57 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playergroup.R
 import com.example.playergroup.databinding.ActivitySearchBinding
 import com.example.playergroup.ui.base.BaseActivity
-import com.example.playergroup.util.ViewTypeConst
-import com.example.playergroup.util.click
-import com.example.playergroup.util.hideKeyboard
-import com.example.playergroup.util.toPx
+import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet
+import com.example.playergroup.util.*
 
 class SearchActivity: BaseActivity<ActivitySearchBinding>() {
 
     private val viewModel by viewModels<SearchViewModel>()
     private var isTwoItemMode: Boolean = false
+    lateinit var currentActivityArea: String
 
     override fun getViewBinding(): ActivitySearchBinding = ActivitySearchBinding.inflate(layoutInflater)
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
 
         isTwoItemMode = configModule.isTwoItemMode ?: false
+        currentActivityArea = pgApplication.userInfo?.activityArea ?: ""
 
-        binding.ivBack click { onBackPressed() }
-        binding.tvSwap click {}
-        binding.moveToTop click { binding.rvSearch.scrollToPosition(0) }
-
-        binding.ivListMode.apply {
-            changeSearchIconUI(isTwoItemMode)
-            click {
-                isTwoItemMode = !isTwoItemMode
-                binding.rvSearch changeSearchListUI isTwoItemMode
-                configModule.isTwoItemMode = isTwoItemMode
-                changeSearchIconUI(isTwoItemMode)
-            }
-        }
-
+        initEtcView()
         initEditTextView()
         initRecyclerView()
         initViewModel()
+    }
+
+    private fun initEtcView() {
+
+        with (binding) {
+            tvSwap click {}
+            moveToTop click { binding.rvSearch.scrollToPosition(0) }
+            llLocation click {
+                val newInstance = ScrollSelectorBottomSheet.newInstance(
+                    type = ViewTypeConst.SCROLLER_ACTIVITY_AREA,
+                    selectItem = currentActivityArea,
+                    customTitle = "검색할 지역을 선택해 주세요."
+                ) {
+                    currentActivityArea = it
+                    tvLocation.text = it
+                    viewModel.getData(it, isTwoItemMode)
+                }
+                if (newInstance.isVisible) return@click
+                newInstance.show(supportFragmentManager, newInstance.tag)
+            }
+            tvLocation.text = currentActivityArea
+
+            ivListMode.apply {
+                changeSearchIconUI(isTwoItemMode)
+                click {
+                    isTwoItemMode = !isTwoItemMode
+                    viewModel.modeChange(isTwoItemMode)
+                    configModule.isTwoItemMode = isTwoItemMode
+                    changeSearchIconUI(isTwoItemMode)
+                }
+            }
+        }
     }
 
     private infix fun ImageView.changeSearchIconUI(isTwoItemMode: Boolean) {
@@ -59,7 +78,6 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>() {
 
     private infix fun RecyclerView.changeSearchListUI(isTwoItemMode: Boolean) {
         with(viewModel) {
-            (adapter as? SearchListAdapter)?.items.getClubAllList(isTwoItemMode)
             post {
                 layoutManager = if (isTwoItemMode) {
                     GridLayoutManager(this@SearchActivity, 2)
@@ -73,9 +91,13 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>() {
     private fun initEditTextView() {
         binding.etsearch.setOnKeyListener { _, keyCode, event ->
             if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                //mainViewModel.requestMovieData(binding.userInputEditText.text.toString())
-                //binding.progressBar isShow true
                 hideKeyboard(binding.etsearch)
+                val keyword = binding.etsearch.text?.trim().toString()
+                if (keyword.isEmpty()) showDefDialog("검색어를 입력해주세요").show()
+                else {
+                    debugToast { "준비중" }
+                    //todo 검색 은 어떻게 해야 할지 아직 못정함..
+                }
                 return@setOnKeyListener true
             }
             return@setOnKeyListener false
@@ -84,14 +106,18 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>() {
 
     private fun initViewModel() {
         viewModel.apply {
+            viewModel.getCurrentSearchListData = { getSearchListAdapter()?.items?.map { it.copy() }?.toMutableList() }
             firebaseClubListData.observe(this@SearchActivity, Observer {
-                (binding.rvSearch.adapter as? SearchListAdapter)?.items = it?.toMutableList()
-                val count = it?.size ?: 0
+                getSearchListAdapter()?.submitList(it.first, it.second)
+                val isEmpty = it.first?.indexOfFirst { it.viewType == ViewTypeConst.EMPTY_ERROR } == 0
+                val count = if (isEmpty) 0 else (it.first?.size ?: 0)
                 binding.tvCount.text = "$count 개"
             })
-            (binding.rvSearch.adapter as? SearchListAdapter)?.items.getClubAllList(configModule.isTwoItemMode ?: false)
+            getData(currentActivityArea, isTwoItemMode)
         }
     }
+
+    private fun getSearchListAdapter() = binding.rvSearch.adapter as? SearchListAdapter
 
     private fun initRecyclerView() {
         binding.rvSearch.apply {
@@ -100,7 +126,14 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>() {
             } else {
                 LinearLayoutManager(this@SearchActivity, LinearLayoutManager.VERTICAL, false)
             }
-            adapter = SearchListAdapter(compositeDisposable)
+            adapter = SearchListAdapter().apply {
+                registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+                    override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                        scrollToPosition(0)
+                        showMoveTopBtn(false)
+                    }
+                })
+            }
             if (itemDecorationCount == 0) addItemDecoration(object: RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(
                     outRect: Rect,
@@ -158,8 +191,9 @@ class SearchActivity: BaseActivity<ActivitySearchBinding>() {
                 hideKeyboard(binding.etsearch)
                 false
             }
+
+            itemAnimator = setItemAnimatorDuration(150L)
         }
     }
-
     private fun showMoveTopBtn(isShow: Boolean) { if (isShow) binding.moveToTop.show() else binding.moveToTop.hide() }
 }
