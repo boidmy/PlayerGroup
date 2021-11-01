@@ -32,8 +32,11 @@ enum class ViewTypeConst {
     CLUB_TAB_TYPE_INFO,
     CLUB_TAB_TYPE_PHOTO,
     CLUB_TAB_TYPE_SCHEDULER,
-    CLUB_TAB_TYPE_MEMBER
+    CLUB_TAB_TYPE_MEMBER,
 
-    // 클럽 내부 아이템 타입.
+    // -- 클럽 맴버 --
+    CLUB_MEMBER_USER,
+    CLUB_MEMBER_EXPAND,
+    CLUB_MEMBER_INVITE_USER,
 
 }

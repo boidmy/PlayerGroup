@@ -12,25 +12,35 @@ import com.example.playergroup.R
 import com.example.playergroup.data.*
 import com.example.playergroup.databinding.ActivityClubBinding
 import com.example.playergroup.ui.base.BaseActivity
+import com.example.playergroup.ui.club.adapter.ClubTabListAdapter
 import com.example.playergroup.ui.club.fragment.ClubCommonFragment
+import com.example.playergroup.ui.club.fragment.ClubMemberFragment
 import com.example.playergroup.util.*
 import com.google.android.material.appbar.AppBarLayout
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 class ClubActivity: BaseActivity<ActivityClubBinding>() {
-
     private val clubViewModel by viewModels<ClubViewModel>()
-
+    private lateinit var mClubInfo: ClubInfo
     override fun getViewBinding(): ActivityClubBinding = ActivityClubBinding.inflate(layoutInflater)
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
         val primaryKey = intent?.getStringExtra(INTENT_EXTRA_PRIMARY_KEY)
-        binding.btnJoinClub.visibility = if (isVisitor(primaryKey)) View.VISIBLE else View.GONE
         initViewModel()
-
         if (primaryKey.isNullOrEmpty()) {
             showToast("해당 클럽은 문제가 있어 폐지 되었습니다. 관리자에게 문의 부탁 드립니다.")
             finish()
         } else {
             clubViewModel.getClubData(primaryKey)
+            initJoinBtn(primaryKey)
+        }
+    }
+
+    private fun initJoinBtn(primaryKey: String) {
+        if (isVisitor(primaryKey)) {
+            binding.btnJoinClub.visibility = View.VISIBLE
+            binding.tvJoinClub.text = if (isJoining(primaryKey)) "가입 취소" else "가입하기"
+        } else {
+            binding.btnJoinClub.visibility = View.GONE
         }
     }
 
@@ -41,24 +51,79 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
                     showToast("해당 동호회는 삭제되었습니다.")
                     finish()
                 } else {
-                    initView(it)
+                    mClubInfo = it
+                    initView()
                 }
             })
+
+            joinEvent.observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it) {
+                        mClubInfo.joinProgress?.add(pgApplication.userInfo?.email!!) ?: run {
+                            mClubInfo.joinProgress = mutableListOf(pgApplication.userInfo?.email!!)
+                        }
+                        pgApplication.userInfo?.joinProgress?.add(mClubInfo.clubPrimaryKey!!) ?: run {
+                            pgApplication.userInfo?.joinProgress = mutableListOf(mClubInfo.clubPrimaryKey!!)
+                        }
+                    }
+
+                    val message = if (it) {
+                        "가입 신청이 완료되었습니다. 클럽에서 확인 후 결과가 있을때 까지 기다려 주세요."
+                    } else {
+                        "가입 신청이 실패하였습니다. 관리자에게 문의해주세요."
+                    }
+                    showToast(message)
+                    binding.tvJoinClub.text = if (it) "가입 취소" else "가입하기"
+                    //todo 클럽장에게 푸시 보내기
+                }, {
+
+                })
+
+            joinCancelEvent.observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it) {
+                        mClubInfo.joinProgress?.removeAll { it == pgApplication.userInfo?.email!!}
+                        pgApplication.userInfo?.joinProgress?.removeAll { it == mClubInfo.clubPrimaryKey!! }
+                    }
+
+                    val message = if (it) {
+                        "가입 취소가 완료되었습니다."
+                    } else {
+                        "가입 취소가 실패하였습니다. 관리자에게 문의해주세요."
+                    }
+                    showToast(message)
+                    binding.tvJoinClub.text = if (it) "가입하기" else "가입 취소"
+                    //todo 클럽장에게 푸시 보내기
+                }, {
+
+                })
         }
     }
 
-    private fun initView(clubInfo: ClubInfo) {
+    private fun initView() {
         with (binding) {
             Glide.with(this@ClubActivity)
-                .load(clubInfo.clubImg)
+                .load(mClubInfo.clubImg)
                 .into(ivClubImg)
 
-            tvClubName.text = clubInfo.clubName
+            tvClubName.text = mClubInfo.clubName
             ivShare click {
                 debugToast { "준비중" }
             }
+
+
             btnJoinClub click {
-                debugToast { "준비중" }
+                val clubPrimaryKey = mClubInfo.clubPrimaryKey ?: return@click
+                val userEmail = pgApplication.userInfo?.email ?: return@click
+
+                val joinProgress = mClubInfo.joinProgress?.firstOrNull { it == userEmail }
+                if (joinProgress.isNullOrEmpty()) {
+                    // 비어 있을 경우 User 가 가입하기를 누른 상황.
+                    clubViewModel.setJoin(clubPrimaryKey, userEmail)
+                } else {
+                    // 비어 있지 않을 경우 User 가 가입 취소를 누른 상황
+                    clubViewModel.setJoinCancel(clubPrimaryKey, userEmail)
+                }
             }
         }
         initTabList()
@@ -101,17 +166,26 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
     private fun moveToTabContent(type: ViewTypeConst) {
         val isHeaderExpandable = type == ViewTypeConst.CLUB_TAB_TYPE_INFO
         binding.appBar.setExpanded(isHeaderExpandable, true)
-        setFragment(ClubCommonFragment.newInstance(type))
 
+        setFragment(getFragmentType(type))
+
+        disableAppbarExpand(isHeaderExpandable)
+    }
+
+    private fun getFragmentType(type: ViewTypeConst) = when(type) {
+        ViewTypeConst.CLUB_TAB_TYPE_MEMBER -> ClubMemberFragment.newInstance()
+        else -> ClubCommonFragment.newInstance(type)
+    }
+
+    private fun disableAppbarExpand(isDisable: Boolean) {
         val params = binding.appBar.layoutParams as CoordinatorLayout.LayoutParams
         if (params.behavior == null)
             params.behavior = AppBarLayout.Behavior()
         val behaviour = params.behavior as AppBarLayout.Behavior
         behaviour.setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
             override fun canDrag(appBarLayout: AppBarLayout): Boolean {
-                return isHeaderExpandable
+                return isDisable
             }
         })
     }
-
 }

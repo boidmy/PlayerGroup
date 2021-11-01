@@ -104,8 +104,14 @@ abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
     fun isVisitor(primaryKey: String?): Boolean {
         val involve = pgApplication.userInfo?.clubInvolved ?: mutableListOf()
         val admin = pgApplication.userInfo?.clubAdmin ?: mutableListOf()
-        val joinedList = involve.union(admin)
-        return joinedList.firstOrNull { it == primaryKey }.isNullOrEmpty()
+        val listJoined = involve.union(admin)
+        return listJoined.firstOrNull { it == primaryKey }.isNullOrEmpty()
+    }
+
+    fun isJoining(primaryKey: String?): Boolean {
+        val joinProgress = pgApplication.userInfo?.joinProgress ?: mutableListOf()
+        val joinPrimaryKey = joinProgress.firstOrNull { it == primaryKey }
+        return !joinPrimaryKey.isNullOrEmpty()
     }
 
     override fun onResume() {

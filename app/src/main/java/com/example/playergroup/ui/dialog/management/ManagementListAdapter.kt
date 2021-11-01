@@ -2,6 +2,7 @@ package com.example.playergroup.ui.dialog.management
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -81,6 +82,7 @@ class ManagementListAdapter(
                     Glide.with(itemView.context)
                         .load(managemant.clubImg)
                         .into(img)
+                    tvJoinProgress.visibility = if (managemant.isJoinProgress) View.VISIBLE else View.GONE
                 }
 
                 itemView click {
