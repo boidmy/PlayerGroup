@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
+import io.reactivex.Single
 
 class AuthRepository: BaseRepository() {
 
@@ -150,6 +151,16 @@ class AuthRepository: BaseRepository() {
                 callback.invoke(userInfo)
             }
     }
+
+    /**
+     * 여러 사용자 정보 갖고 오기
+     */
+    fun getUsersProfileData(emails: List<String>) =
+        Single.create<List<UserInfo>> { emitter ->
+            firebaseUser.whereIn("email", emails).get()
+                .addOnSuccessListener { emitter.onSuccess(it.toObjects(UserInfo::class.java)) }
+                .addOnFailureListener { emitter.onError(it) }
+        }
 
     /**
      * createEmail 오류코드 확인하여 적용 필요

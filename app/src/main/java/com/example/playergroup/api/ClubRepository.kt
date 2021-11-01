@@ -181,7 +181,4 @@ class ClubRepository: BaseRepository() {
                     emitter.onError(it)
                 }
         }
-
-
-
 }

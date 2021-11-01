@@ -21,7 +21,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 
 class ClubActivity: BaseActivity<ActivityClubBinding>() {
     private val clubViewModel by viewModels<ClubViewModel>()
-    private lateinit var mClubInfo: ClubInfo
     override fun getViewBinding(): ActivityClubBinding = ActivityClubBinding.inflate(layoutInflater)
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
         val primaryKey = intent?.getStringExtra(INTENT_EXTRA_PRIMARY_KEY)
@@ -52,7 +51,7 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
                     finish()
                 } else {
                     mClubInfo = it
-                    initView()
+                    initView(it)
                 }
             })
 
@@ -100,23 +99,22 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
         }
     }
 
-    private fun initView() {
+    private fun initView(clubInfo: ClubInfo) {
         with (binding) {
             Glide.with(this@ClubActivity)
-                .load(mClubInfo.clubImg)
+                .load(clubInfo.clubImg)
                 .into(ivClubImg)
 
-            tvClubName.text = mClubInfo.clubName
+            tvClubName.text = clubInfo.clubName
             ivShare click {
                 debugToast { "준비중" }
             }
 
-
             btnJoinClub click {
-                val clubPrimaryKey = mClubInfo.clubPrimaryKey ?: return@click
+                val clubPrimaryKey = clubInfo.clubPrimaryKey ?: return@click
                 val userEmail = pgApplication.userInfo?.email ?: return@click
 
-                val joinProgress = mClubInfo.joinProgress?.firstOrNull { it == userEmail }
+                val joinProgress = clubInfo.joinProgress?.firstOrNull { it == userEmail }
                 if (joinProgress.isNullOrEmpty()) {
                     // 비어 있을 경우 User 가 가입하기를 누른 상황.
                     clubViewModel.setJoin(clubPrimaryKey, userEmail)
