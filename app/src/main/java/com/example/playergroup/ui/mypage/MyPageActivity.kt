@@ -33,8 +33,8 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
         val primaryEmail = intent?.getStringExtra(INTENT_EXTRA_PRIMARY_KEY)
 
         initGalleryImgResult()
-        initView(primaryEmail.isNullOrEmpty())  // null 일경우 내 프로필
-        if (primaryEmail.isNullOrEmpty()) {
+        initView(primaryEmail.isNullOrEmpty() || pgApplication.userInfo?.email == primaryEmail)  // null 일경우 내 프로필
+        if (primaryEmail.isNullOrEmpty() || pgApplication.userInfo?.email == primaryEmail) {
             pgApplication.userInfo?.let {
                 setUserProfileView(it)
             }
