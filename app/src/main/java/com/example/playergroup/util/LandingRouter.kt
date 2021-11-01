@@ -207,7 +207,7 @@ object LandingRouter {
     private fun gotoMyPage(context: Context, event: RouterEvent) {
         if (pgApplication.isLogin()) {
             context.startActivity(Intent(context, MyPageActivity::class.java).apply {
-                putExtra(INTENT_EXTRA_PARAM, event.paramBoolean)
+                putExtra(INTENT_EXTRA_PRIMARY_KEY, event.primaryKey)
             })
         } else {
             goToLogin(context, event.apply { paramInt = LoginType.LOGIN.value })

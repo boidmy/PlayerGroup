@@ -63,16 +63,17 @@ class ManagementBottomSheet: BottomSheetDialogFragment() {
     private fun initObserver() {
         val makeClubList = PlayerGroupApplication.instance.userInfo?.clubAdmin
         val involvedClubList = PlayerGroupApplication.instance.userInfo?.clubInvolved
+        val joinProgress = PlayerGroupApplication.instance.userInfo?.joinProgress
 
-        viewModel.makeClubLiveData.observe(requireActivity(), Observer {
+        viewModel.makeClubLiveData.observe(viewLifecycleOwner, Observer {
             (binding.makeClubList.adapter as? ManagementListAdapter)?.submitList(it)
         })
 
-        viewModel.involvedClubLiveData.observe(requireActivity(), Observer {
+        viewModel.involvedClubLiveData.observe(viewLifecycleOwner, Observer {
             (binding.involvedClubList.adapter as? ManagementListAdapter)?.submitList(it)
         })
 
-        viewModel.getClubList(makeClubList, involvedClubList)
+        viewModel.getClubList(makeClubList, involvedClubList, joinProgress)
     }
 
     private fun initView() {

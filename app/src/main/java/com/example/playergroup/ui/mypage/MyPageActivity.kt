@@ -14,11 +14,8 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.playergroup.R
 import com.example.playergroup.custom.DialogCustom
+import com.example.playergroup.data.*
 import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet
-import com.example.playergroup.data.INTENT_EXTRA_PARAM
-import com.example.playergroup.data.Landing
-import com.example.playergroup.data.RouterEvent
-import com.example.playergroup.data.UserInfo
 import com.example.playergroup.databinding.ActivityMyinfoBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.util.*
@@ -33,18 +30,23 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
 
     override fun getViewBinding(): ActivityMyinfoBinding = ActivityMyinfoBinding.inflate(layoutInflater)
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
-        // 처음 진입했을 경우
-        val isFirstEntry = intent?.getBooleanExtra(INTENT_EXTRA_PARAM, false) ?: false
-        if (isFirstEntry) isEditMode = true
+        val primaryEmail = intent?.getStringExtra(INTENT_EXTRA_PRIMARY_KEY)
 
         initGalleryImgResult()
-        initView(isFirstEntry)
-        pgApplication.userInfo?.let {
-            setUserProfileView(it)
+        initView(primaryEmail.isNullOrEmpty() || pgApplication.userInfo?.email == primaryEmail)  // null 일경우 내 프로필
+        if (primaryEmail.isNullOrEmpty() || pgApplication.userInfo?.email == primaryEmail) {
+            pgApplication.userInfo?.let {
+                setUserProfileView(it)
+            }
+        } else {
+            // 내가 아닌 다른 사용자의 프로필로 진입 함.
+            myPageViewModel.getUserProfile(primaryEmail)
         }
         initViewModel()
 
     }
+
+    private fun isFirstEntry() = pgApplication.userInfo?.name.isNullOrEmpty()
 
     private fun initGalleryImgResult() {
         galleryImgResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -117,6 +119,15 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
                     Toast.makeText(this@MyPageActivity, "프로필을 저정하지 못했습니다. \n잠시 후에 다시 이용해 주세요.", Toast.LENGTH_SHORT).show()
                 }
             })
+
+            userProfileData.observe(this@MyPageActivity, Observer {
+                if (it == null) {
+                    //todo 다른 사용자의 프로필을 열람했는데 데이터가 없을 경우 ?? 엄청난 예외 처리 일듯..
+                    showToast("일시적인 문제로 사용자 정보를 갖고오지 못했습니다.")
+                } else {
+                    setUserProfileView(it)
+                }
+            })
         }
     }
 
@@ -124,6 +135,7 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
         with (binding) {
             Glide.with(this@MyPageActivity)
                 .load(userInfo.img)
+                .placeholder(R.drawable.icon_user)
                 .into(ivProfileImg)
 
             etMyInfoName.setText(userInfo.name ?: "")
@@ -137,7 +149,7 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
         }
     }
 
-    private fun initView(isFirstEntry: Boolean) {
+    private fun initView(isMyProfile: Boolean) {
         with(binding)  {
 
             root.setOnTouchListener { v, event ->
@@ -145,12 +157,15 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
                 false
             }
 
+            isEditMode = isFirstEntry()
+
             ivBack.apply {
                 click { onBackPressed() }
-                visibility = if (isFirstEntry) View.GONE else View.VISIBLE
+                visibility = if (isFirstEntry()) View.GONE else View.VISIBLE
             }
             ivEdit.apply {
                 setEditModeState(isEditMode)
+                visibility = if (isMyProfile) View.VISIBLE else View.GONE
                 click {
                     if (isEditMode) {
                         DialogCustom(this@MyPageActivity)
@@ -256,7 +271,8 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
         activityArea = binding.etActivityArea.text.toString(),
         comment = binding.etMyInfoComment.text.toString(),
         clubAdmin = pgApplication.userInfo?.clubAdmin,
-        clubInvolved = pgApplication.userInfo?.clubInvolved
+        clubInvolved = pgApplication.userInfo?.clubInvolved,
+        joinProgress = pgApplication.userInfo?.joinProgress
     )
 
     private fun setEditMode(isEditMode: Boolean) {
