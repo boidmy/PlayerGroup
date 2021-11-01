@@ -217,16 +217,20 @@ class AuthRepository: BaseRepository() {
     /**
      * Storage 에 사진 저장 하기
      */
-    fun upLoadStorageImg(uri: Uri, callback: (Boolean) -> Unit) {
-        firebaseStorageUserDB.child(firebaseAuth.currentUser?.email.toString())
-            .putFile(uri)
-            .addOnProgressListener {
-                val progress: Double = 100.0 * it.bytesTransferred / it.totalByteCount
-                Log.d("####", "UpLoading >> $progress")
-            }
-            .addOnCompleteListener {
-                callback.invoke(it.isSuccessful)
-            }
+    fun upLoadStorageImg(uri: Uri?, callback: (Boolean) -> Unit) {
+        if (uri == null) {
+            callback.invoke(false)
+        } else {
+            firebaseStorageUserDB.child(firebaseAuth.currentUser?.email.toString())
+                .putFile(uri)
+                .addOnProgressListener {
+                    val progress: Double = 100.0 * it.bytesTransferred / it.totalByteCount
+                    Log.d("####", "UpLoading >> $progress")
+                }
+                .addOnCompleteListener {
+                    callback.invoke(it.isSuccessful)
+                }
+        }
     }
 
     /**

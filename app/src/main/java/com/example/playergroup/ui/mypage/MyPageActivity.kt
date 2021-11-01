@@ -271,7 +271,8 @@ class MyPageActivity: BaseActivity<ActivityMyinfoBinding>() {
         activityArea = binding.etActivityArea.text.toString(),
         comment = binding.etMyInfoComment.text.toString(),
         clubAdmin = pgApplication.userInfo?.clubAdmin,
-        clubInvolved = pgApplication.userInfo?.clubInvolved
+        clubInvolved = pgApplication.userInfo?.clubInvolved,
+        joinProgress = pgApplication.userInfo?.joinProgress
     )
 
     private fun setEditMode(isEditMode: Boolean) {
