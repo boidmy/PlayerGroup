@@ -58,10 +58,17 @@ object LandingRouter {
                 Landing.APP_PERMISSION_SETTING -> gotoAppSettings(context, event)
                 Landing.ADJUST_LIST -> goToAdjustList(context, event)
                 Landing.BOARD_WRITE_UPDATE -> goToBoardUpdate(context, event)
+                Landing.BOARD_WRITE -> goToBoardWrite(context, event)
                 Landing.MY_CLUB_MANAGEMENT -> goToManagement(context, event)
             }
         } catch (e: Exception) {
             Log.e("####", "${event.type} -> ${e.localizedMessage}")
+        }
+    }
+
+    private fun goToBoardWrite(context: Context, event: RouterEvent) {
+        Intent(context, BoardCreateActivity::class.java).run {
+            event.activityResult?.launch(this)
         }
     }
 

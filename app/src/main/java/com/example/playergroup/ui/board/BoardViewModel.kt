@@ -8,14 +8,14 @@ import com.example.playergroup.util.two
 
 class BoardViewModel : BaseViewModel() {
 
-    private val _writeComplete: MutableLiveData<Boolean> = MutableLiveData()
+    private val _writeComplete: MutableLiveData<NoticeBoardItem> = MutableLiveData()
     private var _boardList: MutableLiveData<MutableList<NoticeBoardItem>> = MutableLiveData()
     private var _boardItem: MutableLiveData<NoticeBoardItem> = MutableLiveData()
     private val _boardReview: MutableLiveData<MutableList<NoticeBoardItem>> = MutableLiveData()
     private var _selectCategory: String? = null
     private var _selectDetail: String? = null
 
-    val writeComplete: LiveData<Boolean>
+    val writeComplete: LiveData<NoticeBoardItem>
         get() = _writeComplete
     val boardList: LiveData<MutableList<NoticeBoardItem>>
         get() = _boardList
@@ -28,8 +28,22 @@ class BoardViewModel : BaseViewModel() {
     val selectDetail: String?
         get() = _selectDetail
 
+    fun addBoardList(item: NoticeBoardItem) {
+        _boardList.value?.apply {
+            add(0, item)
+        }.run {
+            _boardList.value = this
+        }
+    }
+
     fun insertBoard(item: NoticeBoardItem) {
         noticeRepository.insertBoard(item) {
+            _writeComplete.value = it
+        }
+    }
+
+    fun updateBoard(item: NoticeBoardItem) {
+        noticeRepository.updateBoard(item) {
             _writeComplete.value = it
         }
     }
@@ -74,7 +88,11 @@ class BoardViewModel : BaseViewModel() {
                 edit = edit,
                 id = id
             ) {
-
+                _boardReview.value?.apply {
+                    add(0, it)
+                }.run {
+                    _boardReview.value = this
+                }
             }
         }
     }

@@ -1,7 +1,10 @@
 package com.example.playergroup.ui.board.boardList
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.example.playergroup.data.*
 import com.example.playergroup.databinding.ActivityBoardListBinding
@@ -22,6 +25,12 @@ class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
     private val adapter = BoardListAdapter {
         itemClickEvent(it)
     }
+    private val activityForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            val value = it.data?.getSerializableExtra(INTENT_SERIALIZABLE)
+            viewModel.addBoardList(value as NoticeBoardItem)
+        }
+    }
 
     override fun getViewBinding() = ActivityBoardListBinding.inflate(layoutInflater)
 
@@ -37,8 +46,7 @@ class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
             boardRv.adapter = adapter
             categoryListText.setText(configModule.categorySelectMode)
             boardWrite click {
-                val intent = Intent(this@BoardListActivity, BoardCreateActivity::class.java)
-                startActivity(intent) //액티비티리절트 받아서 처리할지 확인후 처리
+                move(this@BoardListActivity, RouterEvent(type = Landing.BOARD_WRITE_UPDATE, activityResult = activityForResult))
             }
             categoryListText click {
                 setScrollerPicker(

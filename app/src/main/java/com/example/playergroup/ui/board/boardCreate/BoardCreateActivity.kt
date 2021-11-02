@@ -1,13 +1,16 @@
 package com.example.playergroup.ui.board.boardCreate
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import com.example.playergroup.data.INTENT_BUNDLE
 import com.example.playergroup.data.INTENT_SERIALIZABLE
 import com.example.playergroup.data.NoticeBoardItem
 import com.example.playergroup.databinding.ActivityBoardCreateBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.board.BoardViewModel
+import com.example.playergroup.ui.board.boardList.BoardListActivity
 import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet
 import com.example.playergroup.util.CategoryUtil
 import com.example.playergroup.util.ViewTypeConst
@@ -24,15 +27,12 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
         observe()
     }
 
-    fun updateBoardView() {
-        intent.getBundleExtra(INTENT_BUNDLE)?.let {
-            val item: NoticeBoardItem = it.getSerializable(INTENT_SERIALIZABLE) as NoticeBoardItem
-            binding.boardEditTitle.setText(item.title)
-            binding.boardEditSub.setText(item.sub)
-        }
-    }
-
     fun initView() {
+        if (intent.getBundleExtra(INTENT_BUNDLE) != null) {
+            updateBoardView()
+            return
+        }
+
         setSelectCategory(getCateKey(configModule.categorySelectMode))
         with(binding) {
             categoryListText.setText(configModule.categorySelectMode)
@@ -59,7 +59,12 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
 
     fun observe() {
         viewModel.writeComplete.observe(this, {
-            if (it) finish() //글등록에 성공하고 activityResult로 게시판 갱신어떻게 할지 협의필요
+            Intent(this, BoardListActivity::class.java).apply {
+                putExtra(INTENT_SERIALIZABLE, it)
+            }.run {
+                setResult(RESULT_OK, this)
+                finish()
+            }
         })
     }
 
@@ -84,6 +89,22 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
         return when (name) {
             CategoryUtil.RECRUIT_CATEGORY.value -> CategoryUtil.RECRUIT_CATEGORY.key
             else -> CategoryUtil.FREE_CATEGORY.key
+        }
+    }
+
+    private fun updateBoardView() {
+        intent.getBundleExtra(INTENT_BUNDLE)?.let {
+            val item: NoticeBoardItem = it.getSerializable(INTENT_SERIALIZABLE) as NoticeBoardItem
+            with(binding) {
+                categoryList.isVisible = false
+                boardEditTitle.setText(item.title)
+                boardEditSub.setText(item.sub)
+                btnNoticeBoard click {
+                    item.title = boardEditTitle.text.toString()
+                    item.sub = boardEditSub.text.toString()
+                    viewModel.updateBoard(item)
+                }
+            }
         }
     }
 }

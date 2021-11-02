@@ -42,7 +42,7 @@ class NoticeBoardRepository : BaseRepository() {
      */
     fun insertBoard(
         item: NoticeBoardItem,
-        callback: (Boolean) -> Unit
+        callback: (NoticeBoardItem) -> Unit
     ) {
         val collection = firebaseNoticeBoard.document(item.key).collection("board")
         val boardKey = collection.document().id //데이터를 저장하기전에 미리 난수인 key를 뽑아내서 저장한다
@@ -52,9 +52,21 @@ class NoticeBoardRepository : BaseRepository() {
             //timestamp = FieldValue.serverTimestamp().toString()
         }.run {
             collection.document(boardKey).set(this).addOnCompleteListener {
-                callback(it.isSuccessful)
+                callback(this)
             }
         }
+    }
+
+    fun updateBoard(item: NoticeBoardItem, callback: (NoticeBoardItem) -> Unit) {
+        firebaseNoticeBoard.document(item.categoryKey).collection("board")
+            .document(item.key).update(
+                mapOf(
+                    "title" to item.title,
+                    "sub" to item.sub
+                )
+            ).addOnCompleteListener {
+                callback(item)
+            }
     }
 
     /**
@@ -65,7 +77,7 @@ class NoticeBoardRepository : BaseRepository() {
         detailKey: String,
         edit: String,
         id: String = "",
-        callback: (Boolean) -> Unit
+        callback: (NoticeBoardItem) -> Unit
     ) {
         val collection = firebaseNoticeBoard.document(cateKey).collection("board")
             .document(detailKey).collection("review")
@@ -77,7 +89,7 @@ class NoticeBoardRepository : BaseRepository() {
             time = CalendarUtil.getDate()
         ).run {
             collection.document(boardKey).set(this).addOnCompleteListener {
-                callback(it.isSuccessful)
+                callback(this)
             }
         }
     }
@@ -96,7 +108,7 @@ class NoticeBoardRepository : BaseRepository() {
     }
 
     /**
-     * 게시판 상세 리뷰
+     * 게시판 상세 댓글
      */
     fun getBoardDetailReview(
         cateKey: String,
@@ -104,7 +116,8 @@ class NoticeBoardRepository : BaseRepository() {
         callback: (MutableList<NoticeBoardItem>?) -> Unit
     ) {
         firebaseNoticeBoard.document(cateKey).collection("board")
-            .document(detailKey).collection("review").get().addOnCompleteListener {
+            .document(detailKey).collection("review").orderBy("time", Query.Direction.DESCENDING)
+            .get().addOnCompleteListener {
                 if (it.isSuccessful) {
                     val item = it.result?.toObjects(NoticeBoardItem::class.java)
                     callback(item)

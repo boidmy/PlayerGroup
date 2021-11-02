@@ -25,7 +25,6 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
     companion object {
         lateinit var callback: (String) -> Unit
         const val TYPE = "type"
-        const val SELECT_ITEM = "selectText"
         const val SELECTED_ITEM = "selected_item"
         const val CUSTOM_TITLE = "custom_title"
         fun newInstance(
@@ -38,10 +37,10 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
                 this@Companion.callback = callback
                 arguments = Bundle().apply {
                     putSerializable(TYPE, type)
-                    putSerializable(SELECT_ITEM, selectItem)
+                    putString(SELECTED_ITEM, selectItem)
+                    putString(CUSTOM_TITLE, customTitle)
                 }
             }
-
     }
 
     @SuppressLint("RestrictedApi")
@@ -60,23 +59,16 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
             behavior.peekHeight = 0
             behavior.isDraggable = false
-            behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            behavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     when (newState) {
-                        BottomSheetBehavior.STATE_EXPANDED -> {
-                        }
-                        BottomSheetBehavior.STATE_COLLAPSED -> {
-                            dismiss()
-                        }
-                        BottomSheetBehavior.STATE_HIDDEN -> {
-                        }
-                        BottomSheetBehavior.STATE_DRAGGING -> {
-                        }
-                        BottomSheetBehavior.STATE_SETTLING -> {
-                        }
+                        BottomSheetBehavior.STATE_EXPANDED -> { }
+                        BottomSheetBehavior.STATE_COLLAPSED -> { dismiss() }
+                        BottomSheetBehavior.STATE_HIDDEN -> {}
+                        BottomSheetBehavior.STATE_DRAGGING -> {}
+                        BottomSheetBehavior.STATE_SETTLING -> {}
                     }
                 }
-
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {}
             })
         } ?: run {
@@ -96,60 +88,42 @@ class ScrollSelectorBottomSheet: BottomSheetDialogFragment() {
 
         val viewType = (arguments?.get(TYPE) as? ViewTypeConst) ?: ViewTypeConst.SCROLLER_POSITION
         val selectorList = viewModel.getSelectorDataList(viewType)
-        val selectItem = arguments?.get(SELECT_ITEM)
         val customTitle = arguments?.getString(CUSTOM_TITLE) ?: ""
 
-        binding.title.text =
-            if (customTitle.isEmpty()) viewModel.getSelectorTitle(viewType) else customTitle
+        binding.title.text = if (customTitle.isEmpty()) viewModel.getSelectorTitle(viewType) else customTitle
 
         binding.btnClose click { dismiss() }
 
         binding.selectorList.apply {
             layoutManager = SliderLayoutManager(requireContext()).apply {
-                this.callback = object : SliderLayoutManager.OnItemSelectedListener {
+                this.callback = object: SliderLayoutManager.OnItemSelectedListener {
                     override fun onItemSelected(layoutPosition: Int) {}
                 }
             }
 
-            adapter = SliderListAdapter().also {
-                if (viewType == ViewTypeConst.SCROLLER_CATEGORY) {
-                    it.items = selectorList
-                }
-                it.items = selectorList
-                /*val defaultIndex = selectorList.size / 2*/
-                var defaultIndex = 0
-                for ((index, item) in selectorList.withIndex()) {
-                    if (item == selectItem) {
-                        defaultIndex = index
-                        break
-                    }
-                }
-                smoothScrollToPosition(defaultIndex)
-                adapter = SliderListAdapter().apply {
-                    items = selectorList
+            adapter = SliderListAdapter().apply {
+                items = selectorList
 
-                    val selectedIndex = arguments?.getString(SELECTED_ITEM)
+                val selectedIndex = arguments?.getString(SELECTED_ITEM)
 
-                    val index = if (selectedIndex.isNullOrEmpty()) {
-                        selectorList.size / 2
-                    } else {
-                        selectorList.indexOfFirst { it == selectedIndex }
-                    }
-
-                    smoothScrollToPosition(index)
+                val index = if (selectedIndex.isNullOrEmpty()) {
+                    selectorList.size / 2
+                } else {
+                    selectorList.indexOfFirst { it == selectedIndex }
                 }
 
-                if (itemDecorationCount == 0)
-                    addItemDecoration(VerticalMarginDecoration(itemMargin = 13.toPx))
+                smoothScrollToPosition(index)
             }
 
-            binding.btnConfirm click {
-                val index =
-                    (binding.selectorList.layoutManager as? SliderLayoutManager)?.selectIndex ?: -1
-                if (index == -1) dismiss()
-                callback.invoke(selectorList.getOrNull(index) ?: "")
-                dismiss()
-            }
+            if (itemDecorationCount == 0)
+                addItemDecoration(VerticalMarginDecoration(itemMargin = 13.toPx))
+        }
+
+        binding.btnConfirm click {
+            val index = (binding.selectorList.layoutManager as? SliderLayoutManager)?.selectIndex ?: -1
+            if (index == -1) dismiss()
+            callback.invoke(selectorList.getOrNull(index) ?: "")
+            dismiss()
         }
     }
 }

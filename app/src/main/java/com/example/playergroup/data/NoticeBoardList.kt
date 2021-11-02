@@ -8,10 +8,11 @@ data class NoticeBoardList(
 )
 
 data class NoticeBoardItem(
-    val title: String = "",
-    val sub: String = "",
+    var title: String = "",
+    var sub: String = "",
     val email: String = "",
     var key: String = "",
     var time: Date = Date(),
-    val name: String = ""
+    val name: String = "",
+    var categoryKey: String = ""
 ): Serializable

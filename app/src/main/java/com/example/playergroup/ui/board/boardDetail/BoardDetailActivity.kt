@@ -51,17 +51,11 @@ class BoardDetailActivity : BaseActivity<ActivityBoardDetailBinding>() {
             reviewSend click {
                 insertReview()
             }
-
-            viewModel.boardItem.value?.let { item ->
-                boardUpdate.isVisible = pgApplication.userInfo?.email ?: "" == item.email
-                boardUpdate click {
-                    itemUpdate(item)
-                }
-            }
         }
     }
 
     private fun itemUpdate(item: NoticeBoardItem) {
+        item.categoryKey = viewModel.selectCategory ?: ""
         Bundle().apply {
             putSerializable(INTENT_SERIALIZABLE, item)
         }.run {
@@ -85,6 +79,10 @@ class BoardDetailActivity : BaseActivity<ActivityBoardDetailBinding>() {
                 boardTitle.text = it.title
                 boardSub.text = it.sub
                 boardEditTime.text = CalendarUtil.getDateFormat(it.time)
+                boardUpdate.isVisible = pgApplication.userInfo?.email ?: "" == item.email
+                boardUpdate click {
+                    itemUpdate(item)
+                }
             }
         }
     }
