@@ -17,6 +17,7 @@ import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.club.adapter.ClubTabListAdapter
 import com.example.playergroup.ui.club.fragment.ClubCommonFragment
 import com.example.playergroup.ui.club.fragment.ClubMemberFragment
+import com.example.playergroup.ui.login.LoginType
 import com.example.playergroup.util.*
 import com.google.android.material.appbar.AppBarLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -58,6 +59,7 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
             })
 
             joinEvent.observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { binding.btnJoinClub.isEnabled = true }
                 .subscribe({
                     if (it) {
                         mClubInfo.joinProgress?.add(pgApplication.userInfo?.email!!) ?: run {
@@ -81,6 +83,7 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
                 })
 
             joinCancelEvent.observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { binding.btnJoinClub.isEnabled = true }
                 .subscribe({
                     if (it) {
                         mClubInfo.joinProgress?.removeAll { it == pgApplication.userInfo?.email!!}
@@ -113,6 +116,13 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
             }
 
             btnJoinClub click {
+
+                if (!pgApplication.isLogin()) {
+                    LandingRouter.move(this@ClubActivity,
+                        RouterEvent(type = Landing.LOGIN, paramInt = LoginType.LOGIN.value))
+                    return@click
+                }
+
                 val clubPrimaryKey = clubInfo.clubPrimaryKey ?: return@click
                 val userEmail = pgApplication.userInfo?.email ?: return@click
 
@@ -124,6 +134,7 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
                     // 비어 있지 않을 경우 User 가 가입 취소를 누른 상황
                     clubViewModel.setJoinCancel(clubPrimaryKey, userEmail)
                 }
+                it.isEnabled = false
             }
         }
         initTabList()

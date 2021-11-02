@@ -25,6 +25,9 @@ class PlayerGroupApplication: Application() {
      */
     var userInfo: UserInfo? = null
     fun isLogin() = FirebaseAuth.getInstance().currentUser != null
+    fun setLogout() {
+        userInfo = null
+    }
 
     override fun onCreate() {
         super.onCreate()
