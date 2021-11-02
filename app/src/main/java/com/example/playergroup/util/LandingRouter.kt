@@ -99,6 +99,7 @@ object LandingRouter {
 
     private fun goToLogOut(context: Context, event: RouterEvent) {
         FirebaseAuth.getInstance().signOut()
+        pgApplication.setLogout()
         if (event.paramBoolean) {
             RxBus.publish(LoginStateChange(FirebaseAuth.getInstance().currentUser != null))
         }
