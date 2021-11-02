@@ -11,7 +11,6 @@ import com.example.playergroup.R
 import com.example.playergroup.custom.DialogCustom
 import com.example.playergroup.ui.main.MainActivity
 import com.example.playergroup.util.ConfigModule
-import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {

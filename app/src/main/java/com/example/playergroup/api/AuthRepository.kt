@@ -73,7 +73,6 @@ class AuthRepository: BaseRepository() {
                 userInfo.clubAdmin = mutableListOf(clubPrimaryKey)
             }
             it.set(userDB, userInfo)
-            PlayerGroupApplication.instance.userInfo = userInfo
         }
             .addOnCompleteListener {
                 callback.invoke(it.isSuccessful)
@@ -131,7 +130,6 @@ class AuthRepository: BaseRepository() {
         firebaseUser.document(userEmail).get()
             .addOnCompleteListener {
                 val userInfo = (it.result?.toObject(UserInfo::class.java))
-                PlayerGroupApplication.instance.userInfo = userInfo
                 val isEmpty = userInfo?.isEmptyData() ?: true
                 callback.invoke(isEmpty)
             }
