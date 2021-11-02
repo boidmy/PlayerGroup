@@ -1,10 +1,12 @@
 package com.example.playergroup.ui.board.boardDetail
 
+import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -21,6 +23,15 @@ class BoardDetailActivity : BaseActivity<ActivityBoardDetailBinding>() {
 
     private val viewModel: BoardViewModel by viewModels()
     private val boardDetailReviewAdapter = BoardDetailReviewAdapter()
+
+    private val activityForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            (it.data?.getSerializableExtra(INTENT_SERIALIZABLE) as NoticeBoardItem).run {
+                binding.boardTitle.text = title
+                binding.boardSub.text = sub
+            }
+        }
+    }
 
     override fun getViewBinding() = ActivityBoardDetailBinding.inflate(layoutInflater)
 
@@ -61,7 +72,7 @@ class BoardDetailActivity : BaseActivity<ActivityBoardDetailBinding>() {
         }.run {
             move(
                 this@BoardDetailActivity,
-                RouterEvent(type = Landing.BOARD_WRITE_UPDATE, bundle = this)
+                RouterEvent(type = Landing.BOARD_WRITE_UPDATE, bundle = this, activityResult = activityForResult)
             )
         }
     }

@@ -28,6 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:textColor="@color/board_text_color"
             app:layout_constraintEnd_toEndOf="@+id/guideEnd"
             app:layout_constraintStart_toStartOf="@+id/guideStart"
             app:layout_constraintTop_toTopOf="parent"
@@ -39,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="닉네임자리"
+            android:textColor="@color/board_text_color"
             app:layout_constraintEnd_toEndOf="@+id/guideEnd"
             app:layout_constraintStart_toStartOf="@+id/guideStart"
             app:layout_constraintTop_toBottomOf="@+id/boardTitle" />
@@ -48,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:textColor="@color/board_text_color"
             app:layout_constraintStart_toStartOf="@+id/guideStart"
             app:layout_constraintTop_toBottomOf="@+id/boardEditId"
             tools:text="2021.01.01 20:11" />
@@ -58,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="20"
+            android:textColor="@color/board_text_color"
             app:layout_constraintStart_toEndOf="@+id/boardEditTime"
             app:layout_constraintTop_toTopOf="@+id/boardEditTime" />
 
@@ -77,6 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:minHeight="100dp"
+            android:textColor="@color/board_text_color"
             app:layout_constraintEnd_toEndOf="@+id/guideEnd"
             app:layout_constraintStart_toStartOf="@+id/guideStart"
             app:layout_constraintTop_toBottomOf="@+id/divider"
@@ -151,8 +156,8 @@
             android:textStyle="bold"
             app:backgroundTint="@color/btnColorPositive"
             app:cornerRadius="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/boardReview"
-            app:layout_constraintStart_toStartOf="@+id/guideStart"/>
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/boardReview" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

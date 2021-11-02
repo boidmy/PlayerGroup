@@ -28,32 +28,10 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
     }
 
     fun initView() {
-        if (intent.getBundleExtra(INTENT_BUNDLE) != null) {
+        if (intent.getBundleExtra(INTENT_BUNDLE)?.getSerializable(INTENT_SERIALIZABLE) != null) {
             updateBoardView()
-            return
-        }
-
-        setSelectCategory(getCateKey(configModule.categorySelectMode))
-        with(binding) {
-            categoryListText.setText(configModule.categorySelectMode)
-            categoryListText click {
-                setScrollerPicker(
-                    ViewTypeConst.SCROLLER_CATEGORY,
-                    categoryListText.text.toString()
-                )
-            }
-
-            btnNoticeBoard click {
-                viewModel.selectCategory?.let { key ->
-                    viewModel.insertBoard(NoticeBoardItem(
-                        key = key,
-                        title = boardEditTitle.text.toString(),
-                        sub = boardEditSub.text.toString(),
-                        email = pgApplication.userInfo?.email ?: "",
-                        name = pgApplication.userInfo?.name ?: ""
-                    ))
-                }
-            }
+        } else {
+            insertBoardView()
         }
     }
 
@@ -92,6 +70,33 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
         }
     }
 
+    //일반적인 글등록
+    private fun insertBoardView() {
+        setSelectCategory(getCateKey(configModule.categorySelectMode))
+        with(binding) {
+            categoryListText.setText(configModule.categorySelectMode)
+            categoryListText click {
+                setScrollerPicker(
+                    ViewTypeConst.SCROLLER_CATEGORY,
+                    categoryListText.text.toString()
+                )
+            }
+
+            btnNoticeBoard click {
+                viewModel.selectCategory?.let { key ->
+                    viewModel.insertBoard(NoticeBoardItem(
+                        key = key,
+                        title = boardEditTitle.text.toString(),
+                        sub = boardEditSub.text.toString(),
+                        email = pgApplication.userInfo?.email ?: "",
+                        name = pgApplication.userInfo?.name ?: ""
+                    ))
+                }
+            }
+        }
+    }
+
+    //내가작성한글 수정
     private fun updateBoardView() {
         intent.getBundleExtra(INTENT_BUNDLE)?.let {
             val item: NoticeBoardItem = it.getSerializable(INTENT_SERIALIZABLE) as NoticeBoardItem

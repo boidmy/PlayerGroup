@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
+            android:textColor="@color/board_text_color"
             app:layout_constraintEnd_toEndOf="@+id/guideEnd"
             app:layout_constraintStart_toStartOf="@+id/guideStart"
             app:layout_constraintTop_toTopOf="parent"
@@ -46,6 +47,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             android:ellipsize="end"
+            android:textColor="@color/board_text_color"
             app:layout_constraintEnd_toEndOf="@+id/guideEnd"
             app:layout_constraintStart_toStartOf="@+id/guideStart"
             app:layout_constraintTop_toBottomOf="@+id/boardTitle"
@@ -57,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="id표현"
+            android:textColor="@color/board_text_color"
             app:layout_constraintStart_toStartOf="@+id/guideStart"
             app:layout_constraintTop_toBottomOf="@+id/boardSub" />
 
@@ -75,6 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:textColor="@color/board_text_color"
             app:layout_constraintBottom_toBottomOf="@+id/userId"
             app:layout_constraintStart_toEndOf="@+id/line1"
             app:layout_constraintTop_toTopOf="@+id/userId"

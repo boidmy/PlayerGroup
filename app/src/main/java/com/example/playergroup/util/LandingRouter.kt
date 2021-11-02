@@ -76,7 +76,7 @@ object LandingRouter {
         Intent(context, BoardCreateActivity::class.java).apply {
             putExtra(INTENT_BUNDLE, event.bundle)
         }.run {
-            context.startActivity(this)
+            event.activityResult?.launch(this)
         }
     }
 

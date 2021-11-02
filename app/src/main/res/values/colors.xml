@@ -30,4 +30,6 @@
     <color name="commonDividerBox">#f5f7fa</color>
 
     <color name="dim_color">#66000000</color>
+
+    <color name="board_text_color">#000000</color>
 </resources>
