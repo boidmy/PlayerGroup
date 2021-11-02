@@ -13,17 +13,21 @@ import com.example.playergroup.ui.base.BaseViewModel
 import com.example.playergroup.util.ViewTypeConst
 import com.example.playergroup.util.diffUtilResult
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 
 typealias GetMemberTabList = () -> MutableList<ClubMemberDataSet>?
+typealias JoinProgressMemberClickCallback = (String, Boolean) -> Unit
+typealias IsCurrentUserClubAdmin = () -> Boolean
 class ClubViewModel: BaseViewModel() {
 
     lateinit var mClubInfo: ClubInfo
 
     var getMemberTabList: GetMemberTabList? = null
+    lateinit var isCurrentUserClubAdmin: IsCurrentUserClubAdmin
 
     private val _firebaseClubDataResult: MutableLiveData<ClubInfo?> = MutableLiveData()
     val firebaseClubDataResult: LiveData<ClubInfo?>
@@ -42,8 +46,10 @@ class ClubViewModel: BaseViewModel() {
         }
     }
 
-    fun setJoin(primaryKey: String, email: String) {
-        clubRepository.addClubJoinProgress(primaryKey, email)
+    fun setJoin(email: String) {
+        val clubPrimaryKey = mClubInfo.clubPrimaryKey
+        if (clubPrimaryKey.isNullOrEmpty()) return
+        clubRepository.addClubJoinProgress(clubPrimaryKey, email)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -55,8 +61,10 @@ class ClubViewModel: BaseViewModel() {
             .addTo(compositeDisposable)
     }
 
-    fun setJoinCancel(primaryKey: String, email: String) {
-        clubRepository.removeClubJoinProgress(primaryKey, email)
+    fun setJoinCancel(email: String) {
+        val clubPrimaryKey = mClubInfo.clubPrimaryKey
+        if (clubPrimaryKey.isNullOrEmpty()) return
+        clubRepository.removeClubJoinProgress(clubPrimaryKey, email)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -127,7 +135,10 @@ class ClubViewModel: BaseViewModel() {
                     email = it.email ?: "",
                     img = it.img ?: "",
                     playPosition = it.position ?: "",
-                    isJoiningUser = true
+                    isJoiningUser = true,
+                    isAdmin = isCurrentUserClubAdmin.invoke(),
+                    joinProgressMemberClickCallback = ::setJoinProgressMemberClickCallback
+
                 )
             )
         }
@@ -146,6 +157,7 @@ class ClubViewModel: BaseViewModel() {
                     name = it.name ?: "",
                     email = it.email ?: "",
                     img = it.img ?: "",
+                    isAdmin = isCurrentUserClubAdmin.invoke(),
                     playPosition = it.position ?: ""
                 )
             )
@@ -164,4 +176,21 @@ class ClubViewModel: BaseViewModel() {
         return Pair(data, result)
     }
 
+    private fun setJoinProgressMemberClickCallback(email: String, isState: Boolean) {
+        val clubPrimaryKey = mClubInfo.clubPrimaryKey
+        if (clubPrimaryKey.isNullOrEmpty()) return
+
+        clubRepository.getMemberDataJoinResult(clubPrimaryKey, email, isState)
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+                clubRepository.getClubData(clubPrimaryKey) {
+                    if (it != null) {
+                        mClubInfo = it
+                        getMemberTabData()
+                    }
+                }
+            }, {
+                Log.d("####", "Club Join Approve Error ${it.message}")
+            }).addTo(compositeDisposable)
+    }
 }

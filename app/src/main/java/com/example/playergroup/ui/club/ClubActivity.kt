@@ -25,11 +25,11 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
     override fun getViewBinding(): ActivityClubBinding = ActivityClubBinding.inflate(layoutInflater)
     override fun onCreateBindingWithSetContentView(savedInstanceState: Bundle?) {
         val primaryKey = intent?.getStringExtra(INTENT_EXTRA_PRIMARY_KEY)
-        initViewModel()
         if (primaryKey.isNullOrEmpty()) {
             showToast("해당 클럽은 문제가 있어 폐지 되었습니다. 관리자에게 문의 부탁 드립니다.")
             finish()
         } else {
+            initViewModel(primaryKey)
             clubViewModel.getClubData(primaryKey)
             initJoinBtn(primaryKey)
         }
@@ -44,8 +44,9 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
         }
     }
 
-    private fun initViewModel() {
+    private fun initViewModel(primaryKey: String) {
         clubViewModel.apply {
+            isCurrentUserClubAdmin = { isAdmin(primaryKey) }
             firebaseClubDataResult.observe(this@ClubActivity, Observer {
                 if (it == null) {
                     showToast("해당 동호회는 삭제되었습니다.")
@@ -121,16 +122,15 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
                     return@click
                 }
 
-                val clubPrimaryKey = clubInfo.clubPrimaryKey ?: return@click
                 val userEmail = pgApplication.userInfo?.email ?: return@click
 
                 val joinProgress = clubInfo.joinProgress?.firstOrNull { it == userEmail }
                 if (joinProgress.isNullOrEmpty()) {
                     // 비어 있을 경우 User 가 가입하기를 누른 상황.
-                    clubViewModel.setJoin(clubPrimaryKey, userEmail)
+                    clubViewModel.setJoin(userEmail)
                 } else {
                     // 비어 있지 않을 경우 User 가 가입 취소를 누른 상황
-                    clubViewModel.setJoinCancel(clubPrimaryKey, userEmail)
+                    clubViewModel.setJoinCancel(userEmail)
                 }
                 it.isEnabled = false
             }

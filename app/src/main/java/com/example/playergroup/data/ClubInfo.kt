@@ -1,5 +1,6 @@
 package com.example.playergroup.data
 
+import com.example.playergroup.ui.club.JoinProgressMemberClickCallback
 import com.example.playergroup.util.ViewTypeConst
 import com.example.playergroup.util.ViewTypeConst.EMPTY_ERROR
 
@@ -31,5 +32,7 @@ data class ClubMemberDataSet(
     val img: String = "",
     val email: String = "",
     val titleText: String = "",
-    val playPosition: String = ""
+    val playPosition: String = "",
+    val isAdmin: Boolean = false,
+    var joinProgressMemberClickCallback: JoinProgressMemberClickCallback? = null
 ): BaseDataSet()
