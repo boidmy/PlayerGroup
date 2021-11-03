@@ -90,7 +90,7 @@
         android:background="@drawable/edge_round_send"
         android:gravity="center"
         android:text="@string/save"
-        android:textColor="#BABABA"
+        android:textColor="@color/btn_disabled_text"
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/guideEnd"

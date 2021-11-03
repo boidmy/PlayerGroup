@@ -57,6 +57,7 @@ class BoardDetailActivity : BaseActivity<ActivityBoardDetailBinding>() {
                 R.drawable.edge_round_send,
                 null
             ) as GradientDrawable).run {
+                reviewSend.initTextWatcher(this)
                 boardReviewEdit.addTextChangedListener(reviewSend.textWatcher(this))
             }
             reviewSend click {

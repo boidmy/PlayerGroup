@@ -1,9 +1,11 @@
 package com.example.playergroup.ui.board.boardCreate
 
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import com.example.playergroup.R
@@ -15,10 +17,7 @@ import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.board.BoardViewModel
 import com.example.playergroup.ui.board.boardList.BoardListActivity
 import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet
-import com.example.playergroup.util.CategoryUtil
-import com.example.playergroup.util.ViewTypeConst
-import com.example.playergroup.util.click
-import com.example.playergroup.util.textWatcher
+import com.example.playergroup.util.*
 
 class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
 
@@ -89,13 +88,15 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
 
             btnNoticeBoard click {
                 viewModel.selectCategory?.let { key ->
-                    viewModel.insertBoard(NoticeBoardItem(
-                        key = key,
-                        title = boardEditTitle.text.toString(),
-                        sub = boardEditSub.text.toString(),
-                        email = pgApplication.userInfo?.email ?: "",
-                        name = pgApplication.userInfo?.name ?: ""
-                    ))
+                    viewModel.insertBoard(
+                        NoticeBoardItem(
+                            key = key,
+                            title = boardEditTitle.text.toString(),
+                            sub = boardEditSub.text.toString(),
+                            email = pgApplication.userInfo?.email ?: "",
+                            name = pgApplication.userInfo?.name ?: ""
+                        )
+                    )
                 }
             }
         }
@@ -125,6 +126,7 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
                 R.drawable.edge_round_send,
                 null
             ) as GradientDrawable).run {
+                btnNoticeBoard.initTextWatcher(this)
                 boardEditTitle.addTextChangedListener(btnNoticeBoard.textWatcher(this))
             }
         }

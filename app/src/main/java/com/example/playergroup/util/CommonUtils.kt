@@ -22,6 +22,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.example.playergroup.BuildConfig
 import com.example.playergroup.R
@@ -329,6 +330,20 @@ fun <T, U, R> Pair<T?, U?>.two(body: (T, U) -> R): R? {
         return body(first, second)
     }
     return null
+}
+
+fun TextView.initTextWatcher(drawable: GradientDrawable) {
+    setTextColor(ContextCompat.getColor(
+        this.context,
+        R.color.btn_disabled_text
+    ))
+    drawable.setColor(
+        ContextCompat.getColor(
+            this.context,
+            R.color.btn_disabled_background
+        )
+    )
+    background = drawable
 }
 
 fun TextView.textWatcher(drawable: GradientDrawable) = object : TextWatcherUse {
