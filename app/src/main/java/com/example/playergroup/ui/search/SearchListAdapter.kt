@@ -27,6 +27,7 @@ class SearchListAdapter: RecyclerView.Adapter<BaseViewHolder<ViewBinding>>() {
         } ?: run {
             items = newList
         }
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun getItemCount(): Int = items?.size ?: 0
