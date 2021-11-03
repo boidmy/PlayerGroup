@@ -349,13 +349,25 @@ fun TextView.initTextWatcher(drawable: GradientDrawable) {
 fun TextView.textWatcher(drawable: GradientDrawable) = object : TextWatcherUse {
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         if (p0?.length ?: 0 > 0) {
-            drawable.setColor(Color.parseColor("#5267EA"))
-            setTextColor(Color.parseColor("#ffffff"))
+            drawable.setColor(ContextCompat.getColor(
+                context,
+                R.color.btn_enabled_background
+            ))
+            setTextColor(ContextCompat.getColor(
+                context,
+                R.color.btn_enabled_text
+            ))
             background = drawable
             isEnabled = true
         } else {
-            drawable.setColor(Color.parseColor("#F8F8F8"))
-            setTextColor(Color.parseColor("#e5e5e5"))
+            drawable.setColor(ContextCompat.getColor(
+                context,
+                R.color.btn_disabled_background
+            ))
+            setTextColor(ContextCompat.getColor(
+                context,
+                R.color.btn_disabled_text
+            ))
             background = drawable
             isEnabled = false
         }

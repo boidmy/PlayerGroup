@@ -79,6 +79,24 @@
         tools:text="2021.01.01" />
 
     <View
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/icon_bubble"
+        app:layout_constraintBottom_toBottomOf="@+id/userId"
+        app:layout_constraintEnd_toStartOf="@+id/reviewCount"
+        app:layout_constraintTop_toTopOf="@+id/userId" />
+
+    <TextView
+        android:id="@+id/reviewCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/userId"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintTop_toTopOf="@+id/userId"
+        tools:text="25"/>
+
+    <View
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="#DDDDDD"

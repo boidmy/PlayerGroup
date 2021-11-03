@@ -14,5 +14,6 @@ data class NoticeBoardItem(
     var key: String = "",
     var time: Date = Date(),
     val name: String = "",
-    var categoryKey: String = ""
+    var categoryKey: String = "",
+    var reviewCount: Int = 0
 ): Serializable

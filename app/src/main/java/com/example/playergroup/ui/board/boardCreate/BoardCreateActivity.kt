@@ -107,7 +107,7 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
         intent.getBundleExtra(INTENT_BUNDLE)?.let {
             val item: NoticeBoardItem = it.getSerializable(INTENT_SERIALIZABLE) as NoticeBoardItem
             with(binding) {
-                categoryList.isVisible = false
+                categoryGroup.isVisible = false
                 boardEditTitle.setText(item.title)
                 boardEditSub.setText(item.sub)
                 btnNoticeBoard click {

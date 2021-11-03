@@ -23,7 +23,7 @@
         android:id="@+id/reviewEditId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:text="닉네임자리"
         android:textColor="@color/board_text_color"
         app:layout_constraintEnd_toEndOf="@+id/guideEnd"
@@ -48,6 +48,16 @@
         android:textColor="@color/board_text_color"
         app:layout_constraintEnd_toEndOf="@+id/guideEnd"
         app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/reviewEditTime" />
+        app:layout_constraintTop_toBottomOf="@+id/reviewEditTime"
+        tools:text="내용입니다" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="#DDDDDD"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/reviewSub" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
