@@ -44,6 +44,7 @@ inline fun Context.showToast(text: CharSequence, duration: Int = Toast.LENGTH_SH
     Toast.makeText(this, text, duration).show()
 
 infix fun View?.click(block: (View) -> Unit) = this?.setOnClickListener(block)
+infix fun View?.longClick(block: (View) -> Boolean) = this?.setOnLongClickListener(block)
 infix fun TextView?.setUnderLineBold(input: Pair<String, String>): Spannable {
     val sb = SpannableStringBuilder(input.first)
     val pair = getChangedIndex(input.first, input.second)

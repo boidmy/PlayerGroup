@@ -10,10 +10,7 @@ import com.example.playergroup.data.Landing
 import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ViewClubMemberItemBinding
 import com.example.playergroup.ui.base.BaseViewHolder
-import com.example.playergroup.util.LandingRouter
-import com.example.playergroup.util.click
-import com.example.playergroup.util.debugToast
-import com.example.playergroup.util.viewBinding
+import com.example.playergroup.util.*
 
 class ClubMemberItemViewHolder(parent: ViewGroup): BaseViewHolder<ViewClubMemberItemBinding>(
     parent.viewBinding(ViewClubMemberItemBinding::inflate)) {
@@ -59,6 +56,11 @@ class ClubMemberItemViewHolder(parent: ViewGroup): BaseViewHolder<ViewClubMember
 
         itemView click {
             LandingRouter.move(itemView.context, RouterEvent(type = Landing.MY_PAGE, primaryKey = data.email))
+        }
+
+        itemView longClick {
+            itemView.context debugToast {"롱클릭"}
+            true
         }
     }
 }
