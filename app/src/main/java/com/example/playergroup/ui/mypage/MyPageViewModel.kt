@@ -43,7 +43,7 @@ class MyPageViewModel: BaseViewModel() {
                 userInfo.img = storageFullUrl
 
                 authRepository.insertInitUserDocument(userInfo) {   // user DB 에 userInfo 를 저장한다.
-                    if (it) PlayerGroupApplication.instance.userInfo = userInfo
+                    //if (it) PlayerGroupApplication.instance.userInfo = userInfo
                     _firebaseResult.value = it
                 }
             }

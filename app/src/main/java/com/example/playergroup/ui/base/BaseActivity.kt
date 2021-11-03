@@ -113,6 +113,11 @@ abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
         return !joinPrimaryKey.isNullOrEmpty()
     }
 
+    fun isAdmin(primaryKey: String?): Boolean {
+        val admin = pgApplication.userInfo?.clubAdmin ?: mutableListOf()
+        return !admin.firstOrNull { it == primaryKey }.isNullOrEmpty()
+    }
+
     override fun onResume() {
         super.onResume()
     }
