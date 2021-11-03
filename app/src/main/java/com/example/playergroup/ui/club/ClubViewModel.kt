@@ -18,6 +18,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 typealias GetMemberTabList = () -> MutableList<ClubMemberDataSet>?
 typealias JoinProgressMemberClickCallback = (String, Boolean) -> Unit
@@ -25,6 +27,7 @@ typealias IsCurrentUserClubAdmin = () -> Boolean
 class ClubViewModel: BaseViewModel() {
 
     lateinit var mClubInfo: ClubInfo
+    lateinit var initMemberDataSet: MutableList<ClubMemberDataSet>  // 멤버 검색에서 x버튼 사용 시 필요한 데이터
 
     var getMemberTabList: GetMemberTabList? = null
     lateinit var isCurrentUserClubAdmin: IsCurrentUserClubAdmin
@@ -86,6 +89,7 @@ class ClubViewModel: BaseViewModel() {
             .map(::calculateDiffUtilResult)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                initMemberDataSet = it.first?.map { it.copy() }?.toMutableList() ?: mutableListOf()
                 _clubMemberLiveData.value = it
             }, {
                 _clubMemberLiveData.value = null
@@ -192,5 +196,35 @@ class ClubViewModel: BaseViewModel() {
             }, {
                 Log.d("####", "Club Join Approve Error ${it.message}")
             }).addTo(compositeDisposable)
+    }
+
+    fun onNextObservable(editTextString: CharSequence) {
+        compositeDisposable.clear() // 비동기 로직 Stop
+        Observable.create<CharSequence> { emitter -> emitter.onNext(editTextString) }
+            .debounce(200L, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.computation())
+            .map(::createSearchViewResult)
+            .map(::calculateDiffUtilResult)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                _clubMemberLiveData.value = it
+            }, {
+                Log.d("####", "Member Search Error > ${it.message}")
+            })
+            .addTo(compositeDisposable)
+    }
+
+    private fun createSearchViewResult(editText: CharSequence): MutableList<ClubMemberDataSet> {
+        if (editText.isEmpty()) return initMemberDataSet
+
+        val items = initMemberDataSet.map { it.copy() }.toMutableList()
+            .filter { !it.isJoiningUser }   // 가입된 멤머등 중에
+            .filter {   // 검색하고자 하는 대상이 있는지
+                it.name.toLowerCase(Locale.getDefault()).contains(editText.toString().toLowerCase(
+                    Locale.getDefault()))
+            }
+            .toMutableList()
+
+        return items
     }
 }
