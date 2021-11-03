@@ -37,6 +37,6 @@ enum class ViewTypeConst {
 
     // -- 클럽 맴버 --
     CLUB_MEMBER_USER,
-    CLUB_TITLE_TEXT,
+    CLUB_TITLE_TEXT
 
 }
