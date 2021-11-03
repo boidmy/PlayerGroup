@@ -7,12 +7,8 @@ import androidx.viewbinding.ViewBinding
 import com.example.playergroup.data.ClubMemberDataSet
 import com.example.playergroup.ui.base.BaseViewHolder
 import com.example.playergroup.ui.base.EmptyErrorViewHolder
-import com.example.playergroup.ui.club.holder.ClubMemberExpandItemViewHolder
-import com.example.playergroup.ui.club.holder.ClubMemberInviteUserViewHolder
 import com.example.playergroup.ui.club.holder.ClubMemberItemViewHolder
 import com.example.playergroup.ui.club.holder.ClubTitleTextViewHolder
-import com.example.playergroup.ui.main.holder.MainClubInfoViewHolder
-import com.example.playergroup.ui.main.holder.MainMyInfoViewHolder
 import com.example.playergroup.util.ViewTypeConst
 
 class ClubMemberListAdapter: RecyclerView.Adapter<BaseViewHolder<ViewBinding>>() {
@@ -35,7 +31,6 @@ class ClubMemberListAdapter: RecyclerView.Adapter<BaseViewHolder<ViewBinding>>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ViewBinding> =
         when(ViewTypeConst.values()[viewType]) {
             ViewTypeConst.CLUB_MEMBER_USER -> ClubMemberItemViewHolder(parent)
-            ViewTypeConst.CLUB_MEMBER_EXPAND -> ClubMemberExpandItemViewHolder(parent)
             ViewTypeConst.CLUB_TITLE_TEXT -> ClubTitleTextViewHolder(parent)
             else -> EmptyErrorViewHolder(parent)
         } as BaseViewHolder<ViewBinding>

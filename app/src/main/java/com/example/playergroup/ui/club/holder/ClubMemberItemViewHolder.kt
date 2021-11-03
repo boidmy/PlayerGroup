@@ -37,13 +37,11 @@ class ClubMemberItemViewHolder(parent: ViewGroup): BaseViewHolder<ViewClubMember
 
             btnApprove click {
                 //todo 사용자에게 푸시 보내기
-                //itemView.context debugToast { "준비중" }
                 data.joinProgressMemberClickCallback?.invoke(data.email, true)
             }
 
             btnReject click {
                 //todo 사용자에게 푸시 보내기
-                //itemView.context debugToast { "준비중" }
                 data.joinProgressMemberClickCallback?.invoke(data.email, false)
             }
 
@@ -56,7 +54,6 @@ class ClubMemberItemViewHolder(parent: ViewGroup): BaseViewHolder<ViewClubMember
 
             // Club Join 영역과 Member 영역을 나눔
             btnLayer.visibility = if (data.isJoiningUser) View.VISIBLE else View.GONE
-
 
         }
 
