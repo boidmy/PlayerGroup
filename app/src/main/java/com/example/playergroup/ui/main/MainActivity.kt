@@ -1,6 +1,5 @@
 package com.example.playergroup.ui.main
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
@@ -11,12 +10,11 @@ import com.example.playergroup.data.LoginStateChange
 import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ActivityMainBinding
 import com.example.playergroup.ui.base.BaseActivity
-import com.example.playergroup.ui.vote.VoteActivity
 import com.example.playergroup.util.*
 import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 import io.reactivex.rxkotlin.addTo
 import java.lang.reflect.Type
-import com.google.gson.Gson
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
@@ -81,11 +79,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
         /*binding.btnVote click {
             startActivity(Intent(this, VoteActivity::class.java))
-        }
-*/
-        binding.btnNoticeBoard click {
-            LandingRouter.move(this, RouterEvent(type = Landing.BOARD))
-        }
+        }*/
 
         return mainList
     }

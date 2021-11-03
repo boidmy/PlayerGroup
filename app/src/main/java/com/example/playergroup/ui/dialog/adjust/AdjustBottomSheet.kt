@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playergroup.R
 import com.example.playergroup.data.AdjustDataSet
+import com.example.playergroup.data.Landing
 import com.example.playergroup.databinding.DialogAdjustBinding
 import com.example.playergroup.util.ConfigModule
 import com.example.playergroup.util.ViewTypeConst
@@ -116,7 +117,7 @@ class AdjustBottomSheet: BottomSheetDialogFragment() {
                 AdjustDataSet(viewType = ViewTypeConst.MAIN_NEW_CLUB_INFO, title = "새로운 클럽 정보", subTitle = "새로 개설된 클럽 정보를 볼 수 있는 곳입니다."),
                 AdjustDataSet(viewType = ViewTypeConst.MAIN_CLUB_PICK_INFO, title = "내 클럽 PICK", subTitle = "내가 관심 있는 클럽 정보를 볼 수 있는 곳 입니다."),
                 AdjustDataSet(viewType = ViewTypeConst.MAIN_PICK_LOCATION_INFO, title = "내 장소 PICK", subTitle = "내가 관심 있는 장소 정보를 볼 수 있는 곳 입니다."),
-                AdjustDataSet(viewType = ViewTypeConst.MAIN_APP_COMMON_BOARD_INFO, title = "게시판", subTitle = "새로운 게시판 글을 한눈에 볼 수 있습니다.")
+                AdjustDataSet(viewType = ViewTypeConst.MAIN_APP_COMMON_BOARD_INFO, title = "게시판", subTitle = "새로운 게시판 글을 한눈에 볼 수 있습니다.", landingType = Landing.BOARD)
             )
         }
         currentMenuList = list.map { it.copy() }.toMutableList()

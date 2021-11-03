@@ -2,16 +2,17 @@ package com.example.playergroup.ui.dialog.adjust
 
 import android.view.MotionEvent
 import android.view.ViewGroup
-import androidx.core.view.MotionEventCompat
-import androidx.core.view.accessibility.AccessibilityEventCompat.getAction
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.example.playergroup.R
 import com.example.playergroup.data.AdjustDataSet
+import com.example.playergroup.data.Landing
+import com.example.playergroup.data.RouterEvent
 import com.example.playergroup.databinding.ViewAdjustItemBinding
 import com.example.playergroup.ui.base.BaseViewHolder
+import com.example.playergroup.util.LandingRouter
 import com.example.playergroup.util.click
 import com.example.playergroup.util.debugToast
 import com.example.playergroup.util.viewBinding
@@ -62,8 +63,9 @@ class AdjustListAdapter(
                 }
 
                 itemView click {
-                    if (!data.isAdjustMode)
-                        itemView.context debugToast {" 화면이 만들어질 경우 랜딩 예정 "}
+                    if (!data.isAdjustMode) {
+                        goToMove(data.landingType)
+                    }
                 }
 
                 itemView.setOnTouchListener { v, event ->
@@ -74,6 +76,12 @@ class AdjustListAdapter(
                 }
             }
         }
-    }
 
+        private fun goToMove(landingType: Landing) {
+            when(landingType) {
+                Landing.BOARD -> { LandingRouter.move(itemView.context, RouterEvent(landingType))}
+                else -> { itemView.context debugToast {" 화면이 만들어질 경우 랜딩 예정 "} }
+            }
+        }
+    }
 }

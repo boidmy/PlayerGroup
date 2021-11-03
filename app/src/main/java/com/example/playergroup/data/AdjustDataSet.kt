@@ -5,6 +5,6 @@ data class AdjustDataSet(
     val viewType: ViewTypeConst,
     val title: String,
     val subTitle: String,
-    var isAdjustMode: Boolean = false
-    //todo 화면들이 만들질 경우 랜딩타입 정보를 넣어 줄 예정
+    var isAdjustMode: Boolean = false,
+    val landingType: Landing = Landing.DONE
 )
