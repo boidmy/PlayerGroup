@@ -41,7 +41,7 @@ class ManagementViewModel: BaseViewModel() {
                         clubPrimaryKey = clubInfo.clubPrimaryKey
                     ))
                 }
-                if (makeClubModule.size == 0) {
+                if (makeClubModule.isNullOrEmpty()) {
                     makeClubModule.add(ManagementDataSet(
                         viewType = ViewTypeConst.MANAGEMENT_EMPTY,
                         emptyTxt = "새로은 클럽을 만들어보세요!",
@@ -71,13 +71,7 @@ class ManagementViewModel: BaseViewModel() {
             }
 
             clubRepository.getClubList(joinProgress) {
-                if (it.isNullOrEmpty()) {
-                    involvedClubModule.add(ManagementDataSet(
-                        viewType = ViewTypeConst.MANAGEMENT_EMPTY,
-                        emptyTxt = "클럽에 가입해 보세요!",
-                        emptyLandingType = Landing.SEARCH
-                    ))
-                } else {
+                if (!it.isNullOrEmpty()) {
                     it.forEach {
                         involvedClubModule.add(
                             ManagementDataSet(
@@ -89,7 +83,17 @@ class ManagementViewModel: BaseViewModel() {
                             )
                         )
                     }
+
                 }
+
+                if (involvedClubList.isNullOrEmpty()) {
+                    involvedClubModule.add(ManagementDataSet(
+                        viewType = ViewTypeConst.MANAGEMENT_EMPTY,
+                        emptyTxt = "클럽에 가입해 보세요!",
+                        emptyLandingType = Landing.SEARCH
+                    ))
+                }
+
                 _involvedClubLiveData.value = involvedClubModule
             }
         }

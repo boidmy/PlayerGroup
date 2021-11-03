@@ -55,8 +55,8 @@ class IntroActivity: BaseActivity<ActivityIntroBinding>() {
                 if (it?.isEmptyData() == true) {
                     LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.MY_PAGE))
                 } else {
-                    PlayerGroupApplication.instance.userInfo = it
                     LandingRouter.move(this@IntroActivity, RouterEvent(type = Landing.MAIN))
+                    PlayerGroupApplication.instance.userInfo = it
                 }
                 finish()
             })

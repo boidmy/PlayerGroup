@@ -73,7 +73,6 @@ class AuthRepository: BaseRepository() {
                 userInfo.clubAdmin = mutableListOf(clubPrimaryKey)
             }
             it.set(userDB, userInfo)
-            PlayerGroupApplication.instance.userInfo = userInfo
         }
             .addOnCompleteListener {
                 callback.invoke(it.isSuccessful)

@@ -11,7 +11,6 @@ import com.example.playergroup.R
 import com.example.playergroup.custom.DialogCustom
 import com.example.playergroup.ui.main.MainActivity
 import com.example.playergroup.util.ConfigModule
-import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
@@ -112,6 +111,11 @@ abstract class BaseActivity<B: ViewBinding> : AppCompatActivity() {
         val joinProgress = pgApplication.userInfo?.joinProgress ?: mutableListOf()
         val joinPrimaryKey = joinProgress.firstOrNull { it == primaryKey }
         return !joinPrimaryKey.isNullOrEmpty()
+    }
+
+    fun isAdmin(primaryKey: String?): Boolean {
+        val admin = pgApplication.userInfo?.clubAdmin ?: mutableListOf()
+        return !admin.firstOrNull { it == primaryKey }.isNullOrEmpty()
     }
 
     override fun onResume() {
