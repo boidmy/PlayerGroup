@@ -57,7 +57,7 @@ class BoardDetailActivity : BaseActivity<ActivityBoardDetailBinding>() {
                 R.drawable.edge_round_send,
                 null
             ) as GradientDrawable).run {
-                boardReviewEdit.addTextChangedListener(textWatcher(this))
+                boardReviewEdit.addTextChangedListener(reviewSend.textWatcher(this))
             }
             reviewSend click {
                 insertReview()
@@ -106,19 +106,5 @@ class BoardDetailActivity : BaseActivity<ActivityBoardDetailBinding>() {
 
     private fun insertReview() {
         viewModel.insertReview(binding.boardReviewEdit.text.toString())
-    }
-
-    private fun textWatcher(drawable: GradientDrawable) = object : TextWatcherUse {
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            if (p0?.length ?: 0 > 0) {
-                drawable.setColor(Color.parseColor("#45D4FA"))
-                binding.reviewSend.background = drawable
-                binding.reviewSend.isEnabled = true
-            } else {
-                drawable.setColor(Color.parseColor("#C6C6C6"))
-                binding.reviewSend.background = drawable
-                binding.reviewSend.isEnabled = false
-            }
-        }
     }
 }

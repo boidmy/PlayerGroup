@@ -1,9 +1,12 @@
 package com.example.playergroup.ui.board.boardCreate
 
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
+import com.example.playergroup.R
 import com.example.playergroup.data.INTENT_BUNDLE
 import com.example.playergroup.data.INTENT_SERIALIZABLE
 import com.example.playergroup.data.NoticeBoardItem
@@ -15,6 +18,7 @@ import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomShee
 import com.example.playergroup.util.CategoryUtil
 import com.example.playergroup.util.ViewTypeConst
 import com.example.playergroup.util.click
+import com.example.playergroup.util.textWatcher
 
 class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
 
@@ -33,6 +37,7 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
         } else {
             insertBoardView()
         }
+        textWatch()
     }
 
     fun observe() {
@@ -51,7 +56,7 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
         selectItem: String
     ) {
         ScrollSelectorBottomSheet.newInstance(type, selectItem) {
-            binding.categoryListText.setText(it)
+            binding.categoryList.text = it
             setSelectCategory(getCateKey(it))
         }.run {
             if (isVisible) return
@@ -74,11 +79,11 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
     private fun insertBoardView() {
         setSelectCategory(getCateKey(configModule.categorySelectMode))
         with(binding) {
-            categoryListText.setText(configModule.categorySelectMode)
-            categoryListText click {
+            categoryList.text = configModule.categorySelectMode
+            categoryList click {
                 setScrollerPicker(
                     ViewTypeConst.SCROLLER_CATEGORY,
-                    categoryListText.text.toString()
+                    categoryList.text.toString()
                 )
             }
 
@@ -109,6 +114,18 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
                     item.sub = boardEditSub.text.toString()
                     viewModel.updateBoard(item)
                 }
+            }
+        }
+    }
+
+    private fun textWatch() {
+        with(binding) {
+            (ResourcesCompat.getDrawable(
+                btnNoticeBoard.resources,
+                R.drawable.edge_round_send,
+                null
+            ) as GradientDrawable).run {
+                boardEditTitle.addTextChangedListener(btnNoticeBoard.textWatcher(this))
             }
         }
     }

@@ -3,7 +3,9 @@ package com.example.playergroup.util
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.AbsoluteSizeSpan
@@ -327,4 +329,20 @@ fun <T, U, R> Pair<T?, U?>.two(body: (T, U) -> R): R? {
         return body(first, second)
     }
     return null
+}
+
+fun TextView.textWatcher(drawable: GradientDrawable) = object : TextWatcherUse {
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        if (p0?.length ?: 0 > 0) {
+            drawable.setColor(Color.parseColor("#5267EA"))
+            setTextColor(Color.parseColor("#ffffff"))
+            background = drawable
+            isEnabled = true
+        } else {
+            drawable.setColor(Color.parseColor("#F8F8F8"))
+            setTextColor(Color.parseColor("#e5e5e5"))
+            background = drawable
+            isEnabled = false
+        }
+    }
 }

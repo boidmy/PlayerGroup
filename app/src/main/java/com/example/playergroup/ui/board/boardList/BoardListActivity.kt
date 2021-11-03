@@ -44,14 +44,14 @@ class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
 
         with(binding) {
             boardRv.adapter = adapter
-            categoryListText.setText(configModule.categorySelectMode)
-            boardWrite click {
+            categoryList.text = configModule.categorySelectMode
+            editButton click {
                 move(this@BoardListActivity, RouterEvent(type = Landing.BOARD_WRITE_UPDATE, activityResult = activityForResult))
             }
-            categoryListText click {
+            categoryList click {
                 setScrollerPicker(
                     ViewTypeConst.SCROLLER_CATEGORY,
-                    categoryListText.text.toString()
+                    categoryList.text.toString()
                 )
             }
         }
@@ -75,7 +75,7 @@ class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
         selectItem: String
     ) {
         ScrollSelectorBottomSheet.newInstance(type, selectItem) {
-            binding.categoryListText.setText(it)
+            binding.categoryList.text = it
             setSelectCategory(getCateKey(it))
             configModule.categorySelectMode = it
         }.run {

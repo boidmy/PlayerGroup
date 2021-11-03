@@ -60,7 +60,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.board.boardCreate.BoardCreateActivity"
             android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".ui.board.boardDetail.BoardDetailActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
