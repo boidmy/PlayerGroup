@@ -15,18 +15,19 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
+        app:endIconMode="clear_text"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/etsearch"
+            android:id="@+id/etSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:maxLength="10"
             android:maxLines="1"
-            android:drawableEnd="@drawable/icon_search"
+            android:drawableStart="@drawable/icon_search"
+            android:drawablePadding="10dp"
             android:textColor="@color/selector_edit_text_enable_color"
             android:textCursorDrawable="@drawable/shape_edit_text_cursor_color"
             android:imeOptions="actionSearch"

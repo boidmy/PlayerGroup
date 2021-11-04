@@ -59,7 +59,7 @@ class BoardDetailReviewViewHolder(parent: ViewGroup) :
     override fun onBindView(data: Any?) {
         (data as? NoticeBoardItem)?.let {
             with(binding) {
-                reviewEditTime.text = CalendarUtil.getDateFormat(it.time)
+                reviewEditTime.text = CalendarUtil.txtDate(it.time)
                 reviewSub.text = it.sub
             }
         }

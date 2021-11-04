@@ -29,7 +29,7 @@ class ManagementViewModel: BaseViewModel() {
                 makeClubModule.add(ManagementDataSet(
                     viewType = ViewTypeConst.MANAGEMENT_EMPTY,
                     emptyTxt = "새로은 클럽을 만들어보세요!",
-                    emptyLandingType = Landing.CREATE_CLUB
+                    landing = Landing.CREATE_CLUB
                 ))
             } else {
                 val sortList = it.sortedBy { it.clubCreateDate }
@@ -38,14 +38,20 @@ class ManagementViewModel: BaseViewModel() {
                         viewType = ViewTypeConst.MANAGEMENT_ITEM,
                         clubImg = clubInfo.clubImg,
                         clubName = clubInfo.clubName,
-                        clubPrimaryKey = clubInfo.clubPrimaryKey
+                        clubPrimaryKey = clubInfo.clubPrimaryKey,
+                        landing = Landing.CLUB_MAIN
                     ))
                 }
                 if (makeClubModule.isNullOrEmpty()) {
                     makeClubModule.add(ManagementDataSet(
                         viewType = ViewTypeConst.MANAGEMENT_EMPTY,
                         emptyTxt = "새로은 클럽을 만들어보세요!",
-                        emptyLandingType = Landing.CREATE_CLUB
+                        landing = Landing.CREATE_CLUB
+                    ))
+                } else {
+                    makeClubModule.add(ManagementDataSet(
+                        viewType = ViewTypeConst.MANAGEMENT_ADD,
+                        landing = Landing.CREATE_CLUB
                     ))
                 }
             }
@@ -64,7 +70,8 @@ class ManagementViewModel: BaseViewModel() {
                             viewType = ViewTypeConst.MANAGEMENT_ITEM,
                             clubImg = clubInfo.clubImg,
                             clubName = clubInfo.clubName,
-                            clubPrimaryKey = clubInfo.clubPrimaryKey
+                            clubPrimaryKey = clubInfo.clubPrimaryKey,
+                            landing = Landing.CLUB_MAIN
                         )
                     )
                 }
@@ -79,7 +86,8 @@ class ManagementViewModel: BaseViewModel() {
                                 clubImg = it.clubImg,
                                 clubName = it.clubName,
                                 clubPrimaryKey = it.clubPrimaryKey,
-                                isJoinProgress = true
+                                isJoinProgress = true,
+                                landing = Landing.CLUB_MAIN
                             )
                         )
                     }
@@ -90,7 +98,12 @@ class ManagementViewModel: BaseViewModel() {
                     involvedClubModule.add(ManagementDataSet(
                         viewType = ViewTypeConst.MANAGEMENT_EMPTY,
                         emptyTxt = "클럽에 가입해 보세요!",
-                        emptyLandingType = Landing.SEARCH
+                        landing = Landing.SEARCH
+                    ))
+                } else {
+                    involvedClubModule.add(ManagementDataSet(
+                        viewType = ViewTypeConst.MANAGEMENT_ADD,
+                        landing = Landing.SEARCH
                     ))
                 }
 

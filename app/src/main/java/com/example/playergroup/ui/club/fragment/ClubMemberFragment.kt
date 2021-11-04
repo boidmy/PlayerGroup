@@ -1,6 +1,9 @@
 package com.example.playergroup.ui.club.fragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +16,7 @@ import com.example.playergroup.databinding.FragmentClubMemberBinding
 import com.example.playergroup.ui.club.ClubViewModel
 import com.example.playergroup.ui.club.adapter.ClubMemberListAdapter
 import com.example.playergroup.util.hideKeyboard
+import com.example.playergroup.util.setItemAnimatorDuration
 import com.example.playergroup.util.viewBinding
 
 class ClubMemberFragment: Fragment() {
@@ -40,7 +44,15 @@ class ClubMemberFragment: Fragment() {
     }
 
     private fun initEditText() {
-
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                s?.let {
+                    viewModel.onNextObservable(it)
+                }
+            }
+        })
     }
 
     private fun initObserver() {
@@ -58,8 +70,10 @@ class ClubMemberFragment: Fragment() {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = ClubMemberListAdapter()
 
+            itemAnimator = setItemAnimatorDuration(150L)
+
             setOnTouchListener { v, event ->
-                hideKeyboard(binding.etsearch)
+                hideKeyboard(binding.etSearch)
                 false
             }
         }
@@ -67,11 +81,11 @@ class ClubMemberFragment: Fragment() {
 
     override fun onResume() {
         super.onResume()
-        hideKeyboard(binding.etsearch)
+        hideKeyboard(binding.etSearch)
     }
 
     override fun onPause() {
         super.onPause()
-        hideKeyboard(binding.etsearch)
+        hideKeyboard(binding.etSearch)
     }
 }

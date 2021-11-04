@@ -1,5 +1,6 @@
 package com.example.playergroup.data
 
+import com.example.playergroup.ui.club.DropClubMemberUserClickCallback
 import com.example.playergroup.ui.club.JoinProgressMemberClickCallback
 import com.example.playergroup.util.ViewTypeConst
 import com.example.playergroup.util.ViewTypeConst.EMPTY_ERROR
@@ -14,6 +15,7 @@ data class ClubInfo (
     override var viewType: ViewTypeConst = EMPTY_ERROR,
     var joinProgress: MutableList<String>? = null,   // 가입 절차 진행중 ( 프라이머리 키 )
     var member: MutableList<String>? = null,    // 클럽 회원 ( 프라이머리 키 )
+    var clubDescription: String? = null,    // 클럽 설명
 ): BaseDataSet(viewType)
 
 data class ClubTabInfo(
@@ -33,6 +35,7 @@ data class ClubMemberDataSet(
     val email: String = "",
     val titleText: String = "",
     val playPosition: String = "",
-    val isAdmin: Boolean = false,
-    var joinProgressMemberClickCallback: JoinProgressMemberClickCallback? = null
+    val isCurrentUserAdmin: Boolean = false,
+    var joinProgressMemberClickCallback: JoinProgressMemberClickCallback? = null,
+    var dropClubMemberClickCallback: DropClubMemberUserClickCallback? = null
 ): BaseDataSet()

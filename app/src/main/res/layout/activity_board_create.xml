@@ -20,6 +20,12 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="10dp" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/categoryGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="categoryList, arrow"/>
+
     <TextView
         android:id="@+id/categoryList"
         android:layout_width="0dp"

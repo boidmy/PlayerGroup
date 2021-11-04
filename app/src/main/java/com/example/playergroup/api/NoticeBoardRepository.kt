@@ -90,8 +90,30 @@ class NoticeBoardRepository : BaseRepository() {
         ).run {
             collection.document(boardKey).set(this).addOnCompleteListener {
                 callback(this)
+                setBoardReviewCount(cateKey, detailKey)
             }
         }
+    }
+
+    /**
+     * 게시판 댓글 갯수카운팅
+     */
+    fun setBoardReviewCount(cateKey: String, detailKey: String) {
+        firebaseNoticeBoard.document(cateKey).collection("board")
+            .document(detailKey).get().addOnCompleteListener {
+                if (it.isSuccessful) {
+                    it.result?.toObject(NoticeBoardItem::class.java)?.run {
+                        firebaseNoticeBoard.document(cateKey).collection("board")
+                            .document(detailKey).update(
+                                mapOf(
+                                    "reviewCount" to ++reviewCount,
+                                )
+                            ).addOnCompleteListener {
+                                //callback(item)
+                            }
+                    }
+                }
+            }
     }
 
     /**

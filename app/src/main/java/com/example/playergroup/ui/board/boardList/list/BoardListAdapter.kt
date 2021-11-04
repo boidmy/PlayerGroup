@@ -66,8 +66,9 @@ class BoardListViewHolder(parent: ViewGroup) :
             with(binding) {
                 boardTitle.text = it.title
                 boardSub.text = it.sub
-                boardTime.text = CalendarUtil.getDateFormat(it.time)
+                boardTime.text = CalendarUtil.txtDate(it.time)
                 userId.text = it.name
+                reviewCount.text = it.reviewCount.toString()
             }
         }
     }

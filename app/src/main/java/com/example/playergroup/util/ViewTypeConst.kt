@@ -19,6 +19,7 @@ enum class ViewTypeConst {
     MANAGEMENT_ITEM,
     MANAGEMENT_EMPTY,
     MANAGEMENT_CREATE,
+    MANAGEMENT_ADD,
 
     // -- 선택적 팝업 --
     SCROLLER_HEIGHT,
@@ -37,6 +38,6 @@ enum class ViewTypeConst {
 
     // -- 클럽 맴버 --
     CLUB_MEMBER_USER,
-    CLUB_TITLE_TEXT,
+    CLUB_TITLE_TEXT
 
 }

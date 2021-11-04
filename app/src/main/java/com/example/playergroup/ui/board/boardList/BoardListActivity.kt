@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import com.example.playergroup.PlayerGroupApplication
+import androidx.recyclerview.widget.RecyclerView
 import com.example.playergroup.data.*
 import com.example.playergroup.databinding.ActivityBoardListBinding
 import com.example.playergroup.ui.base.BaseActivity
@@ -28,6 +28,12 @@ class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
             val value = it.data?.getSerializableExtra(INTENT_SERIALIZABLE)
             viewModel.addBoardList(value as NoticeBoardItem)
             
+        }
+    }
+    private val boardListObserve = object : RecyclerView.AdapterDataObserver() {
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            super.onItemRangeInserted(positionStart, itemCount)
+            binding.boardRv.layoutManager?.scrollToPosition(0)
         }
     }
 
@@ -60,6 +66,7 @@ class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
         with(viewModel) {
             observe(boardList, ::renderBoardList)
         }
+        adapter.registerAdapterDataObserver(boardListObserve)
     }
 
     private fun setScrollerPicker(
