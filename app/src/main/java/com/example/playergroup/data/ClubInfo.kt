@@ -15,6 +15,7 @@ data class ClubInfo (
     override var viewType: ViewTypeConst = EMPTY_ERROR,
     var joinProgress: MutableList<String>? = null,   // 가입 절차 진행중 ( 프라이머리 키 )
     var member: MutableList<String>? = null,    // 클럽 회원 ( 프라이머리 키 )
+    var clubDescription: String? = null,    // 클럽 설명
 ): BaseDataSet(viewType)
 
 data class ClubTabInfo(

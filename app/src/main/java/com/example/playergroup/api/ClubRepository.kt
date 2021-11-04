@@ -210,4 +210,11 @@ class ClubRepository: BaseRepository() {
                 .addOnSuccessListener { emitter.onComplete() }
                 .addOnFailureListener { emitter.onError(it) }
         }
+
+    fun updateClubDescription(clubPrimaryKey: String?, description: String) {
+        if (clubPrimaryKey.isNullOrEmpty()) return
+        firebaseClub.document(clubPrimaryKey).update("clubDescription", description)
+            .addOnSuccessListener { Log.d("####", "update to clubDescription success!!") }
+            .addOnFailureListener { Log.d("####", "update to clubDescription Fail!! >> ${it.message}") }
+    }
 }

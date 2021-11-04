@@ -47,6 +47,16 @@ class ClubViewModel: BaseViewModel() {
         }
     }
 
+    fun setUpdateClubDescription(description: String) {
+        clubRepository.updateClubDescription(mClubInfo.clubPrimaryKey, description)
+    }
+
+    fun getClubAdminUserName(callback: (String?) -> Unit) {
+        authRepository.getUserProfileData(mClubInfo.clubAdmin) {
+            callback.invoke(it?.name)
+        }
+    }
+
     fun setJoin(email: String) {
         val clubPrimaryKey = mClubInfo.clubPrimaryKey
         if (clubPrimaryKey.isNullOrEmpty()) return
