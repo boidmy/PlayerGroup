@@ -198,4 +198,16 @@ class ClubRepository: BaseRepository() {
                 .addOnSuccessListener { emitter.onComplete() }
                 .addOnFailureListener { emitter.onError(it) }
         }
+
+    fun removeUserClubMember(primaryKey: String, email: String) =
+        Completable.create { emitter ->
+            firebaseDB.runBatch {
+                val clubDB = firebaseClub.document(primaryKey)
+                it.update(clubDB, "member", FieldValue.arrayRemove(email))
+                val userDB = firebaseUser.document(email)
+                it.update(userDB, "clubInvolved", FieldValue.arrayRemove(primaryKey))
+            }
+                .addOnSuccessListener { emitter.onComplete() }
+                .addOnFailureListener { emitter.onError(it) }
+        }
 }

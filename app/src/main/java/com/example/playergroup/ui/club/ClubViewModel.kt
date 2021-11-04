@@ -4,27 +4,28 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
-import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.data.ClubInfo
 import com.example.playergroup.data.ClubMemberDataSet
-import com.example.playergroup.data.MainDataSet
 import com.example.playergroup.data.UserInfo
 import com.example.playergroup.ui.base.BaseViewModel
 import com.example.playergroup.util.ViewTypeConst
 import com.example.playergroup.util.diffUtilResult
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 typealias GetMemberTabList = () -> MutableList<ClubMemberDataSet>?
 typealias JoinProgressMemberClickCallback = (String, Boolean) -> Unit
+typealias DropClubMemberUserClickCallback = (String) -> Unit
 typealias IsCurrentUserClubAdmin = () -> Boolean
 class ClubViewModel: BaseViewModel() {
 
     lateinit var mClubInfo: ClubInfo
+    lateinit var initMemberDataSet: MutableList<ClubMemberDataSet>  // 멤버 검색에서 x버튼 사용 시 필요한 데이터
 
     var getMemberTabList: GetMemberTabList? = null
     lateinit var isCurrentUserClubAdmin: IsCurrentUserClubAdmin
@@ -86,6 +87,7 @@ class ClubViewModel: BaseViewModel() {
             .map(::calculateDiffUtilResult)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                initMemberDataSet = it.first?.map { it.copy() }?.toMutableList() ?: mutableListOf()
                 _clubMemberLiveData.value = it
             }, {
                 _clubMemberLiveData.value = null
@@ -136,9 +138,8 @@ class ClubViewModel: BaseViewModel() {
                     img = it.img ?: "",
                     playPosition = it.position ?: "",
                     isJoiningUser = true,
-                    isAdmin = isCurrentUserClubAdmin.invoke(),
+                    isCurrentUserAdmin = isCurrentUserClubAdmin.invoke(),
                     joinProgressMemberClickCallback = ::setJoinProgressMemberClickCallback
-
                 )
             )
         }
@@ -157,8 +158,9 @@ class ClubViewModel: BaseViewModel() {
                     name = it.name ?: "",
                     email = it.email ?: "",
                     img = it.img ?: "",
-                    isAdmin = isCurrentUserClubAdmin.invoke(),
-                    playPosition = it.position ?: ""
+                    isCurrentUserAdmin = isCurrentUserClubAdmin.invoke(),
+                    playPosition = it.position ?: "",
+                    dropClubMemberClickCallback = ::setClubDropUserClickCallback
                 )
             )
         }
@@ -174,6 +176,24 @@ class ClubViewModel: BaseViewModel() {
             contentCompare = { o, n -> o == n }
         )
         return Pair(data, result)
+    }
+
+    private fun setClubDropUserClickCallback(email: String) {
+        val clubPrimaryKey = mClubInfo.clubPrimaryKey
+        if (clubPrimaryKey.isNullOrEmpty()) return
+        clubRepository.removeUserClubMember(clubPrimaryKey, email)
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+                clubRepository.getClubData(clubPrimaryKey) {
+                    if (it != null) {
+                        mClubInfo = it
+                        getMemberTabData()
+                    }
+                }
+            }, {
+                Log.d("####", "Club Member Drop Error ${it.message}")
+            }).addTo(compositeDisposable)
+
     }
 
     private fun setJoinProgressMemberClickCallback(email: String, isState: Boolean) {
@@ -192,5 +212,35 @@ class ClubViewModel: BaseViewModel() {
             }, {
                 Log.d("####", "Club Join Approve Error ${it.message}")
             }).addTo(compositeDisposable)
+    }
+
+    fun onNextObservable(editTextString: CharSequence) {
+        compositeDisposable.clear() // 비동기 로직 Stop
+        Observable.create<CharSequence> { emitter -> emitter.onNext(editTextString) }
+            .debounce(200L, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.computation())
+            .map(::createSearchViewResult)
+            .map(::calculateDiffUtilResult)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                _clubMemberLiveData.value = it
+            }, {
+                Log.d("####", "Member Search Error > ${it.message}")
+            })
+            .addTo(compositeDisposable)
+    }
+
+    private fun createSearchViewResult(editText: CharSequence): MutableList<ClubMemberDataSet> {
+        if (editText.isEmpty()) return initMemberDataSet
+
+        val items = initMemberDataSet.map { it.copy() }.toMutableList()
+            .filter { !it.isJoiningUser }   // 가입된 멤머등 중에
+            .filter {   // 검색하고자 하는 대상이 있는지
+                it.name.toLowerCase(Locale.getDefault()).contains(editText.toString().toLowerCase(
+                    Locale.getDefault()))
+            }
+            .toMutableList()
+
+        return items
     }
 }
