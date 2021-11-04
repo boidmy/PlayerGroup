@@ -67,13 +67,6 @@ class BoardCreateActivity : BaseActivity<ActivityBoardCreateBinding>() {
         viewModel.setSelectCategory(key)
     }
 
-    private fun getCateKey(name: String?): String {
-        return when (name) {
-            CategoryUtil.RECRUIT_CATEGORY.value -> CategoryUtil.RECRUIT_CATEGORY.key
-            else -> CategoryUtil.FREE_CATEGORY.key
-        }
-    }
-
     //일반적인 글등록
     private fun insertBoardView() {
         setSelectCategory(getCateKey(configModule.categorySelectMode))

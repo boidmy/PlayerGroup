@@ -6,6 +6,7 @@ data class IntroData (
     var appNewVersion: String? = null,
     var appUpdateType: String? = null,
     var appUpdateInfo: String? = null,
+    var category: MutableList<Category> = mutableListOf()
 ) {
     /**
      * appUpDateType - A : 강제 업데이트
@@ -15,6 +16,11 @@ data class IntroData (
         if (appUpdateType == "A") FORCED else if (appUpdateType == "B") SELECT else NONE
 
 }
+
+data class Category (
+    val categoryKey: String = "",
+    val categoryNm: String = ""
+)
 
 enum class AppUpDateType {
     FORCED,

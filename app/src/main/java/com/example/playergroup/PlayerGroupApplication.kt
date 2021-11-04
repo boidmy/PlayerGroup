@@ -2,6 +2,7 @@ package com.example.playergroup
 
 import android.app.Application
 import android.util.Log
+import com.example.playergroup.data.Category
 import com.example.playergroup.data.UserInfo
 import com.example.playergroup.util.ConfigModule
 import com.example.playergroup.util.applyTheme
@@ -30,6 +31,7 @@ class PlayerGroupApplication: Application() {
      * GlobalData
      */
     var userInfo: UserInfo? = null
+    var boardCategoryList: MutableList<Category>? = null
     fun isLogin() = FirebaseAuth.getInstance().currentUser != null
     fun setLogout() {
         userInfo = null

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.data.*
 import com.example.playergroup.databinding.ActivityBoardListBinding
 import com.example.playergroup.ui.base.BaseActivity
@@ -13,11 +14,8 @@ import com.example.playergroup.ui.board.BoardViewModel
 import com.example.playergroup.ui.board.boardCreate.BoardCreateActivity
 import com.example.playergroup.ui.board.boardList.list.BoardListAdapter
 import com.example.playergroup.ui.dialog.scrollselector.ScrollSelectorBottomSheet
-import com.example.playergroup.util.CategoryUtil
+import com.example.playergroup.util.*
 import com.example.playergroup.util.LandingRouter.move
-import com.example.playergroup.util.ViewTypeConst
-import com.example.playergroup.util.click
-import com.example.playergroup.util.observe
 
 class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
 
@@ -61,13 +59,6 @@ class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
     fun observe() {
         with(viewModel) {
             observe(boardList, ::renderBoardList)
-        }
-    }
-
-    private fun getCateKey(name: String?): String {
-        return when (name) {
-            CategoryUtil.RECRUIT_CATEGORY.value -> CategoryUtil.RECRUIT_CATEGORY.key
-            else -> CategoryUtil.FREE_CATEGORY.key
         }
     }
 

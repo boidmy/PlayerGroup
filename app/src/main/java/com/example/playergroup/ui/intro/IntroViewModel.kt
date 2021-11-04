@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.playergroup.data.AppUpDateType
 import com.example.playergroup.data.AppUpDateType.NONE
+import com.example.playergroup.data.Category
 import com.example.playergroup.data.UserInfo
 import com.example.playergroup.ui.base.BaseViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -14,10 +15,13 @@ class IntroViewModel: BaseViewModel() {
     private val _firebaseAppVersionInfoResult: MutableLiveData<Pair<AppUpDateType, String>> = MutableLiveData()
     val firebaseAppVersionInfoResult: LiveData<Pair<AppUpDateType, String>>
         get() = _firebaseAppVersionInfoResult
+    private val _boardCategoryList: MutableLiveData<MutableList<Category>> = MutableLiveData()
 
     private val _firebaseUserDataResult: MutableLiveData<UserInfo?> = MutableLiveData()
     val firebaseUserDataResult: LiveData<UserInfo?>
         get() = _firebaseUserDataResult
+    val boardCategoryList: LiveData<MutableList<Category>>
+        get() = _boardCategoryList
 
     fun getAppVersionInfo(appNowVersion: String) {
         initRepository.getVersionInfo {
@@ -28,6 +32,7 @@ class IntroViewModel: BaseViewModel() {
                 } else NONE
             val upDateInfo = it?.appUpdateInfo ?: "새로운 버전이 출시되었습니다."
             _firebaseAppVersionInfoResult.value = Pair(type, upDateInfo)
+            _boardCategoryList.value = it?.category
         }
     }
 

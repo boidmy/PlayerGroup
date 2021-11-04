@@ -25,6 +25,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.example.playergroup.BuildConfig
+import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.R
 import com.example.playergroup.custom.DialogCustom
 import io.reactivex.Observable
@@ -37,7 +38,8 @@ import java.util.regex.Pattern
 import kotlin.math.roundToInt
 import io.reactivex.functions.Function
 
-private val PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*#?&]).{8,15}.\$")   // 8 ~ 16 ( 특수문자, 문자, 숫자 모두 포함 )
+private val PASSWORD_PATTERN =
+    Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*#?&]).{8,15}.\$")   // 8 ~ 16 ( 특수문자, 문자, 숫자 모두 포함 )
 
 infix fun Context.debugToast(message: () -> String) {
     if (BuildConfig.DEBUG) Toast.makeText(this, message(), Toast.LENGTH_SHORT).show()
@@ -90,7 +92,12 @@ fun convertPattern(inputPattern: String, outputPattern: String, input: String): 
     }
 }
 
-fun getSpannedColorText(origin: String, changed: String, color: Int, bold: Boolean = false): Spannable {
+fun getSpannedColorText(
+    origin: String,
+    changed: String,
+    color: Int,
+    bold: Boolean = false
+): Spannable {
     val sb = SpannableStringBuilder(origin)
     val pair = getChangedIndex(origin, changed)
 
@@ -172,7 +179,10 @@ fun getSpannedColorSizeText(
     return sb
 }
 
-inline fun <reified T> Observable<T>.retryWithDelay(maxRetries: Int, retryDelayMillis: Int): Observable<T> {
+inline fun <reified T> Observable<T>.retryWithDelay(
+    maxRetries: Int,
+    retryDelayMillis: Int
+): Observable<T> {
     var retryCount = 0
 
     return retryWhen { thObservable ->
@@ -181,7 +191,7 @@ inline fun <reified T> Observable<T>.retryWithDelay(maxRetries: Int, retryDelayM
                 Log.d("retryWhen", "retryWhen ${T::class.java} retry($retryCount) ...")
                 Observable.timer(retryDelayMillis.toLong(), TimeUnit.MILLISECONDS)
             } else {
-                Log.d("retryWhen","retryWhen ${T::class.java} retry($retryCount) failed")
+                Log.d("retryWhen", "retryWhen ${T::class.java} retry($retryCount) failed")
                 Observable.error(throwable)
             }
         }
@@ -191,7 +201,8 @@ inline fun <reified T> Observable<T>.retryWithDelay(maxRetries: Int, retryDelayM
 infix fun Any?.hideKeyboard(currentFocus: View) {
     if (currentFocus is AppCompatEditText) {
         currentFocus.apply {
-            val imm: InputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm: InputMethodManager =
+                context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(windowToken, 0)
             clearFocus()
         }
@@ -203,13 +214,13 @@ infix fun Context.showDefDialog(msg: String): DialogCustom =
         .setMessage(msg)
         .setConfirmBtnText(R.string.ok)
         .setDialogCancelable(false)
-        .setConfirmClickListener(object: DialogCustom.DialogCustomClickListener {
+        .setConfirmClickListener(object : DialogCustom.DialogCustomClickListener {
             override fun onClick(dialogCustom: DialogCustom) {
                 dialogCustom.dismiss()
             }
         })
 
-fun getFirebaseExceptionCodeToString(errorCode: String) = when(errorCode) {
+fun getFirebaseExceptionCodeToString(errorCode: String) = when (errorCode) {
     "ERROR_INVALID_EMAIL" -> "이메일 주소 형식이 잘못되었습니다."
     "ERROR_WRONG_PASSWORD" -> "비밀번호가 틀렸습니다. 반복될 경우 관리자에게 문의 부탁 드립니다."
     "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL" -> "이메일 주소는 같지만 로그인 자격 증명이 다른 계정이 이미 있습니다. 이 이메일 주소와 연결된 제공 업체를 사용하여 로그인하십시오."
@@ -235,7 +246,8 @@ private lateinit var mInputMethodManager: InputMethodManager
 fun AppCompatEditText.hideKeyboard(activity: FragmentActivity) {
     activity.currentFocus?.let {
         if (!::mInputMethodManager.isInitialized) {
-            mInputMethodManager = activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+            mInputMethodManager =
+                activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
         }
         mInputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
         this.clearFocus()
@@ -272,11 +284,11 @@ const val STANDARD_WIDTH_DP = 360f  // 360dp 를 기준으로
 fun getScreenWidthToPx(): Int = Resources.getSystem().displayMetrics.widthPixels
 fun getScreenHeightToPx(): Int = Resources.getSystem().displayMetrics.heightPixels
 
-fun getSizeRelativeScreenWidth(dp: Float): Float
-        = getScreenWidthToPx().toFloat() * dp.toPx / STANDARD_WIDTH_DP.toPx
+fun getSizeRelativeScreenWidth(dp: Float): Float =
+    getScreenWidthToPx().toFloat() * dp.toPx / STANDARD_WIDTH_DP.toPx
 
-fun getSizeRelativeScreenWidth(px: Int): Float
-        = getScreenWidthToPx().toFloat() * px / STANDARD_WIDTH_DP.toPx.toPx
+fun getSizeRelativeScreenWidth(px: Int): Float =
+    getScreenWidthToPx().toFloat() * px / STANDARD_WIDTH_DP.toPx.toPx
 
 inline val Int.toPx: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()
@@ -333,13 +345,15 @@ fun <T, U, R> Pair<T?, U?>.two(body: (T, U) -> R): R? {
 }
 
 fun TextView.initTextWatcher(drawable: GradientDrawable) {
-    setTextColor(ContextCompat.getColor(
-        this.context,
-        R.color.btn_disabled_text
-    ))
+    setTextColor(
+        ContextCompat.getColor(
+            context,
+            R.color.btn_disabled_text
+        )
+    )
     drawable.setColor(
         ContextCompat.getColor(
-            this.context,
+            context,
             R.color.btn_disabled_background
         )
     )
@@ -349,15 +363,47 @@ fun TextView.initTextWatcher(drawable: GradientDrawable) {
 fun TextView.textWatcher(drawable: GradientDrawable) = object : TextWatcherUse {
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         if (p0?.length ?: 0 > 0) {
-            drawable.setColor(Color.parseColor("#5267EA"))
-            setTextColor(Color.parseColor("#ffffff"))
+            drawable.setColor(
+                ContextCompat.getColor(
+                    context,
+                    R.color.btn_enabled_background
+                )
+            )
+            setTextColor(
+                ContextCompat.getColor(
+                    context,
+                    R.color.btn_enabled_text
+                )
+            )
             background = drawable
             isEnabled = true
         } else {
-            drawable.setColor(Color.parseColor("#F8F8F8"))
-            setTextColor(Color.parseColor("#e5e5e5"))
+            drawable.setColor(
+                ContextCompat.getColor(
+                    context,
+                    R.color.btn_disabled_background
+                )
+            )
+            setTextColor(
+                ContextCompat.getColor(
+                    context,
+                    R.color.btn_disabled_text
+                )
+            )
             background = drawable
             isEnabled = false
         }
     }
+}
+
+fun getCateKey(name: String?): String {
+    PlayerGroupApplication.instance.boardCategoryList?.let {
+        for (item in it) {
+            if (name == item.categoryNm) {
+                return item.categoryKey
+            }
+        }
+        return it.getOrNull(0)?.categoryKey ?: ""
+    }
+    return ""
 }

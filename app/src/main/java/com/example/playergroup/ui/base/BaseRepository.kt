@@ -16,5 +16,5 @@ abstract class BaseRepository {
     protected val firebaseStorageDB by lazy { FirebaseStorage.getInstance().reference }
     protected val firebaseStorageUserDB by lazy { firebaseStorageDB.child("userImg") }
     protected val firebaseStorageClubDB by lazy { firebaseStorageDB.child("clubImg") }
-    protected val firebaseNoticeBoard by lazy { firebaseDB.collection("noticeBoard") }
+    protected val firebaseNoticeBoard by lazy { firebaseDB.collection("board") }
 }

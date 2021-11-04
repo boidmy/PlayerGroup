@@ -1,5 +1,6 @@
 package com.example.playergroup.ui.dialog.scrollselector
 
+import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.data.NoticeBoardCategory
 import com.example.playergroup.data.NoticeBoardCategoryList
 import com.example.playergroup.ui.base.BaseViewModel
@@ -20,7 +21,9 @@ class ScrollSelectorViewModel : BaseViewModel() {
         "충청북도", "충청남도", "전라북도", "전라남도", "경상북도", "경상남도", "제주특별자치도"
     )
 
-    private var boardCategoryList: MutableList<String> = NoticeBoardCategoryList().categoryList
+    private var boardCategoryList: MutableList<String> = PlayerGroupApplication.instance.boardCategoryList?.map {
+        it.categoryNm
+    } as MutableList<String>
 
     private fun getYearOfBirth(): MutableList<String> {
         val list = mutableListOf<String>()

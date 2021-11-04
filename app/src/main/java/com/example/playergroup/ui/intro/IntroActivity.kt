@@ -61,6 +61,10 @@ class IntroActivity: BaseActivity<ActivityIntroBinding>() {
                 finish()
             })
 
+            boardCategoryList.observe(this@IntroActivity) {
+                PlayerGroupApplication.instance.boardCategoryList = it
+            }
+
             getAppVersionInfo(appVersion)
         }
     }
