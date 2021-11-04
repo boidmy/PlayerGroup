@@ -9,7 +9,6 @@ import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.util.click
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class VoteCreateActivity : BaseActivity<ActivityVoteCreateBinding>() {
 
     private val viewModel: VoteCreateViewModel by viewModels()

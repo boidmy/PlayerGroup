@@ -1,10 +1,21 @@
 package com.example.playergroup.data.repository.vote
 
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.example.playergroup.PlayerGroupApplication
 import com.example.playergroup.data.room.VoteDb
 import com.example.playergroup.data.room.VoteModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class VoteRepository @Inject constructor(private val voteDb: VoteDb){
+class VoteRepository {
+
+    private val voteDb: VoteDb = Room.databaseBuilder(
+        PlayerGroupApplication.instance.applicationContext,
+        VoteDb::class.java,
+        "vote.db"
+    )
+        .addCallback(object : RoomDatabase.Callback() {}).build()
 
     suspend fun insertVoteItem(voteModel: VoteModel) {
         voteDb.voteDao().insert(voteModel)

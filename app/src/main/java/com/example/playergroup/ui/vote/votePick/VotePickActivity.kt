@@ -15,7 +15,6 @@ import com.example.playergroup.ui.vote.votePick.list.VotePickReviewAdapter
 import com.example.playergroup.util.click
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class VotePickActivity : BaseActivity<ActivityVotePickBinding>() {
 
     private val viewModel: VotePickViewModel by viewModels()

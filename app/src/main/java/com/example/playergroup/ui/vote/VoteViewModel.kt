@@ -10,9 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class VoteViewModel @Inject constructor(private val dataRepository: DataRepository) :
-    BaseViewModel() {
+class VoteViewModel : BaseViewModel() {
+
+    private val dataRepository: DataRepository = DataRepository()
 
     private val _voteList: MutableLiveData<List<VoteModel>> = MutableLiveData()
 
