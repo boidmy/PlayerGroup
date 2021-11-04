@@ -16,6 +16,7 @@ import com.example.playergroup.databinding.ActivityClubBinding
 import com.example.playergroup.ui.base.BaseActivity
 import com.example.playergroup.ui.club.adapter.ClubTabListAdapter
 import com.example.playergroup.ui.club.fragment.ClubCommonFragment
+import com.example.playergroup.ui.club.fragment.ClubInfoFragment
 import com.example.playergroup.ui.club.fragment.ClubMemberFragment
 import com.example.playergroup.ui.login.LoginType
 import com.example.playergroup.util.*
@@ -143,7 +144,7 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
 
     private fun initContent() {
         //초기 진입에는 클럽 정보화면을 노출 함.
-        setFragment(ClubCommonFragment.newInstance(ViewTypeConst.CLUB_TAB_TYPE_INFO))
+        setFragment(ClubInfoFragment.newInstance())
     }
 
     private fun setFragment(fragment: Fragment) {
@@ -185,6 +186,7 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
 
     private fun getFragmentType(type: ViewTypeConst) = when(type) {
         ViewTypeConst.CLUB_TAB_TYPE_MEMBER -> ClubMemberFragment.newInstance()
+        ViewTypeConst.CLUB_TAB_TYPE_INFO -> ClubInfoFragment.newInstance()
         else -> ClubCommonFragment.newInstance(type)
     }
 

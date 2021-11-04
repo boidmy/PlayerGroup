@@ -16,7 +16,7 @@ class ClubMemberListAdapter: RecyclerView.Adapter<BaseViewHolder<ViewBinding>>()
     var items: MutableList<ClubMemberDataSet>? = null
 
     fun submitList(newList: MutableList<ClubMemberDataSet>?, diffResult: DiffUtil.DiffResult) {
-        if (newList.isNullOrEmpty()) return
+        if (newList == null) return
         items?.let {
             it.clear()
             it.addAll(newList)

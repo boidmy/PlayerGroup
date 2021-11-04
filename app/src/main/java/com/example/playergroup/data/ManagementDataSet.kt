@@ -8,6 +8,6 @@ data class ManagementDataSet (
     var clubName: String? = null,
     var emptyTxt: String? = null,
     var clubPrimaryKey: String? = null,
-    var emptyLandingType: Landing? = null,
-    val isJoinProgress: Boolean = false
+    val isJoinProgress: Boolean = false,
+    val landing: Landing
 ): BaseDataSet()

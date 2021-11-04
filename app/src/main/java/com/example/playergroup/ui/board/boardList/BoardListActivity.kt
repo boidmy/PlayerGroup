@@ -30,6 +30,7 @@ class BoardListActivity : BaseActivity<ActivityBoardListBinding>() {
         if (it.resultCode == Activity.RESULT_OK) {
             val value = it.data?.getSerializableExtra(INTENT_SERIALIZABLE)
             viewModel.addBoardList(value as NoticeBoardItem)
+            
         }
     }
     private val boardListObserve = object : RecyclerView.AdapterDataObserver() {

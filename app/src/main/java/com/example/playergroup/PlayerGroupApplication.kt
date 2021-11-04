@@ -21,6 +21,7 @@ class PlayerGroupApplication: Application() {
 
     init {
         instance = this
+
     }
 
     private val configModule by lazy { ConfigModule(this) }
