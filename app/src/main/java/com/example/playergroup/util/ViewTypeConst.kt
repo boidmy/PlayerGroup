@@ -19,6 +19,7 @@ enum class ViewTypeConst {
     MANAGEMENT_ITEM,
     MANAGEMENT_EMPTY,
     MANAGEMENT_CREATE,
+    MANAGEMENT_ADD,
 
     // -- 선택적 팝업 --
     SCROLLER_HEIGHT,

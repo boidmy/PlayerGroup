@@ -1,7 +1,5 @@
 package com.example.playergroup.ui.dialog.management
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.example.playergroup.data.Landing
 import com.example.playergroup.data.ManagementDataSet
 import com.example.playergroup.data.RouterEvent
+import com.example.playergroup.databinding.ViewManagementClubAddItemBinding
 import com.example.playergroup.databinding.ViewManagementClubEmptyBinding
 import com.example.playergroup.databinding.ViewManagementClubItemBinding
 import com.example.playergroup.databinding.ViewManagementCrateClubBinding
@@ -35,6 +34,7 @@ class ManagementListAdapter(
         when(ViewTypeConst.values()[viewType]) {
             ViewTypeConst.MANAGEMENT_ITEM -> ItemViewHolder(parent)
             ViewTypeConst.MANAGEMENT_CREATE -> CreateItemViewHolder(parent)
+            ViewTypeConst.MANAGEMENT_ADD -> AddClubItemViewHolder(parent)
             else -> EmptyItemViewHolder(parent)
         } as BaseViewHolder<ViewBinding>
     override fun onBindViewHolder(holder: BaseViewHolder<ViewBinding>, position: Int) {
@@ -63,7 +63,7 @@ class ManagementListAdapter(
             (data as? ManagementDataSet)?.let {
                 binding.emptyContent.text = it.emptyTxt
                 itemView click {
-                    val landing = data.emptyLandingType ?: return@click
+                    val landing = data.landing
                     LandingRouter.move(itemView.context, RouterEvent(landing))
                     callback.invoke()
                 }
@@ -86,7 +86,19 @@ class ManagementListAdapter(
                 }
 
                 itemView click {
-                    LandingRouter.move(itemView.context, RouterEvent(type = Landing.CLUB_MAIN, primaryKey = managemant.clubPrimaryKey))
+                    LandingRouter.move(itemView.context, RouterEvent(type = managemant.landing, primaryKey = managemant.clubPrimaryKey))
+                    callback.invoke()
+                }
+            }
+        }
+    }
+
+    private inner class AddClubItemViewHolder(parent: ViewGroup): BaseViewHolder<ViewManagementClubAddItemBinding>(
+        parent.viewBinding(ViewManagementClubAddItemBinding::inflate)) {
+        override fun onBindView(data: Any?) {
+            (data as? ManagementDataSet)?.let {
+                itemView click {
+                    LandingRouter.move(itemView.context, RouterEvent(type = data.landing))
                     callback.invoke()
                 }
             }
