@@ -346,55 +346,38 @@ fun <T, U, R> Pair<T?, U?>.two(body: (T, U) -> R): R? {
 }
 
 fun TextView.initTextWatcher(drawable: GradientDrawable) {
-    setTextColor(
-        ContextCompat.getColor(
-            context,
-            R.color.btn_disabled_text
-        )
-    )
-    drawable.setColor(
-        ContextCompat.getColor(
-            context,
-            R.color.btn_disabled_background
-        )
-    )
-    background = drawable
+    setButtonDrawable(false, drawable)
 }
 
 fun TextView.textWatcher(drawable: GradientDrawable) = object : TextWatcherUse {
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        if (p0?.length ?: 0 > 0) {
-            drawable.setColor(
-                ContextCompat.getColor(
-                    context,
-                    R.color.btn_enabled_background
-                )
-            )
-            setTextColor(
-                ContextCompat.getColor(
-                    context,
-                    R.color.btn_enabled_text
-                )
-            )
-            background = drawable
-            isEnabled = true
-        } else {
-            drawable.setColor(
-                ContextCompat.getColor(
-                    context,
-                    R.color.btn_disabled_background
-                )
-            )
-            setTextColor(
-                ContextCompat.getColor(
-                    context,
-                    R.color.btn_disabled_text
-                )
-            )
-            background = drawable
-            isEnabled = false
-        }
+        setButtonDrawable(p0?.length ?: 0 > 0, drawable)
     }
+}
+
+fun TextView.setButtonDrawable(enabled: Boolean, drawable: GradientDrawable) {
+    drawable.setColor(
+        ContextCompat.getColor(
+            context,
+            if (enabled) {
+                R.color.btn_enabled_background
+            } else {
+                R.color.btn_disabled_background
+            }
+        )
+    )
+    setTextColor(
+        ContextCompat.getColor(
+            context,
+            if (enabled) {
+                R.color.btn_enabled_text
+            } else {
+                R.color.btn_disabled_text
+            }
+        )
+    )
+    isEnabled = enabled
+    background = drawable
 }
 
 fun getCateKey(name: String?): String {
