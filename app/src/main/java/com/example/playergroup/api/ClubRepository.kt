@@ -5,7 +5,7 @@ import android.util.Log
 import com.example.playergroup.data.ClubInfo
 import com.example.playergroup.ui.base.BaseRepository
 import com.example.playergroup.ui.dialog.calendar.BaseCalendar.Companion.DATE_FORMAT_YYYYMMDDHHMMSS
-import com.example.playergroup.util.getToday
+import com.example.playergroup.util.CalendarUtil.getToday
 import com.google.firebase.firestore.FieldValue
 import io.reactivex.Completable
 import io.reactivex.Single

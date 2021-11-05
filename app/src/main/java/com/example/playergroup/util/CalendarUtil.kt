@@ -1,5 +1,6 @@
 package com.example.playergroup.util
 
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -54,5 +55,21 @@ object CalendarUtil {
             else -> msg = getDateFormat(tempDate)
         }
         return msg
+    }
+
+    fun getSimpleFormat(pattern: String) = SimpleDateFormat(pattern, Locale.getDefault())
+    fun getToday(pattern: String) = SimpleDateFormat(pattern, Locale.getDefault()).format(Date())
+
+    fun convertPattern(inputPattern: String, outputPattern: String, input: String): String {
+        var output = ""
+
+        try {
+            val date = SimpleDateFormat(inputPattern, Locale.getDefault()).parse(input)
+            output = SimpleDateFormat(outputPattern, Locale.getDefault()).format(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        } finally {
+            return output
+        }
     }
 }

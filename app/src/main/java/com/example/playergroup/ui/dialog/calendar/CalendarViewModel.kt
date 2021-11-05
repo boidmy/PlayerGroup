@@ -7,8 +7,8 @@ import com.example.playergroup.ui.dialog.calendar.BaseCalendar.Companion.DATE_FO
 import com.example.playergroup.ui.dialog.calendar.BaseCalendar.Companion.DAYS_OF_WEEK
 import com.example.playergroup.ui.dialog.calendar.CalendarViewModel.*
 import com.example.playergroup.ui.base.BaseViewModel
-import com.example.playergroup.util.getSimpleFormat
-import com.example.playergroup.util.getToday
+import com.example.playergroup.util.CalendarUtil.getSimpleFormat
+import com.example.playergroup.util.CalendarUtil.getToday
 import java.util.*
 
 typealias GetCalendarDataSet = (() -> MutableList<CalendarData>?)
