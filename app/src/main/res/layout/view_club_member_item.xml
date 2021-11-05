@@ -28,15 +28,29 @@
 
     </androidx.cardview.widget.CardView>
 
-    <ImageView
-        android:id="@+id/stateIcon"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:src="@drawable/icon_club_admin"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/myUserIconLayer"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
         android:visibility="gone"
+        app:cardBackgroundColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="@id/userImgLayer"
         app:layout_constraintEnd_toEndOf="@id/userImgLayer"
-        tools:visibility="visible"/>
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/ivAdmin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:src="@drawable/icon_club_admin"
+            tools:visibility="visible"/>
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/name"

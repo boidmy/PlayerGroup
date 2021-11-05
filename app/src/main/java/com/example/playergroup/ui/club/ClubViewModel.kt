@@ -90,6 +90,8 @@ class ClubViewModel: BaseViewModel() {
     fun getMemberTabData() {
         val clubMemberPublish: PublishSubject<List<UserInfo>> = PublishSubject.create()
         val clubJoinMemberPublish: PublishSubject<List<UserInfo>> = PublishSubject.create()
+        val clubPrimaryKey = mClubInfo.clubPrimaryKey
+        if (clubPrimaryKey.isNullOrEmpty()) return
         Observable.combineLatest(
             clubMemberPublish,
             clubJoinMemberPublish,
@@ -104,11 +106,7 @@ class ClubViewModel: BaseViewModel() {
             })
             .addTo(compositeDisposable)
 
-        val member = mClubInfo.member ?: mutableListOf()
-        member.add(mClubInfo.clubAdmin!!)   // 클럽장 추가
-        val join = mClubInfo.joinProgress ?: mutableListOf()
-
-        authRepository.getUsersProfileData(member)
+        authRepository.getClubMemberData(clubPrimaryKey)
             .subscribeOn(Schedulers.io())
             .subscribe({
                 clubMemberPublish.onNext(it)
@@ -118,7 +116,7 @@ class ClubViewModel: BaseViewModel() {
             })
             .addTo(compositeDisposable)
 
-        authRepository.getUsersProfileData(join)
+        authRepository.getJoinProgressData(clubPrimaryKey)
             .subscribeOn(Schedulers.io())
             .subscribe({
                 clubJoinMemberPublish.onNext(it)
@@ -170,7 +168,8 @@ class ClubViewModel: BaseViewModel() {
                     img = it.img ?: "",
                     isCurrentUserAdmin = isCurrentUserClubAdmin.invoke(),
                     playPosition = it.position ?: "",
-                    dropClubMemberClickCallback = ::setClubDropUserClickCallback
+                    dropClubMemberClickCallback = ::setClubDropUserClickCallback,
+                    isAdmin = it.email == mClubInfo.clubAdmin
                 )
             )
         }

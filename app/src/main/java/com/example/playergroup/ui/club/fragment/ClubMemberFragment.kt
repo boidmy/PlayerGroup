@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.playergroup.R
 import com.example.playergroup.databinding.FragmentClubMemberBinding
 import com.example.playergroup.ui.club.ClubViewModel
@@ -68,7 +69,13 @@ class ClubMemberFragment: Fragment() {
         binding.recyclerView.apply {
             isNestedScrollingEnabled = false
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapter = ClubMemberListAdapter()
+            adapter = ClubMemberListAdapter().apply {
+                registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+                    override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                        scrollToPosition(0)
+                    }
+                })
+            }
 
             itemAnimator = setItemAnimatorDuration(150L)
 

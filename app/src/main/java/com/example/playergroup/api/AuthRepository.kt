@@ -152,11 +152,26 @@ class AuthRepository: BaseRepository() {
     }
 
     /**
-     * 여러 사용자 정보 갖고 오기
+     * 클럽 멤버는 admin(클럽모임장) 을 포함한 가입된 회원 을 조회하기 때문에 우선 admin 을 데리고 와야 한다..
      */
-    fun getUsersProfileData(emails: List<String>) =
+    fun getClubMemberData(primaryKey: String) =
         Single.create<List<UserInfo>> { emitter ->
-            firebaseUser.whereIn("email", emails).get()
+            firebaseUser.whereArrayContains("clubAdmin", primaryKey).get()
+                .addOnSuccessListener {
+                    val adminUser = it.toObjects(UserInfo::class.java)
+                    firebaseUser.whereArrayContains("clubInvolved", primaryKey).get()
+                        .addOnSuccessListener {
+                            val involvedMember = it.toObjects(UserInfo::class.java)
+                            emitter.onSuccess(adminUser.plus(involvedMember))
+                        }
+                        .addOnFailureListener { emitter.onError(it) }
+                }
+                .addOnFailureListener { emitter.onError(it) }
+        }
+
+    fun getJoinProgressData(primaryKey: String) =
+        Single.create<List<UserInfo>> { emitter ->
+            firebaseUser.whereArrayContains("joinProgress", primaryKey).get()
                 .addOnSuccessListener { emitter.onSuccess(it.toObjects(UserInfo::class.java)) }
                 .addOnFailureListener { emitter.onError(it) }
         }

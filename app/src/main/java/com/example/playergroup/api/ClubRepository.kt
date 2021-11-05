@@ -112,7 +112,8 @@ class ClubRepository: BaseRepository() {
     }
 
     /**
-     * whereIn 은 최대 10개까지만 갖고 온다? ( 참고 )
+     * whereIn 의 비교는 최대 10개 까지만 허용 한다..
+     * 결국 primaryKey 가 10개 까지만 검색할 수 있다 .. 참고
      */
     fun getClubList(primaryKeys: List<String>?, callback: (List<ClubInfo>?) -> Unit) {
         if (primaryKeys.isNullOrEmpty()) {

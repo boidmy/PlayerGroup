@@ -35,7 +35,8 @@ data class ClubMemberDataSet(
     val email: String = "",
     val titleText: String = "",
     val playPosition: String = "",
-    val isCurrentUserAdmin: Boolean = false,
+    val isCurrentUserAdmin: Boolean = false,    // 현재 접속한 사람이 Admin 인지 ?
+    val isAdmin: Boolean = false,   // 이 데이터 클레스 자체가 Admin 인지 ?
     var joinProgressMemberClickCallback: JoinProgressMemberClickCallback? = null,
     var dropClubMemberClickCallback: DropClubMemberUserClickCallback? = null
 ): BaseDataSet()

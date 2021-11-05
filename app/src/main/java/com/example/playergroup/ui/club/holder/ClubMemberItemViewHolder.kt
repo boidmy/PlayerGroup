@@ -30,7 +30,8 @@ class ClubMemberItemViewHolder(parent: ViewGroup): BaseViewHolder<ViewClubMember
 
             name.text = data.name
             playPosition.text = data.playPosition
-            stateIcon.visibility = if (data.email == PlayerGroupApplication.instance.userInfo?.email) View.VISIBLE else View.GONE
+            myUserIconLayer.visibility = if (data.email == PlayerGroupApplication.instance.userInfo?.email || data.isAdmin) View.VISIBLE else View.GONE
+            ivAdmin.visibility = if (data.isAdmin) View.VISIBLE else View.GONE
             btnApprove.visibility = if (data.isJoiningUser) View.VISIBLE else View.GONE
 
             btnApprove click {
