@@ -178,9 +178,7 @@ class ClubActivity: BaseActivity<ActivityClubBinding>() {
     private fun moveToTabContent(type: ViewTypeConst) {
         val isHeaderExpandable = type == ViewTypeConst.CLUB_TAB_TYPE_INFO
         binding.appBar.setExpanded(isHeaderExpandable, true)
-
         setFragment(getFragmentType(type))
-
         disableAppbarExpand(isHeaderExpandable)
     }
 
